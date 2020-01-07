@@ -1,0 +1,43 @@
+{%  load static %}
+<!DOCTYPE html>
+<html lang="it">
+    <head>
+        <meta charset="UTF-8">
+        <link rel="stylesheet" type="text/css" href="{% static 'chat/css/theme.css' %}">
+        <link rel="stylesheet" type="text/css" href="{% static 'chat/css/fonts.css' %}">
+        <script src="{% static 'chat/js/reactor.js' %}"></script>
+        <title>ISWChat - Registrazione</title>
+
+    </head>
+    <body>
+        <div class="box" id="logo_box">
+            <img id="chat_logo" src="{% static 'chat/icons/chat_icon.png' %}" alt="ISW Chat" />
+            <br>
+            <label id="greeting_message">Benvenuto in ISWChat</label>
+        </div>
+        <div id="separator"></div>
+        <div class="box" id="register_box">
+            <form action="/" method="post">{% csrf_token %}
+                <label id="access_text">Registrazione</label>
+                <br>
+                <input id="name_field" class="input" type="name" name="name" placeholder="Nome" oninput="onFieldRegisterInput()"/>
+                <br>
+                <input id="surname_field" class="input" type="family-name" name="family-name" placeholder="Cognome" oninput="onFieldRegisterInput()"/>
+                <br>
+                <input id="email_field" class="input" type="text" name="mail" placeholder="Email" oninput="onFieldRegisterInput()"/>
+                <br>
+                <input id="password_field" class="input" type="password" name="password" placeholder="Password" oninput="onFieldRegisterInput()"/>
+                <br>
+                <input id="confirm_password_field" class="input" type="password" name="confirm_psw" placeholder="Conferma password" oninput="onFieldRegisterInput()"/>
+                <br>
+                <button id="login_btn" class="button">Registrati</button>
+            </form>
+            <br>
+        </div>
+
+        <footer>
+             <label id="footer_text">Creato da CCGP Team</label>
+        </footer>
+
+    </body>
+</html>

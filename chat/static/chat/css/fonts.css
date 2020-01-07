@@ -1,0 +1,16 @@
+@font-face {
+  font-family: 'Libel Suit';
+  src: local('LibelSuit'),
+       url('../fonts/libel_suit.ttf') format("truetype");
+}
+@font-face {
+  font-family: 'Product Sans';
+  src: local('ProductSans'),
+       url('../fonts/Product_Sans.ttf') format("truetype");
+}
+@font-face {
+  font-family: 'Material Icons';
+  src: local('ProductSans'),
+       url('../fonts/material_icons.ttf') format("truetype");
+}
+

@@ -1,13 +1,4 @@
-@font-face {
-  font-family: 'Libel Suit';
-  src: local('LibelSuit'),
-       url('../fonts/libel_suit.ttf') format("truetype");
-}
-@font-face {
-  font-family: 'Product Sans';
-  src: local('ProductSans'),
-       url('../fonts/Product_Sans.ttf') format("truetype");
-}
+
 
 body{
     font-family: "Product Sans", sans-serif;
@@ -30,6 +21,10 @@ a:link{
 }
 #logo_box{
     left:10%;
+}
+#register_box{
+    left:50%;
+    top:20%;
 }
 #chat_logo{
     --icon-size: 256px;
@@ -94,6 +89,11 @@ footer{
     margin: 10px;
     width: 128px;
 }
+#register{
+    position: relative;
+    top:64px;
+    color: rgba(48,48,48,0.74);
+}
 
 @media only screen and (max-width: 1280px) {
      .box{
@@ -105,6 +105,10 @@ footer{
     #logo_box{
         left:10%;
     }
+    #register_box{
+        left:60%;
+        top:20%;
+    }
 }
 @media only screen and (max-width: 581px) {
     .box{
@@ -115,6 +119,10 @@ footer{
     }
     #logo_box{
         left:10%;
+    }
+      #register_box{
+        left:60%;
+        top:20%;
     }
     #greeting_message{
         width: auto;
@@ -136,6 +144,10 @@ footer{
        top:30%;
         left:0;
 
+    }
+      #register_box{
+        left:0%;
+        top:30%;
     }
     #separator{
         background: transparent;
@@ -161,6 +173,10 @@ footer{
        top:35%;
         left:0;
 
+    }
+     #register_box{
+      top:35%;
+        left:0;
     }
     #separator{
         background: transparent;

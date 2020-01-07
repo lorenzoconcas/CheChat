@@ -1,0 +1,108 @@
+{%  load static %}
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <title>ISWChat</title>
+        <link rel="stylesheet" type="text/css" href="{% static 'chat/css/chat.css' %}">
+        <link rel="stylesheet" type="text/css" href="{% static 'chat/css/fonts.css' %}">
+        <meta http-equiv="refresh"content="3">
+    </head>
+    <body>
+        <navbar id="navbar">
+            <img id="logo" src="{% static 'chat/icons/chat_icon.png' %}" alt="ISWChat">
+            <label id="navbar_title">ISW Chat</label>
+            <img id="user_icon" src="{{ user_icon }}" alt="{{ name_to_show }}">
+            <a id="user_name" href="logout">{{ name_to_show }}</a>
+        </navbar>
+
+        <div id="thread_list">
+            <div>
+                <button id="new_thread" class="generic_btn"></button>
+                <input  id="search_box" class="input_box" type="text" placeholder="Cerca fra le chat">
+                <button id="search_btn" class="generic_btn"></button>
+            </div>
+            <div class="chat_thread">
+                <img   class="thread_icon" src="{% static 'chat/icons/generic_user.png' %}" alt="username">
+                <label class="thread_title">Piergiorgio</label>
+                <label class="thread_status">  </label>
+                <br>
+                <label class="thread_preview">Ciao come stai?</label>
+
+            </div>
+            <div class="chat_thread">
+                 <img   class="thread_icon" src="{% static 'chat/icons/generic_user.png' %}" alt="username">
+                 <label class="thread_title">Gianpuddu</label>
+                 <label class="thread_status">  </label>
+                 <br>
+                 <label class="thread_preview">Dove sono i miei cazzo di soldi</label>
+            </div>
+
+        </div>
+        <!-- TO-DO inserire header -->
+        <!--this part need to be managed somehow with ajax & js -->
+        <div id="chat">
+            <div id="thread_header">
+                <label>Piergiorgio</label>
+            </div>
+
+            <div id="thread_bubbles">
+                <br>
+              <div class="bubble_container outgoing">
+                  <label >Lorem ipsum dolor sit amet, consectetur adipiscing elit. In bibendum gravida orci nec semper. Curabitur leo tellus, cursus nec sapien vel, posuere condimentum erat. Mauris non nulla ante. Aenean ac metus sagittis, congue dui non, sollicitudin purus. Etiam et consectetur tellus. Maecenas sed laoreet turpis. Nunc quis velit a lorem luctus finibus. Aliquam malesuada ante justo, a dignissim purus rhoncus a.</label>
+              </div>
+                <br>
+              <div class="bubble_container incoming">
+                  <label >Ciao</label>
+              </div>
+                  <br>
+               <div class="bubble_container outgoing">
+                  <label>Lorem ipsum dolor sit amet, consectetur adipiscing elit. In bibendum gravida orci nec semper. Curabitur leo tellus, cursus nec sapien vel, posuere condimentum erat. Mauris non nulla ante. Aenean ac metus sagittis, congue dui non, sollicitudin purus. Etiam et consectetur tellus. Maecenas sed laoreet turpis. Nunc quis velit a lorem luctus finibus. Aliquam malesuada ante justo, a dignissim purus rhoncus a.</label>
+              </div>
+                <br>
+              <div class="bubble_container incoming">
+                  <label>Ciao</label>
+              </div>
+             <div class="bubble_container outgoing">
+                  <label >Lorem ipsum dolor sit amet, consectetur adipiscing elit. In bibendum gravida orci nec semper. Curabitur leo tellus, cursus nec sapien vel, posuere condimentum erat. Mauris non nulla ante. Aenean ac metus sagittis, congue dui non, sollicitudin purus. Etiam et consectetur tellus. Maecenas sed laoreet turpis. Nunc quis velit a lorem luctus finibus. Aliquam malesuada ante justo, a dignissim purus rhoncus a.</label>
+              </div>
+                <br>
+              <div class="bubble_container incoming">
+                  <label >Ciao</label>
+              </div>
+                  <br>
+               <div class="bubble_container outgoing">
+                  <label>Lorem ipsum dolor sit amet, consectetur adipiscing elit. In bibendum gravida orci nec semper. Curabitur leo tellus, cursus nec sapien vel, posuere condimentum erat. Mauris non nulla ante. Aenean ac metus sagittis, congue dui non, sollicitudin purus. Etiam et consectetur tellus. Maecenas sed laoreet turpis. Nunc quis velit a lorem luctus finibus. Aliquam malesuada ante justo, a dignissim purus rhoncus a.</label>
+              </div>
+                <br>
+              <div class="bubble_container incoming">
+                  <label>Ciao</label>
+              </div>
+            <div class="bubble_container outgoing">
+                  <label >Lorem ipsum dolor sit amet, consectetur adipiscing elit. In bibendum gravida orci nec semper. Curabitur leo tellus, cursus nec sapien vel, posuere condimentum erat. Mauris non nulla ante. Aenean ac metus sagittis, congue dui non, sollicitudin purus. Etiam et consectetur tellus. Maecenas sed laoreet turpis. Nunc quis velit a lorem luctus finibus. Aliquam malesuada ante justo, a dignissim purus rhoncus a.</label>
+              </div>
+                <br>
+              <div class="bubble_container incoming">
+                  <label >Ciao</label>
+              </div>
+                  <br>
+               <div class="bubble_container outgoing">
+                  <label>Lorem ipsum dolor sit amet, consectetur adipiscing elit. In bibendum gravida orci nec semper. Curabitur leo tellus, cursus nec sapien vel, posuere condimentum erat. Mauris non nulla ante. Aenean ac metus sagittis, congue dui non, sollicitudin purus. Etiam et consectetur tellus. Maecenas sed laoreet turpis. Nunc quis velit a lorem luctus finibus. Aliquam malesuada ante justo, a dignissim purus rhoncus a.</label>
+              </div>
+                <br>
+              <div class="bubble_container incoming">
+                  <label>Ciao</label>
+              </div>
+            </div>
+
+            <div id="send_box">
+                <div id="send_box_bkg"></div>
+                <input id="message_box" class="input_box" type="text" placeholder="Scrivi qualcosa">
+                <button id="send_btn">Invia</button>
+
+            </div>
+
+        </div>
+        <footer></footer>
+    </body>
+</html>

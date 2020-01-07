@@ -4,8 +4,9 @@
     <head>
         <meta charset="UTF-8">
         <link rel="stylesheet" type="text/css" href="{% static 'chat/css/theme.css' %}">
+        <link rel="stylesheet" type="text/css" href="{% static 'chat/css/fonts.css' %}">
         <script src="{% static 'chat/js/reactor.js' %}"></script>
-        <title>Chat</title>
+        <title>ISWChat</title>
 
     </head>
     <body>
@@ -16,16 +17,18 @@
         </div>
         <div id="separator"></div>
         <div class="box" id="login_box">
-            <form>
+           <form action='home' method="post">{% csrf_token %}
+
                 <label id="access_text">Accedi</label>
                 <br>
-                <input id="username_field" class="input" type="email" placeholder="Email" oninput="onFieldInput()"/>
+               <input id="email_field" class="input" type="text" name="mail" placeholder="Email" oninput="onFieldInput()"/>
                 <br>
-                <input id="password_field" class="input" type="password" placeholder="Password" oninput="onFieldInput()"/>
+                <input id="password_field" class="input" type="password" name="password" placeholder="Password" oninput="onFieldInput()"/>
                 <br>
                 <button id="login_btn" class="button">Login</button>
             </form>
-
+            <br>
+        <a id="register" href="register">Non hai un account? Registrati gratis</a>
         </div>
 
         <footer>
