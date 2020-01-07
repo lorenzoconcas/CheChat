@@ -1,0 +1,36 @@
+{%  load static %}
+<!DOCTYPE html>
+<html lang="it">
+    <head>
+        <meta charset="UTF-8">
+        <link rel="stylesheet" type="text/css" href="{% static 'chat/css/theme.css' %}">
+        <script src="{% static 'chat/js/reactor.js' %}"></script>
+        <title>Chat</title>
+
+    </head>
+    <body>
+        <div class="box" id="logo_box">
+            <img id="chat_logo" src="{% static 'chat/icons/chat_icon.png' %}" alt="ISW Chat" />
+            <br>
+            <label id="greeting_message">Benvenuto in ISWChat</label>
+        </div>
+        <div id="separator"></div>
+        <div class="box" id="login_box">
+            <form>
+                <label id="access_text">Accedi</label>
+                <br>
+                <input id="username_field" class="input" type="email" placeholder="Email" oninput="onFieldInput()"/>
+                <br>
+                <input id="password_field" class="input" type="password" placeholder="Password" oninput="onFieldInput()"/>
+                <br>
+                <button id="login_btn" class="button">Login</button>
+            </form>
+
+        </div>
+
+        <footer>
+             <label id="footer_text">Creato da CCGP Team</label>
+        </footer>
+
+    </body>
+</html>
