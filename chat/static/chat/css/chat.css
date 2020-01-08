@@ -4,8 +4,11 @@ body {
 	background-repeat: no-repeat;
 	background-attachment: fixed;
 	background-image: linear-gradient(to bottom, white, rgba(232, 232, 232, 0.33));
-}
 
+}
+body::-webkit-scrollbar {
+  display: none;
+}
 a:link {
 	text-decoration: none;
 }
@@ -90,7 +93,7 @@ a:link {
 	border-bottom-style: solid;
 	border-bottom-color: lightgray;
 	border-bottom-width: 1px;
-	background-image: linear-gradient(to bottom, white, rgba(126, 126, 126, 0.1));
+	background-image: linear-gradient(to bottom, white, rgba(200, 200, 200, 0.8));
 }
 
 .thread_title {
@@ -169,6 +172,7 @@ a:link {
 	top: 48px;
 	height: 100%;
 }
+
 #thread_header{
 	position: relative;
 	width: 100%;
@@ -198,6 +202,9 @@ a:link {
 #thread_bubbles {
 	height: 80%;
 	overflow: auto;
+}
+#thread_bubbles::-webkit-scrollbar {
+  display: none;
 }
 
 .bubble_container {
@@ -309,7 +316,7 @@ a:link {
 		top:128px;
 		position: relative;
 		width: 100%;
-		visibility: hidden;
+
 	}
 
 	.chat_thread{
@@ -396,6 +403,7 @@ a:link {
 	#chat{
 		width: 100%;
 		left:0;
+			visibility: hidden;
 	}
 	#thread_header{
 		z-index: 9998;
