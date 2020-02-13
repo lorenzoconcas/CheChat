@@ -212,10 +212,11 @@ a:link {
 }
 
 #thread_bubbles {
-	height: 80%;
+	top:0px;
+	height: calc(100% - 112px);
 	overflow: auto;
-	position: relative;
-	top: -16px;
+	position: absolute;
+
 }
 
 #thread_bubbles::-webkit-scrollbar {
@@ -256,6 +257,7 @@ a:link {
 }
 
 #send_box {
+	z-index: 16;
 	position: absolute;
 	height: 32px;
 	top: calc(100% - 100px);
@@ -264,16 +266,21 @@ a:link {
 }
 
 #send_box_bkg {
-	z-index: -1;
+	z-index: 15;
 	position: absolute;
 	height: 64px;
 	top: -14px;
-	background: #f4f4f4;
+	background: rgba(244, 244, 244, 0.25);
 	width: calc(100% + 8px);
 	left: 0;
+	backdrop-filter: blur(8px);
+	border-top-style: solid;
+	border-top-width: 0.5px;
+	border-color: #dfdfdf;
 }
 
 #send_btn {
+	z-index: 16;
 	position: relative;
 	float: right;
 	border-style: solid;
@@ -287,6 +294,7 @@ a:link {
 }
 
 #message_box {
+	z-index: 16;
 	position: relative;
 	width: calc(100% - 124px);
 	left: 8px;
@@ -726,19 +734,22 @@ a:link {
 	}
 
 	.contact_status {
-		position: relative;
-		float: right;
+
 		font-family: "Material Icons";
-		color: white;
-
-
-		border-radius: 64px;
-		padding: 4px;
-
 		font-size: 48px;
-
+		position: relative;
+		color: black;
 		float: right;
 		left: -24px;
-		top: 100px;
+		top: 56px;
+	}
+
+	.online{
+		background-color: transparent;
+		color : limegreen;
+	}
+	.offline{
+		background-color: transparent;
+		color : #303030;
 	}
 }
