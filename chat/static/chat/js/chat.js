@@ -46,3 +46,9 @@ function openNewChat() {
     else
         $("#new_chat_panel").css("top", "25%");
 }
+function openThread() {
+    if(isMobile) {
+        $("#chat").css("left", "0");
+        $("#new_thread").css("visibility", "hidden");
+    }
+}

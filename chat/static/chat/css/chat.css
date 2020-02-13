@@ -318,8 +318,8 @@ a:link {
 	z-index: 50;
 	position: fixed;
 	height: 50%;
-	width: 40%;
-	left: 30%;
+	width: 30%;
+	left: 35%;
 	top: 150%;
 	border-style: solid;
 	border-width: 0.5px;
@@ -422,7 +422,7 @@ a:link {
 	font-size: 24px;
 	color: white;
 	float: right;
-	left: -8px;
+	left: -5px;
 	top: 4px;
 	border-radius: 64px;
 	padding: 4px;
@@ -465,6 +465,7 @@ a:link {
 	}
 	.chat_thread {
 		position: relative;
+
 		height: 256px;
 	}
 	.thread_icon {
@@ -535,8 +536,8 @@ a:link {
 	/*thread detail*/
 	#chat {
 		width: 100%;
-		left: 0;
-		visibility: hidden;
+		background-color: white;
+		left: 100%;
 	}
 	#thread_header {
 		z-index: 9998;
@@ -544,7 +545,7 @@ a:link {
 		width: 100%;
 		height: 128px;
 		top: 80px;
-		background: whitesmoke;
+
 	}
 	#chat_title {
 		position: relative;
@@ -567,9 +568,9 @@ a:link {
 		color: green;
 	}
 	#thread_bubbles {
-		position: relative;
-		top: 100px;
-		height: calc(80% - 80px);
+		position: absolute;
+		top: 64px;
+		height: calc(100% - 272px);
 		overflow: auto;
 	}
 	.bubble_container {
