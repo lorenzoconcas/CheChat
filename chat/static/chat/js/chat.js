@@ -1,6 +1,13 @@
+var isMobile = false;
+
 function funcs() {
     var x = document.getElementById("thread_bubbles")
     x.scrollTo(0,x.scrollHeight);
+     var el = document.getElementById('navbar_title');
+    var style = window.getComputedStyle(el, null).getPropertyValue('font-size');
+    var fontSize = parseFloat(style);
+    isMobile = fontSize >= 80 ? true : false;
+
 }
 function sendMessage(){
     var msg = document.getElementById("message_box");
@@ -26,4 +33,16 @@ function sendMessageOnEnter(e){
         e.preventDefault();
         sendMessage();
     }
+}
+
+function closeNewChat(){
+    $("#new_chat_panel").css("top", "150%");
+
+}
+function openNewChat() {
+
+    if(isMobile)
+        $("#new_chat_panel").css("top", "128px");
+    else
+        $("#new_chat_panel").css("top", "25%");
 }

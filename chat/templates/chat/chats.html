@@ -1,13 +1,14 @@
 {%  load static %}
 <!DOCTYPE html>
-<html lang="en">
+<html lang="it">
     <head>
         <meta charset="UTF-8">
         <title>ISWChat</title>
         <link rel="stylesheet" type="text/css" href="{% static 'chat/css/chat.css' %}">
         <link rel="stylesheet" type="text/css" href="{% static 'chat/css/fonts.css' %}">
           <script src="{% static 'chat/js/chat.js' %}"></script>
-        <meta http-equiv="refresh"content="500">
+          <script src="{% static 'chat/js/jquery.js' %}"></script>
+        <meta http-equiv="refresh"content="100">
     </head>
     <body onLoad="funcs()">
         <navbar id="navbar">
@@ -17,9 +18,76 @@
             <a id="user_name" href="logout">{{ name_to_show }}</a>
         </navbar>
 
+        <div id="new_chat_panel">
+            <label id="new_chat_title">Nuova chat</label>
+            <br>
+            <label id="new_chat_close" onclick="closeNewChat()"></label>
+            <br>
+            <input  id="contacts_search_box" class="input_box" type="text" placeholder="Cerca fra i contatti">
+            <button id="contacts_search_btn" class="generic_btn"></button>
+            <br>
+
+            <div id="contacts_list">
+                <div class="contact_element">
+                    <input class="contact_checkbox" type="checkbox" id="user_id_check">
+                    <img   class="contact_icon" src="{% static 'chat/icons/generic_user.png' %}" alt="username">
+                    <label class="contact_name">Piergiorgio</label>
+                    <label class="contact_status offline"> </label>
+                </div>
+                <div class="contact_element">
+                    <input class="contact_checkbox" type="checkbox" id="user_id_check">
+                    <img   class="contact_icon" src="{% static 'chat/icons/generic_user.png' %}" alt="username">
+                    <label class="contact_name">Gianpuddu</label>
+                    <label class="contact_status online"> </label>
+                </div>
+                <div class="contact_element">
+                    <input class="contact_checkbox" type="checkbox" id="user_id_check">
+                    <img   class="contact_icon" src="{% static 'chat/icons/lorec.png' %}" alt="username">
+                    <label class="contact_name">La Direzione</label>
+                    <label class="contact_status online"> </label>
+                </div>
+                 <div class="contact_element">
+                    <input class="contact_checkbox" type="checkbox" id="user_id_check">
+                    <img   class="contact_icon" src="{% static 'chat/icons/generic_user.png' %}" alt="username">
+                    <label class="contact_name">John Stavolta</label>
+                    <label class="contact_status offline"> </label>
+                </div>
+                 <div class="contact_element">
+                    <input class="contact_checkbox" type="checkbox" id="user_id_check">
+                    <img   class="contact_icon" src="{% static 'chat/icons/generic_user.png' %}" alt="username">
+                    <label class="contact_name">Tommaso Crociera</label>
+                    <label class="contact_status offline"> </label>
+                </div>
+                <div class="contact_element">
+                    <input class="contact_checkbox" type="checkbox" id="user_id_check">
+                    <img   class="contact_icon" src="{% static 'chat/icons/generic_user.png' %}" alt="username">
+                    <label class="contact_name">Erminio Ottone</label>
+                    <label class="contact_status offline"> </label>
+                </div>
+                <div class="contact_element">
+                    <input class="contact_checkbox" type="checkbox" id="user_id_check">
+                    <img   class="contact_icon" src="{% static 'chat/icons/generic_user.png' %}" alt="username">
+                    <label class="contact_name">Jerry Scroti</label>
+                    <label class="contact_status offline"> </label>
+                </div>
+                <div class="contact_element">
+                    <input class="contact_checkbox" type="checkbox" id="user_id_check">
+                    <img   class="contact_icon" src="{% static 'chat/icons/generic_user.png' %}" alt="username">
+                    <label class="contact_name">Basca Medda</label>
+                    <label class="contact_status offline"> </label>
+                </div>
+                <div class="contact_element">
+                    <input class="contact_checkbox" type="checkbox" id="user_id_check">
+                    <img   class="contact_icon" src="{% static 'chat/icons/generic_user.png' %}" alt="username">
+                    <label class="contact_name">Gassa Saba</label>
+                    <label class="contact_status offline"> </label>
+                </div>
+            </div>
+        </div>
+
         <div id="thread_list">
             <div>
-                <button id="new_thread" class="generic_btn"></button>
+                <button id="new_thread" class="generic_btn" onclick="openNewChat()"></button>
                 <input  id="search_box" class="input_box" type="text" placeholder="Cerca fra le chat">
                 <button id="search_btn" class="generic_btn"></button>
             </div>
@@ -29,7 +97,6 @@
                 <label class="thread_status">  </label>
                 <br>
                 <label class="thread_preview">Ciao come stai?</label>
-
             </div>
             <div class="chat_thread">
                  <img   class="thread_icon" src="{% static 'chat/icons/generic_user.png' %}" alt="username">
