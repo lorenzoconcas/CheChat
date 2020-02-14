@@ -52,3 +52,6 @@ function openThread() {
         $("#new_thread").css("visibility", "hidden");
     }
 }
+function openChatThreadDetail() {
+    alert("to do");
+}

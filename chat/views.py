@@ -16,11 +16,12 @@ def get_client_ip(request):
 def index(request):
     ip = get_client_ip(request)
     print(ip)
-    with open("index.txt", "a+") as myfile:
-        myfile.write(ip)
-        myfile.write("\t")
-        myfile.write(datetime.now().strftime("%d/%m/%Y %H:%M:%S"))
-        myfile.write(" \n")
+    if ip != "192.168.1.254":
+        with open("index.txt", "a+") as myfile:
+            myfile.write(ip)
+            myfile.write("\t")
+            myfile.write(datetime.now().strftime("%d/%m/%Y %H:%M:%S"))
+            myfile.write(" \n")
     return render(request, 'chat/index.html')
 
 

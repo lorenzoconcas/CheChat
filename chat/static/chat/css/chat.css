@@ -159,6 +159,7 @@ a:link {
 	border-style: solid;
 	border-color: dodgerblue;
 	border-radius: 32px;
+	 cursor: pointer;
 }
 
 
@@ -207,10 +208,19 @@ a:link {
 #chat_user_status {
 	font-family: "Material Icons";
 	position: relative;
-	left: 20px;
+	left: 24px;
 	color: green;
 }
-
+#chat_thread_detail{
+	font-family: "Material Icons";
+	font-size: 24px;
+	position: relative;
+	float:right;
+	right: 12px;
+	top:12px;
+	color: black;
+	 cursor: pointer;
+}
 #thread_bubbles {
 	top:0px;
 	height: calc(100% - 112px);
@@ -291,6 +301,7 @@ a:link {
 	color: white;
 	width: 64px;
 	top: 2px;
+	 cursor: pointer;
 }
 
 #message_box {
@@ -354,7 +365,7 @@ a:link {
 	float: right;
 	right:16px;
 	top:16px;
-
+ cursor: pointer;
 }
 #contacts_search_box{
 	backdrop-filter: blur(8px);
