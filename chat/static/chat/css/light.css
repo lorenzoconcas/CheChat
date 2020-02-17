@@ -1,0 +1,159 @@
+#navbar {
+	-webkit-backdrop-filter: blur(8px);
+	backdrop-filter: blur(8px);
+	background: rgba(255, 255, 255, 0.8);
+}
+
+#navbar>a:link {
+	color: black;
+}
+
+#navbar>a {
+	color: black;
+}
+#navbar_title {
+	color:black;
+}
+
+/*Thred list look*/
+
+#thread_list {
+
+	border-top-color: #dfdfdf;
+	border-width: 1px;
+}
+
+.chat_thread {
+	border-bottom-color: lightgray;
+	border-bottom-width: 1px;
+}
+
+.thread_status {
+	color: white;
+	background-color: darkgrey;
+	border-radius: 64px;
+
+}
+
+#search_box {
+	color: #e0e0e0;
+}
+
+.generic_btn {
+	color: white;
+	background: dodgerblue;
+	border-color: dodgerblue;
+	border-radius: 32px;
+}
+
+/*Thread view*/
+
+#chat {
+
+	border-top-style: solid;
+	border-top-color: #dfdfdf;
+	border-left-style: solid;
+	border-left-color: #dfdfdf;
+	border-width: 1px;
+
+}
+
+#thread_header {
+	border-color: #dfdfdf;
+	-webkit-backdrop-filter: blur(5px);
+	backdrop-filter: blur(5px);
+	background: rgba(220, 220, 220, 0.31);
+}
+
+#chat_user_status {
+	color: green;
+}
+#chat_thread_detail{
+	color: black;
+	cursor: pointer;
+}
+
+.outgoing {
+	color: white;
+	background: dodgerblue;
+}
+
+.incoming {
+	background: darkgrey;
+	color: #f5f5f5;
+}
+
+.msg_status {
+	color: white;
+	background-color: darkgrey;
+}
+
+#send_box_bkg {
+
+	background: rgba(244, 244, 244, 0.25);
+
+	backdrop-filter: blur(8px);
+	border-top-style: solid;
+	border-top-width: 0.5px;
+	border-color: #dfdfdf;
+}
+
+#send_btn {
+	border-style: solid;
+	border-color: transparent;
+	border-radius: 16px;
+	background-color: dodgerblue;
+	color: white;
+}
+
+#message_box {
+	color: #404040;
+	-webkit-backdrop-filter: blur(5px);
+	backdrop-filter: blur(5px);
+	background: rgba(220, 220, 220, 0.31);
+}
+
+.input_box {
+	border-color: transparent;
+	background-color: rgba(220, 220, 220, 1);
+	color: darkgrey;
+}
+
+#new_chat_panel {
+
+	border-color: #dfdfdf;
+	background-color: white;
+	box-shadow: 0px 0px 50px rgba(16, 16, 16, 1.0);
+	backdrop-filter: blur(8px);
+	background-color: rgba(255,255,255, 0.8);
+}
+
+#contacts_search_box{
+	backdrop-filter: blur(8px);
+	background-color: rgba(204, 204, 204, 0.8);
+}
+.contact_element {
+	border-color: #e0e0e0;
+}
+.contact_checkbox {
+	background-color: #eee;
+}
+.contact_status {
+	color: white;
+}
+
+#personal_info_panel{
+	border-color: #dfdfdf;
+	background-color: white;
+	box-shadow: 0px 0px 50px rgba(16, 16, 16, 1.0);
+	backdrop-filter: blur(8px);
+	background-color: rgba(255,255,255, 0.8);
+}
+.online{
+	background-color: transparent;
+	color : limegreen;
+}
+.offline{
+	background-color: transparent;
+	color : #303030;
+}

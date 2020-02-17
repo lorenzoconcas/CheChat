@@ -1,4 +1,3 @@
-from django.http import HttpResponse
 from django.shortcuts import render, redirect
 from datetime import datetime
 
@@ -41,7 +40,6 @@ def index(request):
         return render(request, 'chat/index.html', {'valid_login': not isdatavalid})
 
 
-
 def register(request):
     return render(request, 'chat/register.html')
 
@@ -58,8 +56,6 @@ def home(request):
     if not islogged:
 
         if mail not in maillist:
-            print(mail)
-            print("not in list")
             request.session.__setitem__("validdata", False)
             return redirect('/')
         else:
@@ -72,8 +68,6 @@ def home(request):
         user_icon = "generic_user.png"
 
     final_icon = test + user_icon
-    print(final_icon)
-
     return render(request, 'chat/chats.html', {'name_to_show': mail, 'user_icon': final_icon})
 
 

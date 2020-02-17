@@ -6,6 +6,9 @@
         <title>ISWChat</title>
         <link rel="shortcut icon" type="image/png" href="{% static 'favicon.ico' %}"/>
         <link rel="stylesheet" type="text/css" href="{% static 'chat/css/chat.css' %}">
+        <link rel="stylesheet" type="text/css" href="{% static 'chat/css/light.css' %}" id="theme">
+        <link rel="stylesheet" type="text/css" href="{% static 'chat/css/mobile.css' %}">
+
         <link rel="stylesheet" type="text/css" href="{% static 'chat/css/fonts.css' %}">
           <script src="{% static 'chat/js/chat.js' %}"></script>
           <script src="{% static 'chat/js/jquery.js' %}"></script>
@@ -15,10 +18,16 @@
         <navbar id="navbar">
             <img id="logo" src="{% static 'chat/icons/chat_icon.png' %}" alt="ISWChat">
             <label id="navbar_title">ISW Chat</label>
+            <label id="theme_mode_btn" onclick="toggleTheme()"></label>
             <img id="user_icon" src="{{ user_icon }}" alt="{{ name_to_show }}">
             <a id="user_name" href="logout">{{ name_to_show }}</a>
         </navbar>
+        <div id="personal_info_panel">
+            <img id="personal_info_icon" src="{{ user_icon }}" alt="{{ name_to_show }}"/>
+            <br>
+            <label id="personal_info_username">{{ name_to_show }}</label> <!--e cognome-->
 
+        </div>
         <div id="new_chat_panel">
             <label id="new_chat_title">Nuova chat</label>
             <br>
@@ -104,7 +113,7 @@
                  <label class="thread_title">Gianpuddu</label>
                  <label class="thread_status">  </label>
                  <br>
-                 <label class="thread_preview">Dove sono i miei cazzo di soldi</label>
+                 <label class="thread_preview">Sono le ore 16 e 32 minuti</label>
             </div>
 
 
