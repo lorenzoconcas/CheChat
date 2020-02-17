@@ -39,3 +39,4 @@ function onFieldRegisterInput() {
         loginBtn.style.color = "";
     }
 }
+

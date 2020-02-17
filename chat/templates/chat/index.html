@@ -18,9 +18,12 @@
         </div>
         <div id="separator"></div>
         <div class="box" id="login_box">
+               {% if valid_login %}
+                    <label id="invalid_data_message">Dati di accesso non validi</label>
+               {% endif %}
            <form action='home' method="post">{% csrf_token %}
-
                 <label id="access_text">Accedi</label>
+
                 <br>
                <input id="email_field" class="input" type="text" name="mail" placeholder="Email" oninput="onFieldInput()"/>
                 <br>
