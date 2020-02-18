@@ -260,6 +260,7 @@ a:link {
 }
 
 #send_btn {
+	font-family: "Material Icons";
 	z-index: 16;
 	position: relative;
 	float: right;

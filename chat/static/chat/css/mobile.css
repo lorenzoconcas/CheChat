@@ -15,16 +15,25 @@
 		font-size: 80px;
 	}
 	#theme_mode_btn{
-
+		position:relative;
 		font-size: 80px;
-		left:48px;
-		top:-24px;
+		float:right;
+		left:-120px;
+		top:24px;
 	}
-
+	#logout{
+		position: relative;
+		float:right;
+		font-size: 80px;
+		top:24px;
+		left:64px;
+		color:blue;
+	}
 	#user_name {
 		visibility: hidden;
 	}
 	#user_icon {
+		left:-32px;
 		width: 128px;
 		top: -2px;
 	}
@@ -74,8 +83,8 @@
 	#search_box {
 		position: relative;
 		left: 16px;
-		top: 0px;
-		height: 100px;
+		top: 10px;
+		height: 80px;
 		width: calc(100% - 240px);
 		font-size: 48px;
 	}
@@ -155,19 +164,12 @@
 	}
 	#send_box {
 		position: absolute;
-		height: 200px;
-		top: calc(100% - 256px);
+		height: 180px;
+		top: calc(100% - 180px);
 		width: 100%;
 		left: 0;
 	}
-	#send_box_bkg {
-		z-index: -1;
-		position: absolute;
-		height: 200px;
-		top: 16px;
-		width: calc(100% + 8px);
-		left: 0;
-	}
+
 	#send_btn {
 		position: relative;
 		float: right;
@@ -176,18 +178,18 @@
 		border-radius: 256px;
 		padding: 8px 4px;
 		font-size: 56px;
-		width: 140px;
-		top: 32px;
-		height: 140px;
-		left: -32px;
+		width: 112px;
+		top: 34px;
+		height: 112px;
+		left: -24px;
 	}
 	#message_box {
 		font-size: 48px;
 		position: relative;
-		width: calc(100% - 240px);
+		width: calc(100% - 200px);
 		left: 16px;
 		top: 32px;
-		height: 128px;
+		height: 96px;
 	}
 
 	#new_chat_panel {
@@ -295,5 +297,20 @@
 	.offline{
 		background-color: transparent;
 		color : #303030;
+	}
+
+	.moving_bubble{
+		position:absolute;
+		left: 25%;
+		z-index:1000;
+		top: calc(50% - 22px);
+		height:24px;
+		width:calc(75% - 32px);
+		color:white;
+		background:dodgerblue;
+
+		padding:8px 16px;
+		border-style:solid;
+		border-radius: 32px 32px 0 32px;
 	}
 }

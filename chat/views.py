@@ -46,17 +46,27 @@ def register(request):
 
 def home(request):
     test = "static/chat/icons/"
-    islogged = request.session.__getitem__("logged")
+    try:
+        islogged = request.session.__getitem__("logged")
+    except:
+        islogged = False
+        request.session.__setitem__("logged", islogged)
+        return redirect('/')
+
     maillist = ["lore@iswchat.com", "test@iswchat.com"]
+
     try:
         mail = request.session.__getitem__("mail")
     except:
-        mail = request.POST.get('mail', 'lore@iswchat.com')
+        mail = request.POST.get('mail', '')
 
     if not islogged:
 
         if mail not in maillist:
-            request.session.__setitem__("validdata", False)
+            if mail == '':
+                request.session.__setitem__("validdata", True)
+            else:
+                request.session.__setitem__("validdata", False)
             return redirect('/')
         else:
             request.session.__setitem__("mail", mail)
