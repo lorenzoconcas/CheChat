@@ -1,5 +1,6 @@
 from django.shortcuts import render, redirect
 from datetime import datetime
+from chat.models import Utente
 
 
 def get_client_ip(request):
@@ -53,24 +54,36 @@ def home(request):
         request.session.__setitem__("logged", islogged)
         return redirect('/')
 
-    maillist = ["lore@iswchat.com", "test@iswchat.com"]
 
     try:
         mail = request.session.__getitem__("mail")
     except:
         mail = request.POST.get('mail', '')
+    try:
+        password = request.session.__getitem__("password")
+    except:
+        password = request.POST.get('password', '')
 
     if not islogged:
+        u = Utente.objects.filter(email=mail)
 
-        if mail not in maillist:
+        if u.exists():
+            u = Utente.objects.get(email=mail)
+            if u.login(mail, password):
+                request.session.__setitem__("mail", mail)
+                request.session.__setitem__("logged", True)
+            else:
+                if mail == '':
+                    request.session.__setitem__("validdata", True)
+                else:
+                    request.session.__setitem__("validdata", False)
+                return redirect('/')
+        else:
             if mail == '':
                 request.session.__setitem__("validdata", True)
             else:
                 request.session.__setitem__("validdata", False)
             return redirect('/')
-        else:
-            request.session.__setitem__("mail", mail)
-            request.session.__setitem__("logged", True)
 
     if mail == 'lore@iswchat.com':
         user_icon = "lorec.png"

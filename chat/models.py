@@ -8,6 +8,12 @@ class Utente(models.Model):
     email = models.CharField(max_length=200)
     password = models.CharField(max_length=200)
 
+    def __str__(self):
+        return "User call himself : " + self.nome
+
+    def login(self, mail, password):
+        return (self.email == mail) and (self.password == password)
+
 
 class ListaContatti(models.Model):
     utente = models.ForeignKey(to=Utente, on_delete=models.CASCADE)
