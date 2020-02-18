@@ -10,26 +10,26 @@ class Utente(models.Model):
 
 
 class ListaContatti(models.Model):
-    utente = models.ForeignKey(to=Utente, on_delete=models.CASCADE())
+    utente = models.ForeignKey(to=Utente, on_delete=models.CASCADE)
 
 
 class Rubrica(models.Model):
-    utente = models.ForeignKey(to=Utente, on_delete=models.CASCADE())
-    listaContatti = models.ForeignKey(to=ListaContatti, on_delete=models.CASCADE())
+    utente = models.ForeignKey(to=Utente, on_delete=models.CASCADE)
+    listaContatti = models.ForeignKey(to=ListaContatti, on_delete=models.CASCADE)
 
 
 class Messaggio(models.Model):
-    mittente = models.ForeignKey(to=Utente, on_delete=models.CASCADE())
+    mittente = models.ForeignKey(to=Utente, on_delete=models.CASCADE)
     dataora = models.DateTimeField()
     contenuto = models.CharField(max_length=2000)
 
 
 class ListaMessaggi(models.Model):
-    idMessaggio = models.ForeignKey(to=Messaggio, on_delete=models.CASCADE())
+    idMessaggio = models.ForeignKey(to=Messaggio, on_delete=models.CASCADE)
 
 
 class Chat(models.Model):
-    creatore = models.ForeignKey(to=Utente, on_delete=models.CASCADE())
+    creatore = models.ForeignKey(to=Utente, on_delete=models.CASCADE)
     nome = models.CharField(max_length=200)
-    partecipanti = models.ForeignKey(to=ListaContatti, on_delete=models.CASCADE())
-    messaggi = models.ForeignKey(to=ListaMessaggi, on_delete=models.CASCADE())
+    partecipanti = models.ForeignKey(to=ListaContatti, on_delete=models.CASCADE)
+    messaggi = models.ForeignKey(to=ListaMessaggi, on_delete=models.CASCADE)
