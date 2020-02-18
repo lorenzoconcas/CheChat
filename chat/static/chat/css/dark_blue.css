@@ -1,5 +1,5 @@
 body {
-	background: #1a1a1a;
+	background: #07253a;
 }
 ::placeholder {
   color: #b5b5b5;
@@ -7,7 +7,7 @@ body {
 #navbar {
 	-webkit-backdrop-filter: blur(8px);
 	backdrop-filter: blur(8px);
-	background: rgba(0, 0, 0, 0.8);
+	background: rgba(7, 37, 58, 0.8);
 }
 
 #navbar>a:link {
@@ -150,7 +150,7 @@ body {
 }
 #contacts_search_box{
 	backdrop-filter: blur(8px);
-	background-color: rgba(30, 30, 30, 0.8);
+	background-color: rgb(7, 37, 58);
 }
 .contact_element {
 	border-color: #353535;
@@ -164,6 +164,13 @@ body {
 .contact_name {
 	color:white;
 }
+
+#personal_info_panel{
+	border-color: #dfdfdf;
+	box-shadow: 0px 0px 50px rgba(16, 16, 16, 1.0);
+	backdrop-filter: blur(8px);
+	background-color: rgba(0,0,0, 0.8);
+}
 .online{
 	background-color: transparent;
 	color : limegreen;
@@ -171,17 +178,4 @@ body {
 .offline{
 	background-color: transparent;
 	color : #303030;
-}
-#personal_info_panel{
-	border-color: #07253a;
-	box-shadow: 0px 0px 50px rgb(93, 93, 93);
-	backdrop-filter: blur(8px);
-	background-color: rgba(0,0,0, 0.8);
-}
-
-#personal_info_username{
-	color:white;
-}
-#personal_info_panel_close{
-	color:white;
 }

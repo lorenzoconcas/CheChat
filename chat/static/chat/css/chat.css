@@ -45,7 +45,7 @@ a:link {
 	text-align: left;
 	float: right;
 	left: -24px;
-	top: 12px;
+	top: 14px;
 	cursor: pointer;
 }
 
@@ -54,7 +54,7 @@ a:link {
 	position: relative;
 	text-align: left;
 	float: right;
-	left: -16px;
+	left: -20px;
 	top: 8px;
 }
 
@@ -70,10 +70,10 @@ a:link {
 /*Thred list look*/
 
 #thread_list {
-	position: relative;
+	position: absolute;
 	width: 33%;
-	left: -8px;
-	top: 40px;
+	left: 0px;
+	top: 48px;
 	height: 100%;
 	overflow: auto;
 
@@ -152,9 +152,9 @@ a:link {
 #chat {
 	position: fixed;
 	width: calc(100% - 33%);
-	left: calc(33% - 6px);
+	left: 33%;
 	top: 48px;
-	height: 100%;
+	height: calc(100% - 48px);
 }
 
 #thread_header {
@@ -194,9 +194,10 @@ a:link {
 }
 #thread_bubbles {
 	top:0px;
-	height: calc(100% - 112px);
+	height: calc(100% - 48px);
 	overflow: auto;
 	position: absolute;
+
 
 }
 
@@ -209,8 +210,26 @@ a:link {
 	width: 45%;
 	overflow: auto;
 	padding: 8px;
-}
 
+		-webkit-transition:all 0.3s ease-out;
+    -moz-transition:all 0.3s ease-out;
+    -o-transition:all 0.3s ease-out;
+    transition:all 0.3s ease-out;
+}
+.moving_bubble{
+	position:absolute;
+	left:8px;
+	z-index:1000;
+   	top: calc(50% - 22px);
+	height:24px;
+	width:calc(100% - 124px);
+	color:white;
+	background:dodgerblue;
+
+	padding:8px 16px;
+	border-style:solid;
+	border-radius: 32px 32px 0 32px;
+}
 .outgoing {
 	left: 52.5%;
 	border-radius: 16px 16px 0 16px;
@@ -234,18 +253,9 @@ a:link {
 #send_box {
 	z-index: 16;
 	position: absolute;
-	height: 32px;
-	top: calc(100% - 100px);
-	width: 100%;
-	left: 0;
-}
-
-#send_box_bkg {
-	z-index: 15;
-	position: absolute;
 	height: 64px;
-	top: -14px;
-	width: calc(100% + 8px);
+	top: calc(100% - 64px);
+	width: 100%;
 	left: 0;
 }
 
@@ -255,9 +265,9 @@ a:link {
 	float: right;
 	border-radius: 16px;
 	padding: 8px 4px;
-
 	width: 64px;
-	top: 2px;
+	top: 14px;
+    right: 8px;
     cursor: pointer;
 }
 
@@ -266,7 +276,8 @@ a:link {
 	position: relative;
 	width: calc(100% - 124px);
 	left: 8px;
-	top: 2px;
+	height: 24px;
+	top: calc(50% - 22px);
 }
 
 .input_box {
@@ -378,13 +389,13 @@ a:link {
 	color : #303030;
 }
 #personal_info_panel{
-	z-index: -51;
+	z-index: 51;
 	position: fixed;
 	height: 50%;
 	width: 30%;
 	left: 35%;
-	'top: 25%;
-	top:150%;
+	top: 150%;
+
 	border-style: solid;
 	border-width: 0.5px;
 	border-radius: 16px;
@@ -398,4 +409,80 @@ a:link {
 	position: relative;
 	width: 30%;
 
+}
+#personal_info_username{
+	font-size: 24px;
+}
+#personal_info_panel_close{
+	font-family: "Material Icons";
+
+	position: absolute;
+	float:right;
+	right:16px;
+	top:16px;
+	font-size:24px;
+}
+#personal_info_delete_profile{
+	position: fixed;
+	bottom:8px;
+	color:darkred;
+	font-size: 24px;
+
+}
+#logout{
+	font-family: "Material Icons";
+	font-size: 24px;
+
+
+	position: relative;
+
+	float: right;
+	left: -16px;
+	top: 12px;
+	cursor: pointer;
+}
+#logout:hover{
+	color: #d20000;
+	 -webkit-transition:all 0.3s ease-in;
+    -moz-transition:all 0.3s ease-in;
+    -o-transition:all 0.3s ease-in;
+    transition:all 0.3s ease-in;
+}
+
+#tooltip_exit {
+
+	position: absolute;
+	float:right;
+	right:0px;
+	top:40px;
+	width: 200px;
+
+}
+#tooltip_edit_profile{
+	position: absolute;
+	float:right;
+	right:32px;
+	top:40px;
+	width: 150px;
+}
+#tooltip_theme{
+	position: absolute;
+
+	left:calc(50% + 87px);
+	top:40px;
+	width: 150px;
+}
+.tooltip{
+	visibility: hidden;
+	display: inline-block;
+	border-bottom: 1px dotted black;
+	color:white;
+	text-align: center;
+	background-color: #555;
+	border-radius: 16px;
+  	padding: 5px 0;
+	margin-left: -60px;
+  	opacity: 0.8;
+  	transition: opacity 0.3s;
+	backdrop-filter: blur(50px);
 }

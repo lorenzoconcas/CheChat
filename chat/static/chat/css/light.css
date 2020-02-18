@@ -79,8 +79,8 @@
 }
 
 .incoming {
-	background: darkgrey;
-	color: #f5f5f5;
+	background: #f1f0f0;
+	color: #303030;
 }
 
 .msg_status {
@@ -88,20 +88,16 @@
 	background-color: darkgrey;
 }
 
-#send_box_bkg {
-
+#send_box{
 	background: rgba(244, 244, 244, 0.25);
-
 	backdrop-filter: blur(8px);
 	border-top-style: solid;
 	border-top-width: 0.5px;
 	border-color: #dfdfdf;
 }
-
 #send_btn {
 	border-style: solid;
 	border-color: transparent;
-	border-radius: 16px;
 	background-color: dodgerblue;
 	color: white;
 }
