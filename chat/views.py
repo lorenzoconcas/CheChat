@@ -1,8 +1,10 @@
+import json
+
 from django.http import HttpResponse
 from django.shortcuts import render, redirect
 from datetime import datetime
 from chat.models import *
-
+from django.core import serializers
 
 def get_client_ip(request):
     x_forwarded_for = request.META.get('HTTP_X_FORWARDED_FOR')
@@ -99,14 +101,12 @@ def home(request):
     for t in threads:
         t.chat.nome = t.chat.nome.replace(user.nome+" "+user.cognome, "").replace("-&/&-", "")
 
-    messages = Messaggio.objects.filter(chat_id=1)
 
     return render(request, 'chat/chats.html', {
                     'name_to_show': user.nome+" "+user.cognome,
                     'user': user,
                     'user_icon': final_icon,
                     'Threads': threads,
-                    'messages': messages
                    })
 
 
@@ -158,3 +158,46 @@ def lstmsg(request):
             return HttpResponse("")
     else:
         return HttpResponse("")
+
+
+class MyJsonEncoder:
+    def default(self, obj):
+        if isinstance(obj, JSONMsg):
+            return {}  # dict representation of your object
+        return super(MyJsonEncoder, self).dumps(obj)
+
+
+def allmsg(request):
+    if request.is_ajax():
+        chat_id = request.POST["chat_id"]
+        user_id = request.session['user_id']
+        messaggi = Messaggio.objects.filter(chat_id=chat_id)
+        msg = []
+        for m in messaggi:
+            if m.mittente_id == user_id:
+                msg.append(JSONMsg(m.dataora, m.contenuto, True))
+            else:
+                msg.append(JSONMsg(m.dataora, m.contenuto, False))
+        json = "["
+        for x in msg:
+            json = json + '{"dataora":"'+x.ora.strftime("%Y-%m-%d %H:%M:%S")+'", "contenuto":"'\
+                   +x.contenuto+'", "inviato":"'+str(x.inviato)+'"},'
+
+        json += "]"
+        json = json.replace(",]", "]")
+        return HttpResponse(json)
+
+    return redirect("/")
+
+
+class JSONMsg(object):
+    ora = datetime.now()
+    contenuto = ""
+    inviato = True
+
+    # The class "constructor" - It's actually an initializer
+    def __init__(self, ora, contenuto, inviato):
+        self.ora = ora
+        self.contenuto = contenuto
+        self.inviato = inviato
+

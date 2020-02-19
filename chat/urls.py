@@ -12,4 +12,5 @@ urlpatterns = [
     path('test', views.test, name="test"),
     url(r'^sendmessage/', views.snmsg),
     url(r'^lastmessage/', views.lstmsg),
+    url(r'^allmessages/', views.allmsg),
 ]

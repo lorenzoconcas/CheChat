@@ -16,7 +16,7 @@ function funcs() {
 
     $("#chat_title").text($("#chat_thread_1").text())
 
-    checkMessages();
+   // checkMessages();
 }
 
 function fromServer(){
@@ -26,7 +26,7 @@ function fromServer(){
        type: "POST",
        url: "/lastmessage/",
        data:{
-           'chat_id': 1
+           'chat_id': currentChat
        },
        beforeSend: function(request, settings) {
            if (!(/^http:.*/.test(settings.url) || /^https:.*/.test(settings.url))) {
@@ -67,7 +67,7 @@ async function checkMessages(){
     }
 }
 
-function elementAlreadyInserted(msg){ 
+function elementAlreadyInserted(msg){
     return $(".lastElement").text() == msg;
 }
 
@@ -188,11 +188,61 @@ function openThread(chat_id) {
     if(isMobile) {
         $("#chat").css("left", "0");
         $("#new_thread").css("visibility", "hidden");
-        window.location.hash("#chat")
+
     }
     currentChat = chat_id;
     $("#chat_title").text($("#chat_thread_"+chat_id).text());
+    $("#chat").css("visibility", "visible");
+    loadMessages(chat_id);
 
+}
+
+function loadMessages(chat_id){
+      $.ajax(
+        {
+            type: "POST",
+            url: "/allmessages/",
+            data:{
+                'chat_id': chat_id
+            },
+              beforeSend: function(request, settings) {
+                        if (!(/^http:.*/.test(settings.url) || /^https:.*/.test(settings.url))) {
+                            request.setRequestHeader("X-CSRFToken", csrfcookie());
+                        }
+                    },
+             dataType: 'json',
+            success: function( data )
+            {
+                console.log(data)
+
+                $("#thread_bubbles").empty();
+                $("#thread_bubbles").append("<br>");
+                $("#thread_bubbles").append("<br>");
+                $("#thread_bubbles").append("<br>");
+                for(var messaggio in data){
+                    $("#thread_bubbles").append(getBubble(data[messaggio]));
+                     $("#thread_bubbles").append("<br>");
+                }
+
+            },
+         });
+}
+
+function getBubble(messaggio){
+       var bubble = document.createElement("div");
+       $(bubble).addClass("bubble_container");
+
+        if(messaggio.inviato == "True")
+             $(bubble).addClass("outgoing");
+        else
+          $(bubble).addClass("incoming");
+
+        var msg = document.createElement("label");
+          $(msg).text(messaggio.contenuto);
+          $(bubble).append(msg);
+
+          console.log(messaggio.contenuto);
+         return bubble;
 }
 function openChatThreadDetail() {
     alert("to do");

@@ -113,9 +113,9 @@
                 <button id="search_btn" class="generic_btn"></button>
             </div>
             {% for chat_thread in Threads %}
-                <div class="chat_thread"  onclick="openThread({{ chat_thread.id }})">
+                <div class="chat_thread"  onclick="openThread({{ chat_thread.chat_id }})">
                  <img   class="thread_icon" src="{% static 'chat/icons/generic_user.png' %}" alt="username">
-                 <label id="chat_thread_{{ chat_thread.id }}"class="thread_title"> {{ chat_thread.chat.nome }} </label>
+                 <label id="chat_thread_{{ chat_thread.chat_id }}"class="thread_title"> {{ chat_thread.chat.nome }} </label>
                  <label class="thread_status">  </label>
                  <br>
                  <label class="thread_preview">{{ chat_thread|getltsmsg }}</label>
@@ -123,16 +123,20 @@
             {% endfor %}
         </div>
 
-        <!--this part need to be managed somehow with ajax & js -->
+        <div id="chat_hidden">
+                <label>Premi una chat per iniziare</label>
+            </div>
         <div id="chat">
+
             <div id="thread_header">
                 <img   id="chat_user_icon" src="{% static 'chat/icons/generic_user.png' %}" alt="username">
                 <label id="chat_title"></label>
-                <label id="chat_user_status"> </label>
+                <label id="chat_user_status"></label>
                 <label id="chat_thread_detail" onclick="openChatThreadDetail()"></label>
             </div>
 
             <div id="thread_bubbles">
+             <!-- thread popolato da javascript
                 <br><br><br>
                 {% for message in messages %}
                      <div class="bubble_container {{ message|sentbyuser:user}}">
@@ -144,7 +148,7 @@
 
                      </div>
                     <br>
-                {% endfor %}
+                {% endfor %}-->
             </div>
 
             <div id="send_box">

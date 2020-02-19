@@ -1,3 +1,4 @@
+from django.contrib.postgres import serializers
 from django.db import models
 from datetime import datetime, timezone
 

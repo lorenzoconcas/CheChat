@@ -89,7 +89,9 @@ a:link {
 }
 
 .chat_thread {
+	position: relative;
 	height: 64px;
+	top:4px;
     border-collapse: collapse;
     border-bottom-style: solid;
 }
@@ -145,6 +147,7 @@ a:link {
 	height: 32px;
     border-style: solid;
     cursor: pointer;
+
 }
 
 /*Thread view*/
@@ -155,8 +158,20 @@ a:link {
 	left: 33%;
 	top: 48px;
 	height: calc(100% - 48px);
-}
+	visibility: hidden
 
+}
+#chat_hidden{
+	position: fixed;
+	width: calc(100% - 33%);
+	left: 33%;
+	top: 48px;
+	height: calc(100% - 48px);
+	visibility: visible;
+	text-align: center;
+ vertical-align: middle;
+	font-family: "Product Sans", serif;
+}
 #thread_header {
 	z-index: 2;
 	position: relative;
