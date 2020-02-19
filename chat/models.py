@@ -1,4 +1,5 @@
 from django.db import models
+from datetime import datetime, timezone
 
 
 # Create your models here.
@@ -15,27 +16,37 @@ class Utente(models.Model):
         return (self.email == mail) and (self.password == password)
 
 
-class ListaContatti(models.Model):
-    utente = models.ForeignKey(to=Utente, on_delete=models.CASCADE)
-
-
 class Rubrica(models.Model):
-    utente = models.ForeignKey(to=Utente, on_delete=models.CASCADE)
-    listaContatti = models.ForeignKey(to=ListaContatti, on_delete=models.CASCADE)
-
-
-class Messaggio(models.Model):
-    mittente = models.ForeignKey(to=Utente, on_delete=models.CASCADE)
-    dataora = models.DateTimeField()
-    contenuto = models.CharField(max_length=2000)
-
-
-class ListaMessaggi(models.Model):
-    idMessaggio = models.ForeignKey(to=Messaggio, on_delete=models.CASCADE)
+    owner = models.ForeignKey(to=Utente, on_delete=models.CASCADE)
+    contatto = models.IntegerField
 
 
 class Chat(models.Model):
     creatore = models.ForeignKey(to=Utente, on_delete=models.CASCADE)
     nome = models.CharField(max_length=200)
-    partecipanti = models.ForeignKey(to=ListaContatti, on_delete=models.CASCADE)
-    messaggi = models.ForeignKey(to=ListaMessaggi, on_delete=models.CASCADE)
+
+
+class Partecipanti(models.Model):  # i partcipanti di una chat
+    chat = models.ForeignKey(to=Chat, on_delete=models.CASCADE)
+    contatto = models.ForeignKey(to=Utente, on_delete=models.CASCADE)
+
+
+def sendmessage(utente, messaggio, chat):
+    m = Messaggio(mittente=utente, contenuto=messaggio, chat=chat, dataora=datetime.utcnow())
+    m.save()
+
+
+def getlastmessagecontent(chat):
+    msg_list = Messaggio.objects.filter(chat=chat)
+    try:
+        return msg_list.latest('dataora').contenuto
+    except:
+        return ""
+
+
+class Messaggio(models.Model):
+    chat = models.ForeignKey(to=Chat, on_delete=models.CASCADE)
+    mittente = models.ForeignKey(to=Utente, on_delete=models.CASCADE)
+    dataora = models.DateTimeField()
+    contenuto = models.CharField(max_length=2000)
+

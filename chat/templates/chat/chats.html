@@ -1,4 +1,5 @@
 {%  load static %}
+{%  load chat_extras %}
 <!DOCTYPE html>
 <html lang="it">
     <head>
@@ -111,108 +112,35 @@
                 <input  id="search_box" class="input_box" type="text" placeholder="Cerca fra le chat">
                 <button id="search_btn" class="generic_btn"></button>
             </div>
-            <div class="chat_thread" onclick="openThread()">
-                <img   class="thread_icon" src="{% static 'chat/icons/generic_user.png' %}" alt="username">
-                <label class="thread_title">Piergiorgio</label>
-                <label class="thread_status">  </label>
-                <br>
-                <label class="thread_preview">Ciao come stai?</label>
-            </div>
-            <div class="chat_thread">
+            {% for chat_thread in Threads %}
+                <div class="chat_thread">
                  <img   class="thread_icon" src="{% static 'chat/icons/generic_user.png' %}" alt="username">
-                 <label class="thread_title">Gianpuddu</label>
+                 <label class="thread_title"> {{ chat_thread.chat.nome }} </label>
                  <label class="thread_status">  </label>
                  <br>
-                 <label class="thread_preview">Sono le ore 16 e 32 minuti</label>
+                 <label class="thread_preview">{{ chat_thread|getltsmsg }}</label>
             </div>
-
-
+            {% endfor %}
         </div>
 
         <!--this part need to be managed somehow with ajax & js -->
         <div id="chat">
             <div id="thread_header">
                 <img   id="chat_user_icon" src="{% static 'chat/icons/generic_user.png' %}" alt="username">
-                <label id="chat_title">Piergiorgio</label>
+                <label id="chat_title">Test</label>
                 <label id="chat_user_status"> </label>
                 <label id="chat_thread_detail" onclick="openChatThreadDetail()"></label>
             </div>
 
             <div id="thread_bubbles">
                 <br><br><br>
-                <div class="bubble_container outgoing">
-                    <label >Lorem ipsum dolor sit amet, consectetur adipiscing elit. In bibendum gravida orci nec semper. Curabitur leo tellus, cursus nec sapien vel, posuere condimentum erat. Mauris non nulla ante. Aenean ac metus sagittis, congue dui non, sollicitudin purus. Etiam et consectetur tellus. Maecenas sed laoreet turpis. Nunc quis velit a lorem luctus finibus. Aliquam malesuada ante justo, a dignissim purus rhoncus a.</label>
-                </div>
-                <br>
-                <div class="bubble_container incoming">
-                   <label >Lorem ipsum dolor sit amet, consectetur adipiscing elit. In bibendum gravida orci nec semper. Curabitur leo tellus, cursus nec sapien vel, posuere condimentum erat. Mauris non nulla ante. Aenean ac metus sagittis, congue dui non, sollicitudin purus. Etiam et consectetur tellus. Maecenas sed laoreet turpis. Nunc quis velit a lorem luctus finibus. Aliquam malesuada ante justo, a dignissim purus rhoncus a.</label>
-                </div>
-              <br>
-                <div class="bubble_container outgoing">
-                    <label >Lorem ipsum dolor sit amet, consectetur adipiscing elit. In bibendum gravida orci nec semper. Curabitur leo tellus, cursus nec sapien vel, posuere condimentum erat. Mauris non nulla ante. Aenean ac metus sagittis, congue dui non, sollicitudin purus. Etiam et consectetur tellus. Maecenas sed laoreet turpis. Nunc quis velit a lorem luctus finibus. Aliquam malesuada ante justo, a dignissim purus rhoncus a.</label>
-                </div>
-                <br>
-                <div class="bubble_container incoming">
-                   <label >Lorem ipsum dolor sit amet, consectetur adipiscing elit. In bibendum gravida orci nec semper. Curabitur leo tellus, cursus nec sapien vel, posuere condimentum erat. Mauris non nulla ante. Aenean ac metus sagittis, congue dui non, sollicitudin purus. Etiam et consectetur tellus. Maecenas sed laoreet turpis. Nunc quis velit a lorem luctus finibus. Aliquam malesuada ante justo, a dignissim purus rhoncus a.</label>
-                </div>
-              <br>
-                <div class="bubble_container outgoing">
-                    <label >Lorem ipsum dolor sit amet, consectetur adipiscing elit. In bibendum gravida orci nec semper. Curabitur leo tellus, cursus nec sapien vel, posuere condimentum erat. Mauris non nulla ante. Aenean ac metus sagittis, congue dui non, sollicitudin purus. Etiam et consectetur tellus. Maecenas sed laoreet turpis. Nunc quis velit a lorem luctus finibus. Aliquam malesuada ante justo, a dignissim purus rhoncus a.</label>
-                </div>
-                <br>
-                <div class="bubble_container incoming">
-                   <label >Lorem ipsum dolor sit amet, consectetur adipiscing elit. In bibendum gravida orci nec semper. Curabitur leo tellus, cursus nec sapien vel, posuere condimentum erat. Mauris non nulla ante. Aenean ac metus sagittis, congue dui non, sollicitudin purus. Etiam et consectetur tellus. Maecenas sed laoreet turpis. Nunc quis velit a lorem luctus finibus. Aliquam malesuada ante justo, a dignissim purus rhoncus a.</label>
-                </div>
-              <br>
-                <div class="bubble_container outgoing">
-                    <label >Lorem ipsum dolor sit amet, consectetur adipiscing elit. In bibendum gravida orci nec semper. Curabitur leo tellus, cursus nec sapien vel, posuere condimentum erat. Mauris non nulla ante. Aenean ac metus sagittis, congue dui non, sollicitudin purus. Etiam et consectetur tellus. Maecenas sed laoreet turpis. Nunc quis velit a lorem luctus finibus. Aliquam malesuada ante justo, a dignissim purus rhoncus a.</label>
-                </div>
-                <br>
-                <div class="bubble_container incoming">
-                   <label >Lorem ipsum dolor sit amet, consectetur adipiscing elit. In bibendum gravida orci nec semper. Curabitur leo tellus, cursus nec sapien vel, posuere condimentum erat. Mauris non nulla ante. Aenean ac metus sagittis, congue dui non, sollicitudin purus. Etiam et consectetur tellus. Maecenas sed laoreet turpis. Nunc quis velit a lorem luctus finibus. Aliquam malesuada ante justo, a dignissim purus rhoncus a.</label>
-                </div>
-              <br>
-                <div class="bubble_container outgoing">
-                    <label >Lorem ipsum dolor sit amet, consectetur adipiscing elit. In bibendum gravida orci nec semper. Curabitur leo tellus, cursus nec sapien vel, posuere condimentum erat. Mauris non nulla ante. Aenean ac metus sagittis, congue dui non, sollicitudin purus. Etiam et consectetur tellus. Maecenas sed laoreet turpis. Nunc quis velit a lorem luctus finibus. Aliquam malesuada ante justo, a dignissim purus rhoncus a.</label>
-                </div>
-                <br>
-                <div class="bubble_container incoming">
-                   <label >Lorem ipsum dolor sit amet, consectetur adipiscing elit. In bibendum gravida orci nec semper. Curabitur leo tellus, cursus nec sapien vel, posuere condimentum erat. Mauris non nulla ante. Aenean ac metus sagittis, congue dui non, sollicitudin purus. Etiam et consectetur tellus. Maecenas sed laoreet turpis. Nunc quis velit a lorem luctus finibus. Aliquam malesuada ante justo, a dignissim purus rhoncus a.</label>
-                </div>
-              <br>
-                <div class="bubble_container outgoing">
-                    <label >Lorem ipsum dolor sit amet, consectetur adipiscing elit. In bibendum gravida orci nec semper. Curabitur leo tellus, cursus nec sapien vel, posuere condimentum erat. Mauris non nulla ante. Aenean ac metus sagittis, congue dui non, sollicitudin purus. Etiam et consectetur tellus. Maecenas sed laoreet turpis. Nunc quis velit a lorem luctus finibus. Aliquam malesuada ante justo, a dignissim purus rhoncus a.</label>
-                </div>
-                <br>
-                <div class="bubble_container incoming">
-                   <label >Lorem ipsum dolor sit amet, consectetur adipiscing elit. In bibendum gravida orci nec semper. Curabitur leo tellus, cursus nec sapien vel, posuere condimentum erat. Mauris non nulla ante. Aenean ac metus sagittis, congue dui non, sollicitudin purus. Etiam et consectetur tellus. Maecenas sed laoreet turpis. Nunc quis velit a lorem luctus finibus. Aliquam malesuada ante justo, a dignissim purus rhoncus a.</label>
-                </div>
-              <br>
-                <div class="bubble_container outgoing">
-                    <label >Lorem ipsum dolor sit amet, consectetur adipiscing elit. In bibendum gravida orci nec semper. Curabitur leo tellus, cursus nec sapien vel, posuere condimentum erat. Mauris non nulla ante. Aenean ac metus sagittis, congue dui non, sollicitudin purus. Etiam et consectetur tellus. Maecenas sed laoreet turpis. Nunc quis velit a lorem luctus finibus. Aliquam malesuada ante justo, a dignissim purus rhoncus a.</label>
-                </div>
-                <br>
-                <div class="bubble_container incoming">
+                {% for message in messages %}
+                     <div class="bubble_container {{ message|sentbyuser:user}}">
+                         <label>{{ message.contenuto }}</label>
+                     </div>
+                    <br>
+                {% endfor %}
 
-                   <label >Lorem ipsum dolor sit amet, consectetur adipiscing elit. In bibendum gravida orci nec semper. Curabitur leo tellus, cursus nec sapien vel, posuere condimentum erat. Mauris non nulla ante. Aenean ac metus sagittis, congue dui non, sollicitudin purus. Etiam et consectetur tellus. Maecenas sed laoreet turpis. Nunc quis velit a lorem luctus finibus. Aliquam malesuada ante justo, a dignissim purus rhoncus a.</label>
-                </div>
-              <br>
-                <div class="bubble_container outgoing">
-                    <label >Lorem ipsum dolor sit amet, consectetur adipiscing elit. In bibendum gravida orci nec semper. Curabitur leo tellus, cursus nec sapien vel, posuere condimentum erat. Mauris non nulla ante. Aenean ac metus sagittis, congue dui non, sollicitudin purus. Etiam et consectetur tellus. Maecenas sed laoreet turpis. Nunc quis velit a lorem luctus finibus. Aliquam malesuada ante justo, a dignissim purus rhoncus a.</label>
-                </div>
-                <br>
-                <div class="bubble_container incoming">
-                   <label >Lorem ipsum dolor sit amet, consectetur adipiscing elit. In bibendum gravida orci nec semper. Curabitur leo tellus, cursus nec sapien vel, posuere condimentum erat. Mauris non nulla ante. Aenean ac metus sagittis, congue dui non, sollicitudin purus. Etiam et consectetur tellus. Maecenas sed laoreet turpis. Nunc quis velit a lorem luctus finibus. Aliquam malesuada ante justo, a dignissim purus rhoncus a.</label>
-                </div>
-              <br>
-                <div class="bubble_container outgoing">
-                    <label >Lorem ipsum dolor sit amet, consectetur adipiscing elit. In bibendum gravida orci nec semper. Curabitur leo tellus, cursus nec sapien vel, posuere condimentum erat. Mauris non nulla ante. Aenean ac metus sagittis, congue dui non, sollicitudin purus. Etiam et consectetur tellus. Maecenas sed laoreet turpis. Nunc quis velit a lorem luctus finibus. Aliquam malesuada ante justo, a dignissim purus rhoncus a.</label>
-                </div>
-                <br>
-                <div class="bubble_container incoming">
-                   <label >Lorem ipsum dolor sit amet, consectetur adipiscing elit. In bibendum gravida orci nec semper. Curabitur leo tellus, cursus nec sapien vel, posuere condimentum erat. Mauris non nulla ante. Aenean ac metus sagittis, congue dui non, sollicitudin purus. Etiam et consectetur tellus. Maecenas sed laoreet turpis. Nunc quis velit a lorem luctus finibus. Aliquam malesuada ante justo, a dignissim purus rhoncus a.</label>
-                </div>
-                <br>
 
             </div>
 

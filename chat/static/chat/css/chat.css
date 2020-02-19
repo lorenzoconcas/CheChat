@@ -197,7 +197,7 @@ a:link {
 	height: calc(100% - 48px);
 	overflow: auto;
 	position: absolute;
-
+	width: 100%;
 
 }
 
@@ -211,7 +211,7 @@ a:link {
 	overflow: auto;
 	padding: 8px;
 
-		-webkit-transition:all 0.3s ease-out;
+	-webkit-transition:all 0.3s ease-out;
     -moz-transition:all 0.3s ease-out;
     -o-transition:all 0.3s ease-out;
     transition:all 0.3s ease-out;

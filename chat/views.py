@@ -1,6 +1,7 @@
+from django.http import HttpResponse
 from django.shortcuts import render, redirect
 from datetime import datetime
-from chat.models import Utente
+from chat.models import *
 
 
 def get_client_ip(request):
@@ -91,9 +92,33 @@ def home(request):
         user_icon = "generic_user.png"
 
     final_icon = test + user_icon
-    return render(request, 'chat/chats.html', {'name_to_show': mail, 'user_icon': final_icon})
+    user = Utente.objects.get(email=mail)
+    threads = Partecipanti.objects.filter(contatto=user)
+    for t in threads:
+        t.chat.nome = t.chat.nome.replace(user.nome+" "+user.cognome+"-&/&-", "")
+
+    messages = Messaggio.objects.filter(chat_id=1)
+    return render(request, 'chat/chats.html', {
+                    'name_to_show': user.nome+" "+user.cognome,
+                    'user': user,
+                    'user_icon': final_icon,
+                    'Threads': threads,
+                    'messages': messages
+                   })
 
 
 def logout(request):
     request.session.flush()
     return redirect("/")
+
+
+def test(request):
+    rText = ""
+    for messaggio in Messaggio.objects.all():
+        rText = rText + messaggio.contenuto + " spedito da " + messaggio.mittente.nome + " nella chat : "+ messaggio.chat.nome +"<br>"
+
+    io = Utente.objects.get(id=1)
+    for partecipanti in Partecipanti.objects.filter(contatto=io):
+        rText = rText + partecipanti.chat.nome + " a cui partecipa "+partecipanti.contatto.nome + "<br>"
+
+    return HttpResponse(rText)
