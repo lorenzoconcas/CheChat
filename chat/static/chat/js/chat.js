@@ -16,7 +16,7 @@ function funcs() {
 
     $("#chat_title").text($("#chat_thread_1").text())
 
-   // checkMessages();
+   checkMessages();
 }
 
 function fromServer(){
@@ -58,8 +58,8 @@ async function checkMessages(){
           var curHeight = $(divElement).css("height");
 
           $(divElement).css("height", "0");
-          $(".lastElement").removeClass("lastElement");
-          $(msg).addClass("lastElement");
+        /*  $(".lastElement").removeClass("lastElement");
+          $(msg).addClass("lastElement");*/
           $("#thread_bubbles").animate({ scrollTop: $('#thread_bubbles').prop("scrollHeight")}, 1000);
           $(divElement).animate({width: "45%", height: curHeight}, 250, function(){} );
       }
@@ -97,7 +97,7 @@ function sendMessage(){
             url: "/sendmessage/",
             data:{
                 'msg': msg.value,
-                'chat_id': 1
+                'chat_id': currentChat
             },
               beforeSend: function(request, settings) {
                         if (!(/^http:.*/.test(settings.url) || /^https:.*/.test(settings.url))) {
@@ -124,7 +124,15 @@ function sendMessage(){
         var target = document.getElementById("thread_bubbles");
 
         var bubble_clone = $(msg_bubble).clone();
-        $(bubble_clone).addClass("bubble_container");
+
+           $(bubble_clone).addClass("bubble_container");
+            $(bubble_clone).addClass("outgoing");
+        if(isMobile){
+            $(bubble_clone).appendTo(target);
+             target.appendChild(br).scrollIntoView(true);
+        }else{
+            var bcW = $(bubble_clone).css("width");
+             $(bubble_clone).addClass("bubble_container");
             $(bubble_clone).addClass("outgoing");
             $(bubble_clone).css("opacity", "0");
             $(bubble_clone).appendTo(target);
@@ -134,32 +142,28 @@ function sendMessage(){
 
         $("#send_box").append(msg_bubble);
 
-        var bcW = $(bubble_clone).css("width");
-        console.log(bcW);
-       $(msg_bubble).animate( {
-            top: "-42px",
-            left: "52%",
-            width:  "-=240px",
-            height: "-=6px",
+           $(msg_bubble).animate( {
+                top: "-42px",
+                left: "52%",
+                width:  "-=240px",
+                height: "-=6px",
 
-          }, 250, "linear", function() {
+              }, 250, "linear", function() {
+                $(bubble_clone).animate(
+                    {
+                        opacity: 1,
+                    },
+                    250,
+                    "linear",
+                    function(){
+                        $(msg_bubble).fadeTo(350, 0);
 
-
-            $(bubble_clone).animate(
-                {
-                    opacity: 1,
-                },
-                250,
-                "linear",
-                function(){
-                    $(msg_bubble).fadeTo(350, 0);
-
-                    target.appendChild(br).scrollIntoView(true);
-                    $(msg_bubble).remove();
-                }
-            )
-          });
-
+                        target.appendChild(br).scrollIntoView(true);
+                        $(msg_bubble).remove();
+                    }
+                )
+              });
+        }
          msg.value = '';
     }
 }
@@ -194,7 +198,10 @@ function openThread(chat_id) {
     $("#chat_title").text($("#chat_thread_"+chat_id).text());
     $("#chat").css("visibility", "visible");
     loadMessages(chat_id);
-
+    window.location="#";
+     $("#thread_bubbles").animate({
+         scrollTop: 10000000000000,
+     }, 250);
 }
 
 function loadMessages(chat_id){
@@ -241,7 +248,6 @@ function getBubble(messaggio){
           $(msg).text(messaggio.contenuto);
           $(bubble).append(msg);
 
-          console.log(messaggio.contenuto);
          return bubble;
 }
 function openChatThreadDetail() {
