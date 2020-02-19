@@ -44,6 +44,14 @@ def getlastmessagecontent(chat):
         return ""
 
 
+def getlastmessage(chat):
+    msg_list = Messaggio.objects.filter(chat=chat)
+    try:
+        return msg_list.latest('dataora')
+    except:
+        return ""
+
+
 class Messaggio(models.Model):
     chat = models.ForeignKey(to=Chat, on_delete=models.CASCADE)
     mittente = models.ForeignKey(to=Utente, on_delete=models.CASCADE)

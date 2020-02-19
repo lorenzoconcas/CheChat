@@ -93,11 +93,14 @@ def home(request):
 
     final_icon = test + user_icon
     user = Utente.objects.get(email=mail)
+    request.session.__setitem__("user_id", user.id)
     threads = Partecipanti.objects.filter(contatto=user)
+
     for t in threads:
-        t.chat.nome = t.chat.nome.replace(user.nome+" "+user.cognome+"-&/&-", "")
+        t.chat.nome = t.chat.nome.replace(user.nome+" "+user.cognome, "").replace("-&/&-", "")
 
     messages = Messaggio.objects.filter(chat_id=1)
+
     return render(request, 'chat/chats.html', {
                     'name_to_show': user.nome+" "+user.cognome,
                     'user': user,
@@ -113,12 +116,45 @@ def logout(request):
 
 
 def test(request):
-    rText = ""
+    rtext = ""
     for messaggio in Messaggio.objects.all():
-        rText = rText + messaggio.contenuto + " spedito da " + messaggio.mittente.nome + " nella chat : "+ messaggio.chat.nome +"<br>"
+        rtext = rtext + messaggio.contenuto + " spedito da " + messaggio.mittente.nome + " nella chat : "+ messaggio.chat.nome +"<br>"
 
     io = Utente.objects.get(id=1)
     for partecipanti in Partecipanti.objects.filter(contatto=io):
-        rText = rText + partecipanti.chat.nome + " a cui partecipa "+partecipanti.contatto.nome + "<br>"
+        rtext = rtext + partecipanti.chat.nome + " a cui partecipa "+partecipanti.contatto.nome + "<br>"
 
-    return HttpResponse(rText)
+    return HttpResponse(rtext)
+
+
+def snmsg(request):
+    if request.is_ajax():
+        msg = request.POST['msg']
+        user_id = request.session['user_id']
+        chat_id = request.POST['chat_id']
+        u = Utente.objects.get(id=user_id)
+        c = Chat.objects.get(id=chat_id)
+        sendmessage(u, msg, c)
+        return HttpResponse("sent")
+    else:
+        return redirect("/")
+
+
+def lstmsg(request):
+    if request.is_ajax():
+        user_id = request.session['user_id']
+        chat_id = request.POST['chat_id']
+        u = Utente.objects.get(id=user_id)
+        c = Chat.objects.get(id=chat_id)
+        msg = getlastmessage(c)
+        try:
+            not_me = msg.mittente != u
+        except:
+            not_me = False
+
+        if not_me:
+            return HttpResponse(msg.contenuto)
+        else:
+            return HttpResponse("")
+    else:
+        return HttpResponse("")

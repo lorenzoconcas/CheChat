@@ -1,4 +1,5 @@
 from django.urls import path
+from django.conf.urls import url
 from . import views
 
 
@@ -8,5 +9,7 @@ urlpatterns = [
     path('register', views.register, name='register'),
     path('home', views.home, name="home"),
     path('logout', views.logout, name="logout"),
-    path('test', views.test, name="test")
+    path('test', views.test, name="test"),
+    url(r'^sendmessage/', views.snmsg),
+    url(r'^lastmessage/', views.lstmsg),
 ]

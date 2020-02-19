@@ -233,6 +233,7 @@ a:link {
 .outgoing {
 	left: 52.5%;
 	border-radius: 16px 16px 0 16px;
+	  overflow: hidden;
 }
 
 .incoming {
