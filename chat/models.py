@@ -11,7 +11,7 @@ class Utente(models.Model):
     password = models.CharField(max_length=200)
 
     def __str__(self):
-        return "User call himself : " + self.nome
+        return self.nome + " " + self.cognome
 
     def login(self, mail, password):
         return (self.email == mail) and (self.password == password)
@@ -58,4 +58,7 @@ class Messaggio(models.Model):
     mittente = models.ForeignKey(to=Utente, on_delete=models.CASCADE)
     dataora = models.DateTimeField()
     contenuto = models.CharField(max_length=2000)
+
+    def __str__(self):
+        return self.mittente.__str__() + " dice : " + self.contenuto + ", nella chat : " + self.chat.nome
 

@@ -245,6 +245,16 @@ a:link {
 	border-style:solid;
 	border-radius: 32px 32px 0 32px;
 }
+.bubble_sender_name{
+	position: absolute;
+	width: calc(100% - 16px);
+	backdrop-filter: brightness(80%);
+	top:0;
+	left:0;
+	padding-left: 16px;
+
+	padding-top: 2px;
+}
 .outgoing {
 	left: 52.5%;
 	border-radius: 16px 16px 0 16px;
@@ -421,6 +431,8 @@ a:link {
     -o-transition:all 0.3s ease-out;
     transition:all 0.3s ease-out;
 	text-align: center;
+
+	visibility: hidden;
 }
 #personal_info_icon{
 	position: relative;

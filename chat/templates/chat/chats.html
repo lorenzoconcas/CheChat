@@ -18,7 +18,7 @@
     <body onLoad="funcs()">
         <navbar id="navbar">
             <img id="logo" src="{% static 'chat/icons/chat_icon.png' %}" alt="ISWChat">
-            <label id="navbar_title">ISW Chat</label>
+            <a id="navbar_title" href="/home">ISW Chat</a>
             <label id="theme_mode_btn" onclick="toggleTheme()"  onmouseover="showtooltip(2)" onmouseleave="hidetooltip(2)"></label>
             <span id="tooltip_theme" class="tooltip">Alterna tema</span>
             <a id="logout" href="logout" onmouseover="showtooltip(0)" onmouseleave="hidetooltip(0)"></a>
@@ -136,12 +136,14 @@
             </div>
 
             <div id="thread_bubbles">
+              <br><br><br>
+
              <!-- thread popolato da javascript
-                <br><br><br>
+
                 {% for message in messages %}
                      <div class="bubble_container {{ message|sentbyuser:user}}">
                         {% if forloop.last %}
-                            <label class="lastElement">{{ message.contenuto }}</label>
+                            <label class="lastElemen t">{{ message.contenuto }}</label>
                         {% else %}
                             <label>{{ message.contenuto }}</label>
                         {% endif %}
@@ -149,6 +151,7 @@
                      </div>
                     <br>
                 {% endfor %}-->
+
             </div>
 
             <div id="send_box">

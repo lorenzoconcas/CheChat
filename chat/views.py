@@ -6,6 +6,7 @@ from datetime import datetime
 from chat.models import *
 from django.core import serializers
 
+
 def get_client_ip(request):
     x_forwarded_for = request.META.get('HTTP_X_FORWARDED_FOR')
     if x_forwarded_for:
@@ -57,11 +58,12 @@ def home(request):
         request.session.__setitem__("logged", islogged)
         return redirect('/')
 
-
     try:
         mail = request.session.__getitem__("mail")
     except:
         mail = request.POST.get('mail', '')
+        mail = mail.lower()
+
     try:
         password = request.session.__getitem__("password")
     except:
@@ -99,15 +101,14 @@ def home(request):
     threads = Partecipanti.objects.filter(contatto=user)
 
     for t in threads:
-        t.chat.nome = t.chat.nome.replace(user.nome+" "+user.cognome, "").replace("-&/&-", "")
-
+        t.chat.nome = t.chat.nome.replace(user.nome + " " + user.cognome, "").replace("-&/&-", "")
 
     return render(request, 'chat/chats.html', {
-                    'name_to_show': user.nome+" "+user.cognome,
-                    'user': user,
-                    'user_icon': final_icon,
-                    'Threads': threads,
-                   })
+        'name_to_show': user.nome + " " + user.cognome,
+        'user': user,
+        'user_icon': final_icon,
+        'Threads': threads,
+    })
 
 
 def logout(request):
@@ -116,15 +117,8 @@ def logout(request):
 
 
 def test(request):
-    rtext = ""
-    for messaggio in Messaggio.objects.all():
-        rtext = rtext + messaggio.contenuto + " spedito da " + messaggio.mittente.nome + " nella chat : "+ messaggio.chat.nome +"<br>"
 
-    io = Utente.objects.get(id=1)
-    for partecipanti in Partecipanti.objects.filter(contatto=io):
-        rtext = rtext + partecipanti.chat.nome + " a cui partecipa "+partecipanti.contatto.nome + "<br>"
-
-    return HttpResponse(rtext)
+    return HttpResponse("")
 
 
 def snmsg(request):
@@ -142,22 +136,36 @@ def snmsg(request):
 
 def lstmsg(request):
     if request.is_ajax():
+        l_sender = request.POST['lastMSGSender']
+        l_content = request.POST['lastMSGContent']
+        l_time = request.POST['lastMSGTime']
+
         user_id = request.session['user_id']
         chat_id = request.POST['chat_id']
         u = Utente.objects.get(id=user_id)
         c = Chat.objects.get(id=chat_id)
-        msg = getlastmessage(c)
-        try:
-            not_me = msg.mittente != u
-        except:
-            not_me = False
 
-        if not_me:
-            return HttpResponse(msg.contenuto)
+        msg = getlastmessage(c)
+
+        try:
+            sent = msg.mittente == u
+        except:
+            sent = False
+
+        if not sent:
+            response = "[" + getJSONLine(dataora=msg.dataora, contenuto=msg.contenuto, sent=sent,
+                                         mittente=(msg.mittente.nome + " " + msg.mittente.cognome)) + "]"
         else:
-            return HttpResponse("")
+            response = ""
+        return HttpResponse(response)
+
     else:
         return HttpResponse("")
+
+
+def getJSONLine(dataora, contenuto, sent, mittente):
+    return '{"dataora":"' + dataora.strftime("%Y-%m-%d %H:%M:%S") + '", "contenuto":"' \
+           + contenuto + '", "inviato":"' + str(sent) + '", "mittente":"' + mittente + '"}'
 
 
 class MyJsonEncoder:
@@ -175,17 +183,15 @@ def allmsg(request):
         msg = []
         for m in messaggi:
             if m.mittente_id == user_id:
-                msg.append(JSONMsg(m.dataora, m.contenuto, True))
+                msg.append(JSONMsg(m.dataora, m.contenuto, True, ""))
             else:
-                msg.append(JSONMsg(m.dataora, m.contenuto, False))
-        json = "["
+                msg.append(JSONMsg(m.dataora, m.contenuto, False, m.mittente.nome + " " + m.mittente.cognome))
+        json_response = "["
         for x in msg:
-            json = json + '{"dataora":"'+x.ora.strftime("%Y-%m-%d %H:%M:%S")+'", "contenuto":"'\
-                   +x.contenuto+'", "inviato":"'+str(x.inviato)+'"},'
+            json_response = json_response + getJSONLine(x.ora, x.contenuto, x.inviato, x.mittente) + ","
 
-        json += "]"
-        json = json.replace(",]", "]")
-        return HttpResponse(json)
+        json_response += "]"
+        return HttpResponse(json_response.replace(",]", "]"))
 
     return redirect("/")
 
@@ -194,10 +200,11 @@ class JSONMsg(object):
     ora = datetime.now()
     contenuto = ""
     inviato = True
+    mittente = ""
 
     # The class "constructor" - It's actually an initializer
-    def __init__(self, ora, contenuto, inviato):
+    def __init__(self, ora, contenuto, inviato, mittente):
         self.ora = ora
         self.contenuto = contenuto
         self.inviato = inviato
-
+        self.mittente = mittente

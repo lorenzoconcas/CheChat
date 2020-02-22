@@ -2,9 +2,11 @@ var isMobile = false;
 var dark_mode = false;
 var currentChat = 1;
 
-function getfirstchatid(){
 
-}
+let lastMsgContent = "";
+let lastMsgSender = "";
+let lastMsgTime = null;
+
 function funcs() {
     var x = document.getElementById("thread_bubbles")
     x.scrollTo(0,x.scrollHeight);
@@ -26,15 +28,17 @@ function fromServer(){
        type: "POST",
        url: "/lastmessage/",
        data:{
-           'chat_id': currentChat
+           'chat_id': currentChat,
+           'lastMSGSender': lastMsgSender,
+           'lastMSGContent':lastMsgContent,
+           'lastMSGTime': lastMsgTime
        },
+       dataType: "json",
        beforeSend: function(request, settings) {
            if (!(/^http:.*/.test(settings.url) || /^https:.*/.test(settings.url))) {
                request.setRequestHeader("X-CSRFToken", csrfcookie());
            }},
         success:function(data){
-
-
            resolve(data);
         }
     });
@@ -42,28 +46,35 @@ function fromServer(){
 }
 
 async function checkMessages(){
-    let lastmsg = "";
+
     while (true) {
-      let x =  await fromServer();
-      if(x != lastmsg && x != "" && !elementAlreadyInserted(x)){
-          lastmsg = x
-          var divElement = document.createElement("div");
-          $(divElement).addClass("bubble_container");
+       console.log("chiedo");
+      let data =  await fromServer();
+      let x = data[0];
+      var alreadyExists = (lastMsgContent == x.contenuto  &&  lastMsgSender == x.mittente  && lastMsgTime == x.dataora) || elementAlreadyInserted(x.contenuto);
+
+      if(!alreadyExists){
+          lastMsgContent = x.contenuto;
+          lastMsgSender = x.mittente;
+          lastMsgTime = x.dataora;
+           var divElement = document.createElement("div");
+        /*  $(divElement).addClass("bubble_container");
           $(divElement).addClass("incoming");
           var msg = document.createElement("label");
-          $(msg).text(x);
-          $(divElement).append(msg);
+          $(msg).text(x.contenuto);
+          $(divElement).append(msg);*/
+            divElement = getBubble(x);
           $("#thread_bubbles").append(divElement).append("<br>");
           $(divElement).css("width", "0");
           var curHeight = $(divElement).css("height");
 
           $(divElement).css("height", "0");
-        /*  $(".lastElement").removeClass("lastElement");
-          $(msg).addClass("lastElement");*/
+
           $("#thread_bubbles").animate({ scrollTop: $('#thread_bubbles').prop("scrollHeight")}, 1000);
           $(divElement).animate({width: "45%", height: curHeight}, 250, function(){} );
+
       }
-      console.log(x==lastmsg);
+
     }
 }
 
@@ -120,7 +131,7 @@ function sendMessage(){
         var msg_bubble = document.createElement("div");
 
         msg_bubble.appendChild(msg_text);
-
+        $(msg_bubble).addClass("lastElement");
         var target = document.getElementById("thread_bubbles");
 
         var bubble_clone = $(msg_bubble).clone();
@@ -175,7 +186,7 @@ function sendMessageOnEnter(e){
            sendMessage();
 
     }
-    // user: '{{ user }}'
+
 }
 
 function closeNewChat(){
@@ -195,9 +206,13 @@ function openThread(chat_id) {
 
     }
     currentChat = chat_id;
+
+
+    $(".chat_thread").css("background", "transparent");
     $("#chat_title").text($("#chat_thread_"+chat_id).text());
+    $("#chat_thread_"+chat_id).parent("div").css("background", "dodgerblue");
     $("#chat").css("visibility", "visible");
-    loadMessages(chat_id);
+   loadMessages(chat_id);
     window.location="#";
      $("#thread_bubbles").animate({
          scrollTop: 10000000000000,
@@ -220,7 +235,6 @@ function loadMessages(chat_id){
              dataType: 'json',
             success: function( data )
             {
-                console.log(data)
 
                 $("#thread_bubbles").empty();
                 $("#thread_bubbles").append("<br>");
@@ -243,6 +257,15 @@ function getBubble(messaggio){
              $(bubble).addClass("outgoing");
         else
           $(bubble).addClass("incoming");
+
+        if(messaggio.mittente != ""){
+            var mittente = document.createElement("label")
+            $(mittente).text(messaggio.mittente);
+            $(mittente).addClass("bubble_sender_name");
+            $(bubble).append(mittente);
+            $(bubble).append("<br>");
+        }
+
 
         var msg = document.createElement("label");
           $(msg).text(messaggio.contenuto);
