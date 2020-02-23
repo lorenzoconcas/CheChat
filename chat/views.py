@@ -1,10 +1,8 @@
-import json
-
 from django.http import HttpResponse
 from django.shortcuts import render, redirect
-from datetime import datetime
 from chat.models import *
-from django.core import serializers
+import asyncio
+from channels.consumer import AsyncConsumer
 
 
 def get_client_ip(request):
@@ -77,6 +75,7 @@ def home(request):
             if u.login(mail, password):
                 request.session.__setitem__("mail", mail)
                 request.session.__setitem__("logged", True)
+                request.session.__setitem__("user_id", u.id)
             else:
                 if mail == '':
                     request.session.__setitem__("validdata", True)
@@ -117,8 +116,7 @@ def logout(request):
 
 
 def test(request):
-
-    return HttpResponse("")
+    return render(request, "chat/test.html")
 
 
 def snmsg(request):

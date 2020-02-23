@@ -1,0 +1,36 @@
+{%  load static %}
+<!DOCTYPE html>
+<html lang="it">
+    <head>
+        <meta charset="UTF-8">
+        <title>Test</title>
+        <link rel="shortcut icon" type="image/png" href="{% static 'favicon.ico' %}"/>
+
+          <script src="{% static 'chat/js/jquery.js' %}"></script>
+        <script>
+            var socket = new WebSocket("ws://"+window.location.host+"/ws/testsocket");
+            socket.onopen = function (event){
+                            socket.send(JSON.stringify({
+                                'message': "ciao"
+                            }));
+                        }
+
+              socket.onmessage = function(e) {
+                var data = JSON.parse(e.data);
+                var message = data['message'];
+                 $("#msg").empty()
+                $("#msg").append("<label>"+message+"</label><br>");
+            };
+
+            socket.onclose = function(e) {
+                console.error('Chat socket closed unexpectedly');
+            };
+        </script>
+        <meta http-equiv="refresh"content="500">
+    </head>
+        <div id="msg">
+
+        </div>
+    <body>
+    </body>
+</html>

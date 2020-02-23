@@ -38,6 +38,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'channels',
 ]
 
 MIDDLEWARE = [
@@ -70,8 +71,7 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = 'ISW_test.wsgi.application'
-
-
+ASGI_APPLICATION = 'ISW_test.routing.application'
 # Database
 # https://docs.djangoproject.com/en/3.0/ref/settings/#databases
 

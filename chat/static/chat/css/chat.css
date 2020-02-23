@@ -124,7 +124,10 @@ a:link {
 	left: 16px;
 	top: 8px;
 }
-
+#search{
+	position: relative;
+	height: 24px;
+}
 #search_box {
 	position: relative;
 	left: 16px;

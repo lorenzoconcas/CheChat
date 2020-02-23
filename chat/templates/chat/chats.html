@@ -112,13 +112,14 @@
                 <input  id="search_box" class="input_box" type="text" placeholder="Cerca fra le chat">
                 <button id="search_btn" class="generic_btn"></button>
             </div>
+        <br>
             {% for chat_thread in Threads %}
-                <div class="chat_thread"  onclick="openThread({{ chat_thread.chat_id }})">
+                <div class="chat_thread"  id="thread_{{ chat_thread.chat_id }}" onclick="openThread({{ chat_thread.chat_id }})">
                  <img   class="thread_icon" src="{% static 'chat/icons/generic_user.png' %}" alt="username">
-                 <label id="chat_thread_{{ chat_thread.chat_id }}"class="thread_title"> {{ chat_thread.chat.nome }} </label>
-                 <label class="thread_status">  </label>
+                 <label class="thread_title"  id="thread_title_{{ chat_thread.chat_id }}">{{ chat_thread.chat.nome }}</label>
+                 <label class="thread_status" id="thread_status_{{ chat_thread.chat_id }}"></label>
                  <br>
-                 <label class="thread_preview">{{ chat_thread|getltsmsg }}</label>
+                 <label class="thread_preview" id="thread_preview_{{ chat_thread.chat_id }}">{{ chat_thread|getltsmsg }}</label>
             </div>
             {% endfor %}
         </div>
