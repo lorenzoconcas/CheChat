@@ -47,6 +47,20 @@ def register(request):
     return render(request, 'chat/register.html')
 
 
+def info(request):
+    if request.is_ajax():
+        msg = request.POST['msg']
+        print(msg)
+        if msg == 'personal_id':
+            resp = HttpResponse(request.session['user_id'])
+            print(resp)
+            return resp
+        else:
+            return HttpResponse("")
+    else:
+        return HttpResponse("")
+
+
 def home(request):
     test = "static/chat/icons/"
     try:

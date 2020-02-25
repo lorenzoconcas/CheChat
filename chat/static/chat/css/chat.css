@@ -59,7 +59,7 @@ a:link {
 }
 
 #navbar {
-	z-index: 9999;
+	z-index: 55;
 	position: fixed;
 	width: 100%;
 	height: 48px;
@@ -181,7 +181,15 @@ a:link {
 	width: 100%;
 	height: 48px;
 }
+#chat_close{
+	font-size: 0;
+	font-family: "Material Icons", serif;
+	position: relative;
+	background: transparent;
+	left: -16px;
+	visibility: hidden;
 
+}
 #chat_title {
 	position: relative;
 	left: 16px;

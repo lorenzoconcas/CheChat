@@ -4,7 +4,8 @@
     <head>
         <meta charset="UTF-8">
         <link rel="shortcut icon" type="image/png" href="{% static 'favicon.ico' %}"/>
-        <link rel="stylesheet" type="text/css" href="{% static 'chat/css/theme.css' %}">
+        <link rel="stylesheet" type="text/css" href="{% static 'chat/css/login.css' %}">
+        <link rel="stylesheet" type="text/css" href="{% static 'chat/css/login_mobile.css' %}">
         <link rel="stylesheet" type="text/css" href="{% static 'chat/css/fonts.css' %}">
         <script src="{% static 'chat/js/reactor.js' %}"></script>
         <title>ISWChat</title>
@@ -23,7 +24,6 @@
                {% endif %}
            <form action='home' method="post">{% csrf_token %}
                 <label id="access_text">Accedi</label>
-
                 <br>
                <input id="email_field" class="input" type="text" name="mail" placeholder="Email" oninput="onFieldInput()"/>
                 <br>

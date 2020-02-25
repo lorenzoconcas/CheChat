@@ -60,3 +60,46 @@ class PushMessages(WebsocketConsumer):
                 for partecipante in chat_partecipanti:
                     last_messages += Messaggio.objects.filter(chat=partecipante.chat)
 
+
+class PushMobile(WebsocketConsumer):
+    def connect(self):
+        self.accept()
+
+    def disconnect(self, close_code):
+        pass
+
+    def receive(self, text_data):
+
+        current_user = int(text_data)
+        chat_partecipanti = Partecipanti.objects.filter(contatto_id=1)
+        print(text_data)
+        last_messages = []
+        chats = []
+        for partecipante in chat_partecipanti:
+            last_messages += Messaggio.objects.filter(chat=partecipante.chat)
+        update = False
+        while True:
+            for partecipante in chat_partecipanti:
+                messaggi = Messaggio.objects.filter(chat=partecipante.chat)
+                ultimo = messaggi.last()
+                contiene_msg = ultimo in last_messages
+                try:
+                    if not contiene_msg and not ultimo.mittente.id == current_user:
+                        contiene_msg = True
+                        update = True
+                        notifica = json.dumps({
+                            'chat_id': ultimo.chat.id,
+                            'mittente': ultimo.mittente.__str__(),
+                            'dataora': ultimo.dataora.strftime("%Y-%m-%d %H:%M:%S"),
+                            'contenuto': ultimo.contenuto,
+                            'sender_id': ultimo.mittente.id
+                        })
+                        print("invio al telefono")
+                        self.send(notifica)
+                except:
+                    update = True
+            if update:
+                update = False
+                for partecipante in chat_partecipanti:
+                    last_messages += Messaggio.objects.filter(chat=partecipante.chat)
+

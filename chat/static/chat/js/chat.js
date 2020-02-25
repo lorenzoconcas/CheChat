@@ -24,6 +24,7 @@ push_socket.onmessage = function(e) {
 
      notification_sound.play();
 
+    notifyMe(e.data)
     if (currentChat == msg.chat_id) {
         divElement = getBubble(msg);
         $("#thread_bubbles").append(divElement).append("<br>");
@@ -75,18 +76,14 @@ push_socket.onmessage = function(e) {
     }
 }
 
-
 function funcs() {
-    var x = document.getElementById("thread_bubbles")
-    x.scrollTo(0, x.scrollHeight);
-    var el = document.getElementById('navbar_title');
-    var style = window.getComputedStyle(el, null).getPropertyValue('font-size');
-    var fontSize = parseFloat(style);
-    isMobile = fontSize >= 80 ? true : false;
-    // toggleTheme();
+    //toggleTheme();
+
+    isMobile = $("#user_name").css("visibility") == "hidden" ? true : false;
 
     $("#chat_title").text($("#chat_thread_1").text());
-
+    if(isMobile)
+        getPersonalID();
 }
 
 function askForMessages() {
@@ -112,6 +109,25 @@ let csrfcookie = function() {
     return cookieValue;
 };
 
+function getPersonalID(){
+     $.ajax({
+            type: "POST",
+            url: "info/",
+            data: {
+                'msg': 'personal_id'
+            },
+         dataType: 'json',
+           beforeSend: function(request, settings) {
+                if (!(/^http:.*/.test(settings.url) || /^https:.*/.test(settings.url))) {
+                    request.setRequestHeader("X-CSRFToken", csrfcookie());
+                }
+            },
+           success: function(data) {
+               B4A.CallSub('SetID', false, data)
+            },
+        });
+
+}
 
 function sendMessage() {
     var msg = document.getElementById("message_box");
@@ -195,23 +211,32 @@ function sendMessageOnEnter(e) {
         var msg = document.getElementById("message_box");
         e.preventDefault();
         sendMessage();
-
     }
 
 }
 
 function closeNewChat() {
     $("#new_chat_panel").css("top", "150%");
-
 }
 
 function openNewChat() {
-    if (isMobile)
-        $("#new_chat_panel").css("top", "128px");
+    if (isMobile){
+        $("#new_chat_panel").css("top", 0);
+    }
     else
         $("#new_chat_panel").css("top", "25%");
 }
+function closeChatThread() {
+  if (isMobile) {
+        $("#chat").css("left", "100%");
+        $("#new_thread").css("visibility", "hidden");
+        $(".chat_thread").css("background", "transparent");
+        $("#thread_bubbles").empty();
+        currentChat = 0;
+    }
 
+
+}
 function openThread(chat_id) {
     if (isMobile) {
         $("#chat").css("left", "0");
@@ -246,9 +271,7 @@ function openThread(chat_id) {
     loadMessages(chat_id);
     window.location = "#";
 
-    $("#thread_bubbles").animate({
-        scrollTop: 10000000000000,
-    }, 250);
+
 }
 
 function loadMessages(chat_id) {
@@ -274,6 +297,11 @@ function loadMessages(chat_id) {
                 $("#thread_bubbles").append(getBubble(data[messaggio]));
                 $("#thread_bubbles").append("<br>");
             }
+            /*   var objDiv = document.getElementById("thread_bubbles");
+                objDiv.scrollTop = objDiv.scrollHeight;*/
+             $("#thread_bubbles").animate({
+                    scrollTop: 10000000000000,
+                }, 125);
 
         },
     });
@@ -319,6 +347,8 @@ function toggleTheme() {
         document.getElementById("theme").href = "/static/chat/css/dark.css";
         document.getElementById("theme_mode_btn").innerText = "";
     }
+    if(isMobile)
+        B4A.CallSub('darkMode', true, dark_mode+"")
 }
 
 function showtooltip(wich) {

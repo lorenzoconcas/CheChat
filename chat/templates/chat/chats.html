@@ -42,7 +42,7 @@
         <div id="new_chat_panel">
             <label id="new_chat_title">Nuova chat</label>
             <br>
-            <label id="new_chat_close" onclick="closeNewChat()"></label>
+            <button  id="new_chat_close" onclick="closeNewChat()"></button>
             <br>
             <input  id="contacts_search_box" class="input_box" type="text" placeholder="Cerca fra i contatti">
             <button id="contacts_search_btn" class="generic_btn"></button>
@@ -119,7 +119,7 @@
                  <label class="thread_title"  id="thread_title_{{ chat_thread.chat_id }}">{{ chat_thread.chat.nome }}</label>
                  <label class="thread_status" id="thread_status_{{ chat_thread.chat_id }}"></label>
                  <br>
-                 <label class="thread_preview" id="thread_preview_{{ chat_thread.chat_id }}">{{ chat_thread|getltsmsg }}</label>
+                 <label class="thread_preview" id="thread_preview_{{ chat_thread.chat_id }}">{{ chat_thread|getltsmsg:"32" }}</label>
             </div>
             {% endfor %}
         </div>
@@ -130,6 +130,7 @@
         <div id="chat">
 
             <div id="thread_header">
+                <button id="chat_close" onclick="closeChatThread()"></button>
                 <img   id="chat_user_icon" src="{% static 'chat/icons/generic_user.png' %}" alt="username">
                 <label id="chat_title"></label>
                 <label id="chat_user_status"></label>
