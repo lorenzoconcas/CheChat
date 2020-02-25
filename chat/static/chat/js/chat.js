@@ -18,61 +18,71 @@ push_socket.onopen = function(event) {
 push_socket.onmessage = function(e) {
     let n;
     var msg = JSON.parse(e.data)
+    switch(msg.type){
+        case 'new_chat':{
+            console.log(msg);
+            $("#thread_list").append(getThreadItem(msg.name, msg.id));
+            break;
+        }
+        case 'new_message': {
+            $("#thread_preview_" + msg.chat_id).text(msg.contenuto)
+            $("#thread_status_" + msg.chat_id).text("");
 
-    $("#thread_preview_" + msg.chat_id).text(msg.contenuto)
-    $("#thread_status_" + msg.chat_id).text("");
+            notification_sound.play();
 
-    notification_sound.play();
+            notifyMe(e.data)
+            if (currentChat == msg.chat_id) {
+                divElement = getBubble(msg);
+                $("#thread_bubbles").append(divElement).append("<br>");
+                $(divElement).css("width", "0");
+                var curHeight = $(divElement).css("height");
 
-    notifyMe(e.data)
-    if (currentChat == msg.chat_id) {
-        divElement = getBubble(msg);
-        $("#thread_bubbles").append(divElement).append("<br>");
-        $(divElement).css("width", "0");
-        var curHeight = $(divElement).css("height");
+                $(divElement).css("height", "0");
 
-        $(divElement).css("height", "0");
+                $("#thread_bubbles").animate({
+                    scrollTop: $('#thread_bubbles').prop("scrollHeight")
+                }, 1000);
+                $(divElement).animate({
+                    width: "45%",
+                    height: curHeight
+                }, 250, function () {
+                });
+            } else {
 
-        $("#thread_bubbles").animate({
-            scrollTop: $('#thread_bubbles').prop("scrollHeight")
-        }, 1000);
-        $(divElement).animate({
-            width: "45%",
-            height: curHeight
-        }, 250, function() {});
-    } else {
-
-        let new_thread_title = "";
-        unreaded_messages++;
-        if (notifications.length == 0) {
-            n = Object.create(notification);
-            n.thread_id = msg.chat_id;
-            n.notification_count++;
-            notifications.push(n);
-            new_thread_title = $("#thread_title_" + msg.chat_id).text() + " (1)"
-
-        } else {
-            let size = notifications.length;
-
-            for (let i = 0; i < size; i++) {
-                n = notifications[i];
-                if (n.thread_id == msg.chat_id)
-                    n.notification_count++;
-                else {
+                let new_thread_title = "";
+                unreaded_messages++;
+                if (notifications.length == 0) {
                     n = Object.create(notification);
                     n.thread_id = msg.chat_id;
                     n.notification_count++;
                     notifications.push(n);
+                    new_thread_title = $("#thread_title_" + msg.chat_id).text() + " (1)"
+
+                } else {
+                    let size = notifications.length;
+
+                    for (let i = 0; i < size; i++) {
+                        n = notifications[i];
+                        if (n.thread_id == msg.chat_id)
+                            n.notification_count++;
+                        else {
+                            n = Object.create(notification);
+                            n.thread_id = msg.chat_id;
+                            n.notification_count++;
+                            notifications.push(n);
+                        }
+                        new_thread_title = $("#thread_title_" + n.thread_id).text() + " (" + n.notification_count + ")"
+
+                    }
+
                 }
-                new_thread_title = $("#thread_title_" + n.thread_id).text() + " (" + n.notification_count + ")"
-
+                $("#thread_title_" + n.thread_id).text(new_thread_title);
             }
+            if (unreaded_messages > 0)
+                document.title = "Nuovo messaggio (" + unreaded_messages + ")";
 
+            break;
         }
-        $("#thread_title_" + n.thread_id).text(new_thread_title);
-
-        if (unreaded_messages > 0)
-            document.title = "Nuovo messaggio (" + unreaded_messages + ")";
     }
 }
 
@@ -236,7 +246,7 @@ function openInputPanel() {
     $("#input_panel").css("height", "100px");
     $("#input_panel_error").hide();
     $("#input_panel_title").text("Nuovo contatto");
-    $("#input_panel_text").attr("placeholder", "Inserisci un indirzzo mail");
+    $("#input_panel_text").attr("placeholder", "Inserisci un indirizzo mail");
     $("#input_panel_btn_confirm").on("keypress", addContact2);
     $("#input_panel_btn_confirm").click(addContact);
 
@@ -323,7 +333,7 @@ function loadMessages(chat_id) {
         },
         dataType: 'json',
         success: function(data) {
-
+            console.log(data);
             $("#thread_bubbles").empty();
             $("#thread_bubbles").append("<br>");
             $("#thread_bubbles").append("<br>");
@@ -332,6 +342,7 @@ function loadMessages(chat_id) {
                 $("#thread_bubbles").append(getBubble(data[messaggio]));
                 $("#thread_bubbles").append("<br>");
             }
+            $("#chat").css("visibility", "visible");
             /*   var objDiv = document.getElementById("thread_bubbles");
                 objDiv.scrollTop = objDiv.scrollHeight;*/
             $("#thread_bubbles").animate({
@@ -424,6 +435,7 @@ function addContact() {
 
                 $(div).addClass("contact_element");
                 $(checkbox).addClass("contact_checkbox");
+                $(checkbox).attr("id", data[0].id)
                 $(img).attr("src", "/static/chat/icons/generic_user.png");
                 $(img).addClass("contact_icon")
                 $(name).text(data[0].name);
@@ -478,4 +490,87 @@ function removeFromContacts(id){
         },
     });
 
+}
+
+function startChat(){
+    var chat_ids = [];
+    $('#contacts_list input:checked').each(function() {
+        var id = $(this).attr('id');
+        id = id.replace("c_", "");
+        console.log(id);
+        chat_ids.push(id);
+    });
+    var chat_ids_json = JSON.stringify(chat_ids);
+    $.ajax({
+        type: "POST",
+        url: "send_data/",
+        data: {
+            'req': 'create_chat',
+            'user_ids_json': chat_ids_json,
+        },
+
+        beforeSend: function (request, settings) {
+            if (!(/^http:.*/.test(settings.url) || /^https:.*/.test(settings.url))) {
+                request.setRequestHeader("X-CSRFToken", csrfcookie());
+            }
+        },
+        dataType: 'json',
+        success: function (data) {
+            /*
+            * <div         class="chat_thread"  id="thread_{{ chat_thread.chat_id }}" onclick="openThread({{ chat_thread.chat_id }})">
+                    <img   class="thread_icon"     src="{% static 'chat/icons/generic_user.png' %}" alt="username">
+                    <label class="thread_title"  id="thread_title_{{ chat_thread.chat_id }}">{{ chat_thread.chat.nome }}</label>
+                    <label class="thread_status" id="thread_status_{{ chat_thread.chat_id }}"></label>
+                    <br>
+                    <label class="thread_preview" id="thread_preview_{{ chat_thread.chat_id }}">{{ chat_thread|getltsmsg:"32" }}</label>
+                </div>
+            *
+            * */
+            console.log(data);
+            if(data[0].result == "ok"){
+                closePanel("chat_and_contacts_panel");
+             //   $("#thread_list").append(getThreadItem(data[0].name, data[0].id));
+                //vengono aggiunti automaticamente in push su tutti i dispositivi
+            }
+
+        }
+    });
+
+}
+
+function getThreadItem(chat_name, id) {
+  let div = document.createElement("div");
+                let img = document.createElement("img");
+                let name = document.createElement("label");
+                let status = document.createElement("label");
+                let preview = document.createElement("label");
+
+                $(div).addClass("chat_thread");
+
+                $(img).attr("src", "/static/chat/icons/generic_user.png"); //modificare con icona gruppi
+                $(img).addClass("thread_icon")
+                $(name).text(chat_name);
+                if (chat_name.length > 28) {
+                    $(name).text(chat_name.substring(0, 28) + '...');
+                     $(name).css("font-size", "16px");
+                }
+                $(name).addClass("thread_title");
+                $(status).addClass("thread_status");
+                $(preview).addClass("thread_preview");
+                $(name).attr("id", "thread_title_"+id);
+                $(status).attr("id", "thread_status_"+id);
+                $(status).text("")
+                $(preview).addClass("id", "thread_preview_"+id);
+
+
+                $(div).append(img);
+                $(div).append(name);
+                $(div).append(status);
+                $(div).append("<br>");
+                $(div).append(preview);
+
+
+                $(div).attr("id", "thread_"+id);
+                $(div).attr("onclick", "openThread("+id+")");
+   return div
 }

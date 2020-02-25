@@ -66,13 +66,14 @@
             <div id="contacts_list">
                 {% for contact in contacts %}
                     <div class="contact_element" id="contact_{{  contact.contatto.id  }}">
-                        <input class="contact_checkbox" type="checkbox">
+                        <input class="contact_checkbox" id="c_{{ contact.contatto.id }}" type="checkbox">
                         <img   class="contact_icon" src="{% static 'chat/icons/generic_user.png' %}" alt="username">
                         <label class="contact_name">{{ contact.contatto }}</label>
                         <button class="contact_delete" onclick="removeFromContacts({{ contact.contatto.id }})"></button>
                     </div>
                 {% endfor %}
             </div>
+            <button id="cec_startchat" class="generic_btn" onclick="startChat()"></button>
             <div id="cec_footer">
                 <button id="cec_new_contact_btn" onclick="openInputPanel()">Aggiungi Contatto</button>
             </div>
@@ -87,12 +88,12 @@
         <br>
             {% for chat_thread in Threads %}
                 <div class="chat_thread"  id="thread_{{ chat_thread.chat_id }}" onclick="openThread({{ chat_thread.chat_id }})">
-                 <img   class="thread_icon" src="{% static 'chat/icons/generic_user.png' %}" alt="username">
-                 <label class="thread_title"  id="thread_title_{{ chat_thread.chat_id }}">{{ chat_thread.chat.nome }}</label>
-                 <label class="thread_status" id="thread_status_{{ chat_thread.chat_id }}"></label>
-                 <br>
-                 <label class="thread_preview" id="thread_preview_{{ chat_thread.chat_id }}">{{ chat_thread|getltsmsg:"32" }}</label>
-            </div>
+                    <img   class="thread_icon" src="{% static 'chat/icons/generic_user.png' %}" alt="username">
+                    <label class="thread_title"  id="thread_title_{{ chat_thread.chat_id }}">{{ chat_thread.chat.nome|cut:'24' }}</label>
+                    <label class="thread_status" id="thread_status_{{ chat_thread.chat_id }}"></label>
+                    <br>
+                    <label class="thread_preview" id="thread_preview_{{ chat_thread.chat_id }}">{{ chat_thread|getltsmsg:"32" }}</label>
+                </div>
             {% endfor %}
         </div>
 

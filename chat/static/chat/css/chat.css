@@ -415,6 +415,12 @@ a:link {
 	top:8px;
 
 }
+#cec_startchat{
+	position: relative;
+	float:right;
+	top: -24px;
+	left:-16px;
+}
 #cec_footer{
 	position: relative;
 	height: 32px;

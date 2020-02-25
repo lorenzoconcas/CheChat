@@ -1,3 +1,5 @@
+import json
+
 from django.http import HttpResponse
 from django.shortcuts import render, redirect
 from chat.models import *
@@ -44,7 +46,38 @@ def index(request):
 
 
 def register(request):
-    return render(request, 'chat/register.html')
+    try:
+        registering = request.POST['register']
+    except:
+        registering = False
+    print(registering)
+    if registering:
+        mail = request.POST['mail']
+        psw = request.POST['password']
+        c_psw = request.POST['confirm_psw']
+        name = request.POST['name']
+        surname = request.POST['family-name']
+
+        if mail == "" or psw == "" or name == "" or surname == "":
+            return render(request, 'chat/register.html', {
+                'response': "Compila tutti i campi",
+            })
+
+        if Utente.objects.filter(email=mail).exists():
+            return render(request, 'chat/register.html', {
+                'response': "Email già utilizzata",
+            })
+
+        if psw != c_psw:
+            return render(request, 'chat/register.html', {
+                'response': "Le password non corrispondono",
+            })
+        new_user = Utente(email=mail, password=psw, nome=name, cognome=surname)
+        new_user.save()
+        return redirect('/')
+
+    else:
+        return render(request, 'chat/register.html')
 
 
 def info(request):
@@ -114,7 +147,8 @@ def home(request):
     threads = Partecipanti.objects.filter(contatto=user)
 
     for t in threads:
-        t.chat.nome = t.chat.nome.replace(user.nome + " " + user.cognome, "").replace("-&/&-", "")
+        if not t.chat.nome.startswith("Gruppo"):
+            t.chat.nome = t.chat.nome.replace(user.nome + " " + user.cognome, "").replace("-&/&-", "")
 
     try:
         contacts = Rubrica.objects.filter(owner=user)
@@ -172,10 +206,9 @@ def send_data(request):
                 return HttpResponse(resp)
 
             if insertcontact(u, utente) == "ok":
-                resp = '[{"result":"ok","name":"' + utente.__str__() + '", "id":"'+str(utente.id)+'"}]'
+                resp = '[{"result":"ok","name":"' + utente.__str__() + '", "id":"' + str(utente.id) + '"}]'
             else:
                 resp = '[{"result":"err","error":"Utente già in rubrica"}]'
-
         elif req == 'remove_contact':
 
             id = request.POST['id']
@@ -183,8 +216,19 @@ def send_data(request):
                 utente = Utente.objects.get(id=id)
                 remove_contact(u, utente)
             except:
-              print("err")
+                print("err")
+        elif req == 'create_chat':
+            ids_json = json.loads(request.POST['user_ids_json'])
+            ids = []
 
+            for e in ids_json:
+                print(e)
+                ids.append(int(e))
+
+            c = createchat(u, ids)
+
+            resp = '[{"result":"ok","id":"' + str(c.id) + '","name":"' + c.nome.replace(str(u), "").\
+                replace("-&/&-", "") + '"}]'
         return HttpResponse(resp)
     else:
         return redirect("/")

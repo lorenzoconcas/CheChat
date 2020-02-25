@@ -43,6 +43,28 @@ class Chat(models.Model):
     nome = models.CharField(max_length=200)
 
 
+def createchat(utente, id_utenti):
+    if len(id_utenti) == 1:
+        altro_u = Utente.objects.get(id=id_utenti[0])
+        chat_name = str(utente) + "-&/&-"+str(altro_u)
+    else:
+        chat_name = "Gruppo : "
+        for i in id_utenti:
+            chat_name = chat_name + str(Utente.objects.get(id=i)) + ", "
+        chat_name = chat_name + utente.__str__()
+
+    c = Chat(creatore=utente, nome=chat_name)
+    c.save()
+    p = Partecipanti(chat=c, contatto=utente)
+    p.save()
+    for i in id_utenti:
+        u = Utente.objects.get(id=i)
+        p = Partecipanti(chat=c, contatto=u)
+        p.save()
+
+    return c
+
+
 class Partecipanti(models.Model):  # i partcipanti di una chat
     chat = models.ForeignKey(to=Chat, on_delete=models.CASCADE)
     contatto = models.ForeignKey(to=Utente, on_delete=models.CASCADE)

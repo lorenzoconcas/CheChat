@@ -33,7 +33,9 @@ class PushMessages(WebsocketConsumer):
         chat_partecipanti = Partecipanti.objects.filter(contatto_id=current_user)
 
         last_messages = []
-        chats = []
+
+        c_p_count = len(chat_partecipanti)
+
         for partecipante in chat_partecipanti:
             last_messages += Messaggio.objects.filter(chat=partecipante.chat)
         update = False
@@ -47,6 +49,7 @@ class PushMessages(WebsocketConsumer):
                         contiene_msg = True
                         update = True
                         notifica = json.dumps({
+                            'type': 'new_message',
                             'chat_id': ultimo.chat.id,
                             'mittente': ultimo.mittente.__str__(),
                             'dataora': ultimo.dataora.strftime("%Y-%m-%d %H:%M:%S"),
@@ -59,6 +62,18 @@ class PushMessages(WebsocketConsumer):
                 update = False
                 for partecipante in chat_partecipanti:
                     last_messages += Messaggio.objects.filter(chat=partecipante.chat)
+            if len(Partecipanti.objects.filter(contatto_id=current_user)) > c_p_count:
+                chat_partecipanti = Partecipanti.objects.filter(contatto_id=current_user)
+                last_chat = chat_partecipanti.last().chat
+                user = Utente.objects.get(id=current_user)
+                last_chat.nome = last_chat.nome.replace(str(user), ""). replace("-&/&-", "")
+                notifica = json.dumps({
+                            'type': 'new_chat',
+                            'id': last_chat.id,
+                            'name': last_chat.nome,
+                        })
+                self.send(notifica)
+                c_p_count += 1
 
 
 class PushMobile(WebsocketConsumer):
