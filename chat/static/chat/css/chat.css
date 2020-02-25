@@ -32,12 +32,26 @@ a:link {
 	font-size: 20px;
 	font-weight: bold;
 }
-#theme_mode_btn{
-	position: relative;
+.navbar_button{
 	font-family: "Material Icons";
-	left: calc(50% - 12px);
-	top:4px;
+	top:7px;
 	font-size: 24px;
+	position: relative;
+	background:	white;
+	border-style: solid;
+	border-width: 0.5px;
+	border-radius: 4px;
+	border-color: transparent;
+	box-shadow: 0px 1px 13px 0px rgba(0, 0, 0, 0.35);
+	padding: 4px 12px;
+
+}
+#theme_mode_btn{
+	left: calc(50% - 12px);
+	cursor: pointer;
+}
+#open_contacts_btn{
+	left: calc(50% - 12px);
 	cursor: pointer;
 }
 #user_name {
@@ -65,6 +79,26 @@ a:link {
 	height: 48px;
 	left: 0;
 	top: 0;
+	border-bottom-style: solid;
+	border-bottom-width: 0.5px;
+}
+.navbar_section{
+	position: absolute;
+	width: 33%;
+	height: 48px;
+}
+
+#navbar_section_logo{
+	left:0;
+}
+#navbar_section_buttons{
+	left:33.33333333333333333333333%;
+}
+#navbar_section_profile{
+	right:0;
+}
+#navbar_section_profile>a {
+	color: black;
 }
 
 /*Thred list look*/
@@ -76,8 +110,6 @@ a:link {
 	top: 48px;
 	height: 100%;
 	overflow: auto;
-
-    border-top-style: solid;
 }
 
 .thread_icon {
@@ -168,8 +200,8 @@ a:link {
 	position: fixed;
 	width: calc(100% - 33%);
 	left: 33%;
-	top: 48px;
-	height: calc(100% - 48px);
+	top: calc(50% - 24px);
+	height: 48px;
 	visibility: visible;
 	text-align: center;
  vertical-align: middle;
@@ -215,7 +247,7 @@ a:link {
 	font-size: 24px;
 	position: relative;
 	float:right;
-	right: 12px;
+	right: 16px;
 	top:12px;
 }
 #thread_bubbles {
@@ -323,8 +355,7 @@ a:link {
 	padding: 8px 16px;
     border-style: solid;
 }
-
-#new_chat_panel {
+.popup_panel{
 	z-index: 50;
 	position: fixed;
 	height: 50%;
@@ -339,8 +370,42 @@ a:link {
     -o-transition:all 0.3s ease-out;
     transition:all 0.3s ease-out;
 }
+#input_panel{
+	height: 100px;
+	z-index: 51;
 
-#new_chat_title {
+}
+#input_panel_title{
+	font-family: "Libel Suit", Serif;
+	position: absolute;
+	font-size: 24px;
+	padding-left: 24px;
+	padding-top: 4px;
+	padding-bottom: 4px;
+	top:8px;
+	/*on error show, panel increase +20px*//
+}
+#input_panel_error{
+	visibility: hidden;
+    position: absolute;
+    left: 16px;
+    top: 96px;
+    font-size: 12px;
+}
+#input_panel_text{
+	top: 32px;
+    position: relative;
+    left: 8px;
+	width: calc(100% - 96px);
+}
+#input_panel_btn_confirm{
+	font-family: "Material Icons";
+	position: relative;
+    left: 12px;
+    top: 36px;
+}
+
+#cec_title {
 	font-family: "Libel Suit", serif;
 	position: absolute;
 	font-size: 24px;
@@ -350,15 +415,37 @@ a:link {
 	top:8px;
 
 }
-#new_chat_close{
+#cec_footer{
+	position: relative;
+	height: 32px;
+	text-align: left;
+	top: 10px;
+}
+#cec_new_contact_btn{
+
+	font-family: "Product Sans", serif;
+    background: rgba(220, 220, 220, 0.8);
+    border-color: transparent;
+    border-radius: 16px;
+    font-size: 16px;
+    top: 8px;
+	left: calc(50% - 76px);
+    position: relative;
+    backdrop-filter: blur(8px);
+    color: #565353;
+	padding: 4px 8px;
+}
+.panel_close{
 	z-index: 55;
 	font-family: "Material Icons", serif;
 	position: absolute;
 	font-size: 24px;
 	float: right;
-	right:16px;
-	top:16px;
-     cursor: pointer;
+	right:8px;
+	top:8px;
+	cursor: pointer;
+	background: transparent;
+	border-color: transparent;
 }
 #contacts_search_box{
 	width: calc(100% - 112px);
@@ -373,9 +460,9 @@ a:link {
 }
 #contacts_list {
 	position: relative;
-	top:10px;
-	height: calc(100% - 98px);
-	overflow: auto;
+    top: 10px;
+    height: calc(100% - 132px);
+    overflow: auto;
 }
 #contacts_list::-webkit-scrollbar {
 	display: none;
@@ -417,6 +504,18 @@ a:link {
 	top: 4px;
 	border-radius: 64px;
 	padding: 4px;
+}
+.contact_delete{
+	position: relative;
+    float: right;
+    font-family: "Material Icons";
+    font-size: 20px;
+    left: -4px;
+    top: 3px;
+    border-radius: 64px;
+    padding: 4px;
+    border-color: transparent;
+    color: #505050;
 }
 .online{
 	background-color: transparent;
@@ -490,13 +589,11 @@ a:link {
 }
 
 #tooltip_exit {
-
 	position: absolute;
 	float:right;
 	right:0px;
 	top:40px;
 	width: 200px;
-
 }
 #tooltip_edit_profile{
 	position: absolute;
@@ -508,8 +605,15 @@ a:link {
 #tooltip_theme{
 	position: absolute;
 
-	left:calc(50% + 87px);
-	top:40px;
+	left:calc(50% + 48px);
+	top:46px;
+	width: 150px;
+}
+#tooltip_contacts{
+	position: absolute;
+
+	left:calc(50% + 0px);
+	top:46px;
 	width: 150px;
 }
 .tooltip{

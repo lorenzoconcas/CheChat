@@ -1,7 +1,9 @@
 #navbar {
 	-webkit-backdrop-filter: blur(8px);
 	backdrop-filter: blur(8px);
-	background: rgba(255, 255, 255, 0.8);
+	background: rgba(235, 235, 235, 0.8);
+	background: linear-gradient(#ededed, #ededed);
+	border-bottom-color: #e0e0e0;
 }
 
 #navbar>a:link {
@@ -14,11 +16,14 @@
 #navbar_title {
 	color:black;
 }
-
+.navbar_button{
+	color:#444444;
+}
 /*Thred list look*/
 
 #thread_list {
-
+	border-right-style: solid;
+	border-right-color: #dfdfdf;
 	border-top-color: #dfdfdf;
 	border-width: 1px;
 }
@@ -115,7 +120,7 @@
 	color: darkgrey;
 }
 
-#new_chat_panel {
+.popup_panel {
 
 	border-color: #dfdfdf;
 	background-color: white;

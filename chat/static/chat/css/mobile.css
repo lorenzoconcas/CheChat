@@ -211,7 +211,7 @@
 		top: 150%;
 	}
 
-	#new_chat_title {
+	#cec_title {
 		position: absolute;
 		font-size: 72px;
 		padding-left: 24px;
@@ -554,7 +554,7 @@
 		top: 150%;
 	}
 
-	#new_chat_title {
+	#cec_title {
 		position: absolute;
 		font-size: 32px;
 		padding-left: 24px;

@@ -18,8 +18,24 @@ class Utente(models.Model):
 
 
 class Rubrica(models.Model):
-    owner = models.ForeignKey(to=Utente, on_delete=models.CASCADE)
-    contatto = models.IntegerField
+    owner = models.ForeignKey(to=Utente, on_delete=models.CASCADE, related_name='owner')
+    contatto = models.ForeignKey(to=Utente, on_delete=models.CASCADE, related_name='contact')
+
+
+def insertcontact(phonebook_owner, contact):
+    if Rubrica.objects.filter(owner=phonebook_owner, contatto=contact).exists():
+        return "exists"
+    else:
+        phonebook_element = Rubrica(owner=phonebook_owner, contatto=contact)
+        phonebook_element.save()
+        return "ok"
+
+
+def remove_contact(phonebook_owner, contact):
+    try:
+        Rubrica.objects.get(owner=phonebook_owner, contatto=contact).delete()
+    except:
+        print("contatto non trovato in rubrica")
 
 
 class Chat(models.Model):

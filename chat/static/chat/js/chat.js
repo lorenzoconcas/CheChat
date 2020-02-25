@@ -22,7 +22,7 @@ push_socket.onmessage = function(e) {
     $("#thread_preview_" + msg.chat_id).text(msg.contenuto)
     $("#thread_status_" + msg.chat_id).text("");
 
-     notification_sound.play();
+    notification_sound.play();
 
     notifyMe(e.data)
     if (currentChat == msg.chat_id) {
@@ -82,7 +82,7 @@ function funcs() {
     isMobile = $("#user_name").css("visibility") == "hidden" ? true : false;
 
     $("#chat_title").text($("#chat_thread_1").text());
-    if(isMobile)
+    if (isMobile)
         getPersonalID();
 }
 
@@ -92,7 +92,6 @@ function askForMessages() {
     })
     push_socket.send(message);
 }
-
 let csrfcookie = function() {
     let cookieValue = null,
         name = "csrftoken";
@@ -109,24 +108,23 @@ let csrfcookie = function() {
     return cookieValue;
 };
 
-function getPersonalID(){
-     $.ajax({
-            type: "POST",
-            url: "info/",
-            data: {
-                'msg': 'personal_id'
-            },
-         dataType: 'json',
-           beforeSend: function(request, settings) {
-                if (!(/^http:.*/.test(settings.url) || /^https:.*/.test(settings.url))) {
-                    request.setRequestHeader("X-CSRFToken", csrfcookie());
-                }
-            },
-           success: function(data) {
-               B4A.CallSub('SetID', false, data)
-            },
-        });
-
+function getPersonalID() {
+    $.ajax({
+        type: "POST",
+        url: "info/",
+        data: {
+            'msg': 'personal_id'
+        },
+        dataType: 'json',
+        beforeSend: function(request, settings) {
+            if (!(/^http:.*/.test(settings.url) || /^https:.*/.test(settings.url))) {
+                request.setRequestHeader("X-CSRFToken", csrfcookie());
+            }
+        },
+        success: function(data) {
+            B4A.CallSub('SetID', false, data)
+        },
+    });
 }
 
 function sendMessage() {
@@ -215,21 +213,57 @@ function sendMessageOnEnter(e) {
 
 }
 
-function closeNewChat() {
-    $("#new_chat_panel").css("top", "150%");
+function closePanel(panel_name) {
+    $("#" + panel_name).css("top", "150%");
 }
 
-function openNewChat() {
-    if (isMobile){
-        $("#new_chat_panel").css("top", 0);
-    }
+function openPanel(panel_name) {
+    if (isMobile)
+        $("#" + panel_name).css("top", 0);
     else
-        $("#new_chat_panel").css("top", "25%");
+        $("#" + panel_name).css("top", "25%");
 }
+
+function openInputPanel() {
+    //
+    if (isMobile)
+        openPanel("input_panel");
+    else {
+        $("#input_panel").css("top", "calc(50% - 50px)");
+        $("#input_panel").css("top", "calc(50% - 50px)");
+    }
+
+    $("#input_panel").css("height", "100px");
+    $("#input_panel_error").hide();
+    $("#input_panel_title").text("Nuovo contatto");
+    $("#input_panel_text").attr("placeholder", "Inserisci un indirzzo mail");
+    $("#input_panel_btn_confirm").on("keypress", addContact2);
+    $("#input_panel_btn_confirm").click(addContact);
+
+}
+
+function openCECPanel(mode) {
+    openPanel("chat_and_contacts_panel");
+
+    if (mode) { //se nuova chat
+        $("#cec_title").text("Nuova Chat");
+        $("#contacts_list").css("height", "calc(100% - 98px)");
+        $("#cec_footer").hide();
+        $(".contact_checkbox").show();
+        $(".contact_delete").hide();
+    } else {
+        $("#cec_title").text("Rubrica");
+        $("#contacts_list").css("height", "calc(100% - 132px)");
+        $("#cec_footer").show();
+        $(".contact_checkbox").hide();
+        $(".contact_delete").show();
+    }
+}
+
 function closeChatThread() {
-  if (isMobile) {
+    if (isMobile) {
         $("#chat").css("left", "100%");
-        $("#new_thread").css("visibility", "hidden");
+        $("#new_thread").hide();
         $(".chat_thread").css("background", "transparent");
         $("#thread_bubbles").empty();
         currentChat = 0;
@@ -237,10 +271,11 @@ function closeChatThread() {
 
 
 }
+
 function openThread(chat_id) {
     if (isMobile) {
         $("#chat").css("left", "0");
-        $("#new_thread").css("visibility", "hidden");
+        $("#new_thread").hide();
 
     }
     currentChat = chat_id;
@@ -263,11 +298,11 @@ function openThread(chat_id) {
 
     $("#thread_status_" + chat_id).text("");
     $(".chat_thread").css("background", "transparent");
-    $("#chat_title").text($("#thread_title_"+chat_id).text());
+    $("#chat_title").text($("#thread_title_" + chat_id).text());
 
     $("#thread_" + chat_id).css("background", "dodgerblue");
 
-    $("#chat").css("visibility", "visible");
+    $("#chat").show();
     loadMessages(chat_id);
     window.location = "#";
 
@@ -299,9 +334,9 @@ function loadMessages(chat_id) {
             }
             /*   var objDiv = document.getElementById("thread_bubbles");
                 objDiv.scrollTop = objDiv.scrollHeight;*/
-             $("#thread_bubbles").animate({
-                    scrollTop: 10000000000000,
-                }, 125);
+            $("#thread_bubbles").animate({
+                scrollTop: 10000000000000,
+            }, 125);
 
         },
     });
@@ -347,42 +382,100 @@ function toggleTheme() {
         document.getElementById("theme").href = "/static/chat/css/dark.css";
         document.getElementById("theme_mode_btn").innerText = "";
     }
-    if(isMobile)
-        B4A.CallSub('darkMode', true, dark_mode+"")
+    if (isMobile)
+        B4A.CallSub('darkMode', true, dark_mode + "")
 }
 
-function showtooltip(wich) {
-    switch (wich) {
-        case 0: {
-            $("#tooltip_exit").css("visibility", "visible");
-            break;
-        }
-        case 1: {
-            $("#tooltip_edit_profile").css("visibility", "visible");
-            break;
-        }
+function tooltip(wich, visible) {
+    status = visible ? "visible" : "hidden";
+    $("#" + wich).css("visibility", status);
+}
 
-        case 2: {
-            $("#tooltip_theme").css("visibility", "visible");
-            break;
-        }
+function addContact() {
+    $("#input_panel").css("height", "100px");
+
+    $("#input_panel_error").show();
+    $("#input_panel_error").css("visibility", "hidden");
+    $("#input_panel_error").text("");
+    let mail = $("#input_panel_text").val();
+    $.ajax({
+        type: "POST",
+        url: "send_data/",
+        data: {
+            'req' : 'add_contact',
+            'mail': mail,
+        },
+
+        beforeSend: function(request, settings) {
+            if (!(/^http:.*/.test(settings.url) || /^https:.*/.test(settings.url))) {
+                request.setRequestHeader("X-CSRFToken", csrfcookie());
+            }
+        },
+         dataType: 'json',
+        success: function(data) {
+            if (data[0].result == "ok"){
+                closePanel("input_panel");
+
+                let div = document.createElement("div");
+                let checkbox = document.createElement("input"); checkbox.type = 'checkbox';
+                let img = document.createElement("img");
+                let name = document.createElement("label");
+                let del_btn = document.createElement("button");
+
+                $(div).addClass("contact_element");
+                $(checkbox).addClass("contact_checkbox");
+                $(img).attr("src", "/static/chat/icons/generic_user.png");
+                $(img).addClass("contact_icon")
+                $(name).text(data[0].name);
+                $(name).addClass("contact_name");
+                $(del_btn).addClass("contact_delete");
+                $(del_btn).text("")
+
+                $(div).append(checkbox);
+                $(checkbox).hide();
+                $(div).append(img);
+                $(div).append(name);
+                $(div).append(del_btn);
+
+                $(div).attr("id", "contact_"+data[0].id);
+                $("#contacts_list").append(div);
+
+            }
+            else{
+                //<label id="input_panel_error">Errore</label>
+                $("#input_panel").css("height", "120px");
+                $("#input_panel_error").show();
+                $("#input_panel_error").css("visibility", "visible");
+                $("#input_panel_error").text(data[0].error);
+            }
+        },
+    });
+}
+
+function addContact2() {
+    if (e.keyCode === 13) {
+        addContact()
     }
 }
 
-function hidetooltip(wich) {
-    switch (wich) {
-        case 0: {
-            $("#tooltip_exit").css("visibility", "hidden");
-            break;
-        }
-        case 1: {
-            $("#tooltip_edit_profile").css("visibility", "hidden");
-            break;
-        }
-        case 2: {
-            $("#tooltip_theme").css("visibility", "hidden");
-            break;
-        }
+function removeFromContacts(id){
 
-    }
+    $.ajax({
+        type: "POST",
+        url: "send_data/",
+        data: {
+            'req' : 'remove_contact',
+            'id': id,
+        },
+
+        beforeSend: function(request, settings) {
+            if (!(/^http:.*/.test(settings.url) || /^https:.*/.test(settings.url))) {
+                request.setRequestHeader("X-CSRFToken", csrfcookie());
+            }
+        },
+        success: function(data) {
+            $("#contact_"+id).remove();
+        },
+    });
+
 }

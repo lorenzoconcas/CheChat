@@ -14,4 +14,5 @@ urlpatterns = [
     url(r'^lastmessage/', views.lstmsg),
     url(r'^allmessages/', views.allmsg),
     url(r'^info/', views.info),
+    url(r'^send_data/', views.send_data),
 ]

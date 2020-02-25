@@ -17,98 +17,70 @@
     </head>
     <body onLoad="funcs()">
         <navbar id="navbar">
-            <img id="logo" src="{% static 'chat/icons/chat_icon.png' %}" alt="ISWChat">
-            <a id="navbar_title" href="/home">ISW Chat</a>
-            <label id="theme_mode_btn" onclick="toggleTheme()"  onmouseover="showtooltip(2)" onmouseleave="hidetooltip(2)"></label>
-            <span id="tooltip_theme" class="tooltip">Alterna tema</span>
-            <a id="logout" href="logout" onmouseover="showtooltip(0)" onmouseleave="hidetooltip(0)"></a>
-            <span id="tooltip_exit" class="tooltip">Premi per fare il logout</span>
-            <img id="user_icon" onmouseover="showtooltip(1)" onmouseleave="hidetooltip(1)" src="{{ user_icon }}" alt="{{ name_to_show }}">
-            <a id="user_name" onmouseover="showtooltip(1)" onmouseleave="hidetooltip(1)">{{ name_to_show }}</a>
-            <span id="tooltip_edit_profile" class="tooltip">Modifica il profilo</span>
+            <div id="navbar_section_logo" class="navbar_section">
+                 <img id="logo" src="{% static 'chat/icons/chat_icon.png' %}" alt="ISWChat">
+                 <a id="navbar_title" href="/home">ISW Chat</a>
+            </div>
+            <div id="navbar_section_buttons" class="navbar_section">
+                <button id="open_contacts_btn" class="navbar_button" onclick="openCECPanel(0)" onmouseover="tooltip('tooltip_contacts', 1)" onmouseleave="tooltip('tooltip_contacts', 0)"></button>
+                <span id="tooltip_contacts" class="tooltip">Contatti</span>
+                <button id="theme_mode_btn" class="navbar_button" onclick="toggleTheme()"  onmouseover="tooltip('tooltip_theme', 1)" onmouseleave="tooltip('tooltip_theme', 0)"></button>
+                <span id="tooltip_theme" class="tooltip">Alterna tema</span>
+
+            </div>
+            <div id="navbar_section_profile" class="navbar_section">
+                <a id="logout" href="logout" onmouseover="tooltip('tooltip_exit', 0)" onmouseleave="tooltip('tooltip_exit', 0)"></a>
+                <span id="tooltip_exit" class="tooltip">Premi per fare il logout</span>
+                <img id="user_icon" onmouseover="tooltip('tooltip_edit_profile', 0)" onmouseleave="tooltip('tooltip_edit_profile', 0)" src="{{ user_icon }}" alt="{{ name_to_show }}">
+                <a id="user_name" onmouseover="tooltip('tooltip_edit_profile', 0)" onmouseleave="tooltip('tooltip_edit_profile', 0)">{{ name_to_show }}</a>
+                <span id="tooltip_edit_profile" class="tooltip">Modifica il profilo</span>
+            </div>
 
         </navbar>
         <div id="personal_info_panel">
             <label id="personal_info_panel_close" ></label>
             <br>
-            <img id="personal_info_icon" src="{{ user_icon }}" alt="{{ name_to_show }}"/>
+            <img   id="personal_info_icon" src="{{ user_icon }}" alt="{{ name_to_show }}"/>
             <br>
             <label id="personal_info_username">{{ name_to_show }}</label> <!--e cognome-->
             <br>
-             <label id="personal_info_delete_profile" >Elimina profilo</label>
+            <label id="personal_info_delete_profile" >Elimina profilo</label>
             <br>
-
         </div>
-        <div id="new_chat_panel">
-            <label id="new_chat_title">Nuova chat</label>
+        <div id="input_panel" class="popup_panel">
+            <label id="input_panel_title"></label>
+            <button class="panel_close" onclick="closePanel('input_panel')"></button>
             <br>
-            <button  id="new_chat_close" onclick="closeNewChat()"></button>
+            <input id="input_panel_text" class="input_box" type="email"></input>
+            <button id="input_panel_btn_confirm"  class="generic_btn" ></button>
+            <label id="input_panel_error">Errore</label>
+        </div>
+        <div id="chat_and_contacts_panel" class="popup_panel">
+            <label id="cec_title">Nuova chat</label>
+            <br>
+            <button class="panel_close" onclick="closePanel('chat_and_contacts_panel'); closePanel('input_panel')"></button>
             <br>
             <input  id="contacts_search_box" class="input_box" type="text" placeholder="Cerca fra i contatti">
             <button id="contacts_search_btn" class="generic_btn"></button>
             <br>
-
             <div id="contacts_list">
-                <div class="contact_element">
-                    <input class="contact_checkbox" type="checkbox" id="user_id_check">
-                    <img   class="contact_icon" src="{% static 'chat/icons/generic_user.png' %}" alt="username">
-                    <label class="contact_name">Piergiorgio</label>
-                    <label class="contact_status offline"> </label>
-                </div>
-                <div class="contact_element">
-                    <input class="contact_checkbox" type="checkbox" id="user_id_check">
-                    <img   class="contact_icon" src="{% static 'chat/icons/generic_user.png' %}" alt="username">
-                    <label class="contact_name">Gianpuddu</label>
-                    <label class="contact_status online"> </label>
-                </div>
-                <div class="contact_element">
-                    <input class="contact_checkbox" type="checkbox" id="user_id_check">
-                    <img   class="contact_icon" src="{% static 'chat/icons/lorec.png' %}" alt="username">
-                    <label class="contact_name">La Direzione</label>
-                    <label class="contact_status online"> </label>
-                </div>
-                 <div class="contact_element">
-                    <input class="contact_checkbox" type="checkbox" id="user_id_check">
-                    <img   class="contact_icon" src="{% static 'chat/icons/generic_user.png' %}" alt="username">
-                    <label class="contact_name">John Stavolta</label>
-                    <label class="contact_status offline"> </label>
-                </div>
-                 <div class="contact_element">
-                    <input class="contact_checkbox" type="checkbox" id="user_id_check">
-                    <img   class="contact_icon" src="{% static 'chat/icons/generic_user.png' %}" alt="username">
-                    <label class="contact_name">Tommaso Crociera</label>
-                    <label class="contact_status offline"> </label>
-                </div>
-                <div class="contact_element">
-                    <input class="contact_checkbox" type="checkbox" id="user_id_check">
-                    <img   class="contact_icon" src="{% static 'chat/icons/generic_user.png' %}" alt="username">
-                    <label class="contact_name">Erminio Ottone</label>
-                    <label class="contact_status offline"> </label>
-                </div>
-                <div class="contact_element">
-                    <input class="contact_checkbox" type="checkbox" id="user_id_check">
-                    <img   class="contact_icon" src="{% static 'chat/icons/generic_user.png' %}" alt="username">
-                    <label class="contact_name">Jerry Scroti</label>
-                    <label class="contact_status offline"> </label>
-                </div>
-                <div class="contact_element">
-                    <input class="contact_checkbox" type="checkbox" id="user_id_check">
-                    <img   class="contact_icon" src="{% static 'chat/icons/generic_user.png' %}" alt="username">
-                    <label class="contact_name">Basca Medda</label>
-                    <label class="contact_status offline"> </label>
-                </div>
-                <div class="contact_element">
-                    <input class="contact_checkbox" type="checkbox" id="user_id_check">
-                    <img   class="contact_icon" src="{% static 'chat/icons/generic_user.png' %}" alt="username">
-                    <label class="contact_name">Gassa Saba</label>
-                    <label class="contact_status offline"> </label>
-                </div>
+                {% for contact in contacts %}
+                    <div class="contact_element" id="contact_{{  contact.contatto.id  }}">
+                        <input class="contact_checkbox" type="checkbox">
+                        <img   class="contact_icon" src="{% static 'chat/icons/generic_user.png' %}" alt="username">
+                        <label class="contact_name">{{ contact.contatto }}</label>
+                        <button class="contact_delete" onclick="removeFromContacts({{ contact.contatto.id }})"></button>
+                    </div>
+                {% endfor %}
+            </div>
+            <div id="cec_footer">
+                <button id="cec_new_contact_btn" onclick="openInputPanel()">Aggiungi Contatto</button>
             </div>
         </div>
 
         <div id="thread_list">
             <div>
-                <button id="new_thread" class="generic_btn" onclick="openNewChat()"></button>
+                <button id="new_thread" class="generic_btn" onclick="openCECPanel(1)"></button>
                 <input  id="search_box" class="input_box" type="text" placeholder="Cerca fra le chat">
                 <button id="search_btn" class="generic_btn"></button>
             </div>
@@ -128,7 +100,6 @@
                 <label>Premi una chat per iniziare</label>
             </div>
         <div id="chat">
-
             <div id="thread_header">
                 <button id="chat_close" onclick="closeChatThread()"></button>
                 <img   id="chat_user_icon" src="{% static 'chat/icons/generic_user.png' %}" alt="username">
@@ -136,7 +107,6 @@
                 <label id="chat_user_status"></label>
                 <label id="chat_thread_detail" onclick="openChatThreadDetail()"></label>
             </div>
-
             <div id="thread_bubbles">
               <br><br><br>
 
@@ -157,7 +127,7 @@
             </div>
 
             <div id="send_box">
-                <input id="message_box" onkeypress="sendMessageOnEnter(event)" class="input_box" type="text" placeholder="Scrivi qualcosa">
+                <input id="message_box" onkeypress="sendMessageOnEnter()" class="input_box" type="text" placeholder="Scrivi qualcosa">
                 <button id="send_btn" onclick="sendMessage()"></button>
             </div>
 

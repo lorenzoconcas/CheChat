@@ -8,6 +8,8 @@ body {
 	-webkit-backdrop-filter: blur(8px);
 	backdrop-filter: blur(8px);
 	background: rgba(0, 0, 0, 0.8);
+
+	border-bottom-color: #202020;
 }
 
 #navbar>a:link {
@@ -20,7 +22,11 @@ body {
 #navbar_title {
 	color:white;
 }
-#theme_mode_btn{
+.navbar_button{
+	background:	#3e3d3d;
+	color: white;
+}
+#chat_hidden {
 	color: white;
 }
 /*Thred list look*/
@@ -28,6 +34,8 @@ body {
 #thread_list {
 	border-top-color: #212121;
 	border-width: 1px;
+	border-right-style: solid;
+	border-right-color: #212121;
 }
 
 .chat_thread {
@@ -133,8 +141,7 @@ body {
 	color: white;
 }
 
-#new_chat_panel {
-
+.popup_panel{
 	border-color: #2c2c2c;
 	background-color: black;
 	box-shadow: 0px 0px 50px rgba(16, 16, 16, 1.0);
@@ -142,10 +149,10 @@ body {
 	background-color: rgba(0,0,0, 0.8);
 }
 
-#new_chat_title {
+#cec_title {
 	color:white;
 }
-#new_chat_close{
+.panel_close{
 	color:white;
 }
 #contacts_search_box{

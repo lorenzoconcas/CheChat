@@ -116,11 +116,17 @@ def home(request):
     for t in threads:
         t.chat.nome = t.chat.nome.replace(user.nome + " " + user.cognome, "").replace("-&/&-", "")
 
+    try:
+        contacts = Rubrica.objects.filter(owner=user)
+    except:
+        contacts = []
+
     return render(request, 'chat/chats.html', {
         'name_to_show': user.nome + " " + user.cognome,
         'user': user,
         'user_icon': final_icon,
         'Threads': threads,
+        'contacts': contacts,
     })
 
 
@@ -146,15 +152,49 @@ def snmsg(request):
         return redirect("/")
 
 
+def send_data(request):
+    if request.is_ajax():
+        req = request.POST['req']
+        resp = ""
+        user_id = request.session['user_id']
+        u = Utente.objects.get(id=user_id)
+
+        if req == 'add_contact':
+            email = request.POST['mail']
+            try:
+                utente = Utente.objects.get(email=email)
+            except:
+                resp = '[{"result":"err","error":"Utente non trovato"}]'
+                return HttpResponse(resp)
+
+            if u == utente:
+                resp = '[{"result":"err","error":"Non si può aggiungere se stessi"}]'
+                return HttpResponse(resp)
+
+            if insertcontact(u, utente) == "ok":
+                resp = '[{"result":"ok","name":"' + utente.__str__() + '", "id":"'+str(utente.id)+'"}]'
+            else:
+                resp = '[{"result":"err","error":"Utente già in rubrica"}]'
+
+        elif req == 'remove_contact':
+
+            id = request.POST['id']
+            try:
+                utente = Utente.objects.get(id=id)
+                remove_contact(u, utente)
+            except:
+              print("err")
+
+        return HttpResponse(resp)
+    else:
+        return redirect("/")
+
+
 def lstmsg(request):
     if request.is_ajax():
-        l_sender = request.POST['lastMSGSender']
-        l_content = request.POST['lastMSGContent']
-        l_time = request.POST['lastMSGTime']
-
         user_id = request.session['user_id']
-        chat_id = request.POST['chat_id']
         u = Utente.objects.get(id=user_id)
+        chat_id = request.POST['chat_id']
         c = Chat.objects.get(id=chat_id)
 
         msg = getlastmessage(c)
