@@ -72,6 +72,7 @@ def register(request):
             return render(request, 'chat/register.html', {
                 'response': "Le password non corrispondono",
             })
+        mail = mail.lower()
         new_user = Utente(email=mail, password=psw, nome=name, cognome=surname)
         new_user.save()
         return redirect('/')

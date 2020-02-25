@@ -49,7 +49,7 @@
         </div>
         <div id="input_panel" class="popup_panel">
             <label id="input_panel_title"></label>
-            <button class="panel_close" onclick="closePanel('input_panel')"></button>
+            <button class="panel_close" id="input_close" onclick="closePanel('input_panel')"></button>
             <br>
             <input id="input_panel_text" class="input_box" type="email"></input>
             <button id="input_panel_btn_confirm"  class="generic_btn" ></button>
@@ -128,7 +128,7 @@
             </div>
 
             <div id="send_box">
-                <input id="message_box" onkeypress="sendMessageOnEnter()" class="input_box" type="text" placeholder="Scrivi qualcosa">
+                <input id="message_box" onkeypress="sendMessageOnEnter(event)" class="input_box" type="text" placeholder="Scrivi qualcosa">
                 <button id="send_btn" onclick="sendMessage()"></button>
             </div>
 

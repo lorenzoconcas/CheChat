@@ -13,13 +13,36 @@
 		top: -32px;
 		font-size: 80px;
 	}
-	#theme_mode_btn{
+
+	.navbar_section{
+		position: absolute;
+		width: 33%;
+		height: 100%;
+	}
+
+	#navbar_section_logo{
+		left:0;
+	}
+	#navbar_section_buttons{
+		left:33.33333333333333333333333%;
+	}
+	#navbar_section_profile{
+		right:0;
+	}
+
+	.navbar_button{
 		position:relative;
 		font-size: 80px;
 		float:right;
-		left:-120px;
 		top:24px;
 	}
+	#theme_mode_btn{
+		left: -72px;
+	}
+	#open_contacts_btn{
+		left: -64px;
+	}
+
 	#logout{
 		position: relative;
 		float:right;
@@ -202,7 +225,7 @@
 		height: 96px;
 	}
 
-	#new_chat_panel {
+	.popup_panel {
 		z-index: 60;
 		position: fixed;
 		height: calc(100% - 128px);
@@ -340,13 +363,32 @@
 		top: 0px;
 		font-size: 20px;
 	}
-	#theme_mode_btn{
+
+	#navbar_section_logo{
+		left:0;
+	}
+	#navbar_section_buttons{
+		left:33.33333333333333333333333%;
+	}
+	#navbar_section_profile{
+		right:0;
+	}
+
+	.navbar_button{
 		position:relative;
 		font-size: 32px;
 		float:right;
 		left:-12px;
-		top:8px;
+		top:4px;
 	}
+	#theme_mode_btn{
+		left: 50px;
+	}
+	#open_contacts_btn{
+		float:right;
+		right:-2px
+	}
+
 	#logout{
 		position: relative;
 		float:right;
@@ -545,7 +587,7 @@
 		height: 32px;
 	}
 
-	#new_chat_panel {
+	.popup_panel {
 		z-index: 60;
 		position: fixed;
 		height: 100%;
@@ -562,7 +604,7 @@
 		padding-bottom: 4px;
 		top:0px;
 	}
-	#new_chat_close{
+	.panel_close{
 		z-index: 56;
 		position: fixed;
 		float: right;
@@ -588,6 +630,7 @@
 		width: calc(100% - 128px);
 		font-size: 16px;
 	}
+
 	#contacts_search_btn{
 		position: relative;
 		float: right;
@@ -669,5 +712,44 @@
 		padding:8px 16px;
 		border-style:solid;
 		border-radius: 32px 32px 0 32px;
+	}
+	#cec_footer{
+		top:-16px;
+	}
+	#cec_startchat{
+		float:left;
+		top: -72px;
+		left: 16px;
+		width: 64px;
+		height: 64px;
+	}
+	#cec_new_contact_btn{
+		font-size: 16px;
+		left: 17px;
+		top: -5px;
+	}
+	.contact_delete{
+		left: -12px;
+		top: 9px;
+	}
+	#input_panel{
+		z-index: 70;
+		height: 100px;
+		width: calc(100% - 24px);
+		left: 12px;
+	}
+	#input_close{
+		left: calc(100% - 46px);
+		width: 32px;
+		height: 32px;
+		font-size: 12px;
+		top: 11px;
+		float: right;
+	}
+	#input_panel_btn_confirm{
+		font-size: 14px;
+	    width: 31px;
+	    height: 31px;
+
 	}
 }

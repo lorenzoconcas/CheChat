@@ -383,7 +383,7 @@ a:link {
 	padding-top: 4px;
 	padding-bottom: 4px;
 	top:8px;
-	/*on error show, panel increase +20px*//
+	/*on error show, panel increase +20px*/
 }
 #input_panel_error{
 	visibility: hidden;

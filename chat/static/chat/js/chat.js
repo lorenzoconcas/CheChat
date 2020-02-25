@@ -18,9 +18,10 @@ push_socket.onopen = function(event) {
 push_socket.onmessage = function(e) {
     let n;
     var msg = JSON.parse(e.data)
+      console.log(msg);
     switch(msg.type){
         case 'new_chat':{
-            console.log(msg);
+
             $("#thread_list").append(getThreadItem(msg.name, msg.id));
             break;
         }
@@ -30,24 +31,25 @@ push_socket.onmessage = function(e) {
 
             notification_sound.play();
 
-            notifyMe(e.data)
+
             if (currentChat == msg.chat_id) {
                 divElement = getBubble(msg);
                 $("#thread_bubbles").append(divElement).append("<br>");
-                $(divElement).css("width", "0");
+
                 var curHeight = $(divElement).css("height");
-
                 $(divElement).css("height", "0");
-
+                 $(divElement).css("width", "0");
                 $("#thread_bubbles").animate({
                     scrollTop: $('#thread_bubbles').prop("scrollHeight")
                 }, 1000);
                 $(divElement).animate({
                     width: "45%",
-                    height: curHeight
+                    height:  $(divElement).get(0).scrollHeight
                 }, 250, function () {
+                     $(this).height('auto');
                 });
-            } else {
+            }
+            else {
 
                 let new_thread_title = "";
                 unreaded_messages++;
@@ -210,8 +212,10 @@ function sendMessage() {
                 )
             });
         }
+         $("#thread_preview_"+currentChat).text("Tu: "+msg.value.substring(0, 20));
         msg.value = '';
     }
+
 }
 
 function sendMessageOnEnter(e) {
@@ -235,13 +239,9 @@ function openPanel(panel_name) {
 }
 
 function openInputPanel() {
-    //
-    if (isMobile)
-        openPanel("input_panel");
-    else {
-        $("#input_panel").css("top", "calc(50% - 50px)");
-        $("#input_panel").css("top", "calc(50% - 50px)");
-    }
+
+    $("#input_panel").css("top", "calc(50% - 50px)");
+
 
     $("#input_panel").css("height", "100px");
     $("#input_panel_error").hide();
@@ -261,12 +261,16 @@ function openCECPanel(mode) {
         $("#cec_footer").hide();
         $(".contact_checkbox").show();
         $(".contact_delete").hide();
+
+        $("#cec_startchat").show();
+
     } else {
         $("#cec_title").text("Rubrica");
         $("#contacts_list").css("height", "calc(100% - 132px)");
         $("#cec_footer").show();
         $(".contact_checkbox").hide();
         $(".contact_delete").show();
+        $("#cec_startchat").hide();
     }
 }
 
@@ -516,16 +520,7 @@ function startChat(){
         },
         dataType: 'json',
         success: function (data) {
-            /*
-            * <div         class="chat_thread"  id="thread_{{ chat_thread.chat_id }}" onclick="openThread({{ chat_thread.chat_id }})">
-                    <img   class="thread_icon"     src="{% static 'chat/icons/generic_user.png' %}" alt="username">
-                    <label class="thread_title"  id="thread_title_{{ chat_thread.chat_id }}">{{ chat_thread.chat.nome }}</label>
-                    <label class="thread_status" id="thread_status_{{ chat_thread.chat_id }}"></label>
-                    <br>
-                    <label class="thread_preview" id="thread_preview_{{ chat_thread.chat_id }}">{{ chat_thread|getltsmsg:"32" }}</label>
-                </div>
-            *
-            * */
+
             console.log(data);
             if(data[0].result == "ok"){
                 closePanel("chat_and_contacts_panel");
