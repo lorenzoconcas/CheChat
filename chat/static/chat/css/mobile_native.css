@@ -1,23 +1,18 @@
+
 /*mobile optimizations*/
 
-@media (-webkit-min-device-pixel-ratio: 2.0) {
+@media (-webkit-min-device-pixel-ratio: 2.75) {
 	#navbar {
 		position: fixed;
-		height: 128px;
+		height: 48px;
 		width: 100%;
 	}
 	#logo {
-		width: 128px;
+		width: 32px;
 	}
 	#navbar_title {
-		top: -32px;
-		font-size: 64px;
-	}
-
-	.navbar_section{
-		position: absolute;
-		width: 33%;
-		height: 100%;
+		top: 0px;
+		font-size: 20px;
 	}
 
 	#navbar_section_logo{
@@ -32,121 +27,133 @@
 
 	.navbar_button{
 		position:relative;
-		font-size: 80px;
+		font-size: 32px;
 		float:right;
-		top:24px;
+		left:-12px;
+		top:4px;
 	}
-
+	#theme_mode_btn{
+		left: 50px;
+	}
 	#open_contacts_btn{
-		left: -100px;
+		float:right;
+		right:-2px
 	}
 
 	#logout{
 		position: relative;
 		float:right;
-		font-size: 80px;
-		top:24px;
+		font-size: 32px;
 
+		left:-16px;
+		top:8px;
 		color:blue;
 	}
 	#user_name {
 		visibility: hidden;
 	}
 	#user_icon {
-		left:-32px;
-		width: 128px;
-		top: -2px;
+		left:-16px;
+		width: 48px;
+		top: 0px;
 	}
 	#thread_list {
-		top: 128px;
+		top: 40px;
 		position: relative;
 		width: 100%;
+		height: calc(100% - 64px);
+	}
+	#chat_hidden{
+		visibility: hidden;
 	}
 	.chat_thread {
 		position: relative;
-
-		height: 256px;
+		height: 64px;
 	}
 	.thread_icon {
 		position: relative;
-		height: 128px;
+		height: 48px;
 		left: 8px;
-		top: 64px;
+		top: 8px;
 	}
 	.thread_title {
 		position: relative;
 		left: 16px;
 		top: -16px;
-		font-size: 72px;
+		font-size: 24px;
 	}
 	.thread_preview {
 		position: relative;
-		left: 150px;
-		font-size: 48px;
+		left: 70px;
+		top: -16px;
+		font-size: 12px;
+		width: calc(60% - 12px);
+
+		 white-space: nowrap;
+ 		 overflow: hidden;
+		 text-overflow: ellipsis;
 	}
 	.thread_status {
 		font-family: "Material Icons";
-		font-size: 48px;
+		font-size: 24px;
 		position: relative;
 		float: right;
 		left: -24px;
-		top: 100px;
+		top: 16px;
 	}
 	#new_thread {
 		z-index: 49;
 		position: fixed;
 		float: right;
-		left: calc(100% - 180px);
-		top: calc(100% - 180px);
-		height: 128px;
-		width: 128px;
+		left: calc(100% - 80px);
+		top: calc(100% - 80px);
+		height: 64px;
+		width: 64px;
 
 	}
 	#search_box {
 		position: relative;
-		left: 16px;
+		left: 4px;
 		top: 10px;
-		height: 80px;
-		width: calc(100% - 240px);
-		font-size: 48px;
+		height: 32px;
+		width: calc(100% - 100px);
+		font-size: 16px;
 	}
 	.input_box {
 		border-radius: 128px;
 		padding: 8px 16px;
 	}
+	.generic_btn {
+		font-size: 24px;
+		width: 24px;
+		height: 24px;
+		border-radius: 128px;
+	}
 	#search_btn {
 		position: relative;
 		float: right;
-		left: -16px;
-		width: 100px;
-		height: 100px;
+		left: -4px;
+		width: 48px;
+		height: 48px;
 		top: 12px;
+
 	}
-	.generic_btn {
-		font-size: 48px;
-		width: 128px;
-		height: 128px;
-		border-radius: 256px;
-	}
+
 	/*thread detail*/
 	#chat {
 		width: 100%;
 		left: 100%;
 	}
-	#chat_hidden{
-		visibility: hidden;
-	}
 	#thread_header {
 		z-index: 9998;
 		position: relative;
 		width: 100%;
-		height: 128px;
-		top: 80px;
+		height: 48px;
+		top: 0px;
 
 	}
 	#chat_close{
-		visibility: visible;
-		font-size: 64px;
+		font-size: 32px;
 		font-family: "Material Icons", serif;
 		position: relative;
 		background: transparent;
@@ -156,33 +163,35 @@
 		border-color: transparent;
 	}
 	#chat_thread_detail{
-		font-size: 96px;
-		top:16px;
+		font-size: 24px;
+		top:12px;
 		left:-16px;
 	}
 	#chat_title {
 		position: relative;
-		left: 16px;
-		font-size: 64px;
+		left: 8px;
+		font-size: 24px;
 		font-weight: bold;
-		top: -16px;
+		top: -2px;
 	}
 	#chat_user_icon {
 		position: relative;
-		width: 92px;
-		top: 12px;
-		left: 8px;
+		width: 32px;
+		top: 6px;
+		left: -1px;
 	}
 	#chat_user_status {
-		font-size: 48px;
+		font-size: 12px;
 		position: relative;
 		left: 24px;
 		top: -10px;
+		visibility: hidden;
 	}
+
 	#thread_bubbles {
 		position: absolute;
-		top: 64px;
-		height: calc(100% - 272px);
+		top: 0px;
+		height: calc(100% - 64px);
 		overflow: auto;
 	}
 	.bubble_container {
@@ -190,7 +199,7 @@
 		width: 75%;
 		overflow: auto;
 		padding: 8px;
-		font-size: 48px;
+		font-size: 24px;
 	}
 	.outgoing {
 		left: 18%;
@@ -200,8 +209,8 @@
 	}
 	#send_box {
 		position: absolute;
-		height: 180px;
-		top: calc(100% - 180px);
+		height: 64px;
+		top: calc(100% - 65px);
 		width: 100%;
 		left: 0;
 	}
@@ -213,25 +222,26 @@
 		border-color: transparent;
 		border-radius: 256px;
 		padding: 8px 4px;
-		font-size: 56px;
-		width: 112px;
-		top: 34px;
-		height: 112px;
-		left: -24px;
+		font-size: 24px;
+		width: 48px;
+		height: 48px;
+		top: 6px;
+
+		left: -8px;
 	}
 	#message_box {
-		font-size: 48px;
+		font-size: 16px;
 		position: relative;
-		width: calc(100% - 200px);
-		left: 16px;
-		top: 32px;
-		height: 96px;
+		width: calc(100% - 108px);
+		left: 8px;
+		top: 4px;
+		height: 32px;
 	}
 
 	.popup_panel {
 		z-index: 60;
 		position: fixed;
-		height: calc(100% - 128px);
+		height: 100%;
 		width: 100%;
 		left: 0;
 		top: 150%;
@@ -239,49 +249,53 @@
 
 	#cec_title {
 		position: absolute;
-		font-size: 72px;
+		font-size: 32px;
 		padding-left: 24px;
 		padding-top: 4px;
 		padding-bottom: 4px;
-		top:8px;
+		top:0px;
 	}
-	#new_chat_close{
-		z-index: 55;
+	.panel_close{
+		z-index: 56;
 		position: fixed;
 		float: right;
-		left: 80%;
-		top: 90%;
+		left: calc(100% - 80px);
+		top: calc(100% - 80px);
 		text-align: center;
 
-		font-size: 48px;
-		color: white;
-		width: 128px;
-		height: 128px;
+		font-size: 32px;
+		height: 64px;
+		width: 64px;
 		border-radius: 256px;
+
+		color: white;
+		background: dodgerblue;
+		border-color: transparent;
 
 	}
 	#contacts_search_box{
 		position: relative;
-		left: 32px;
-		top: 96px;
-		height: 100px;
-		width: calc(100% - 240px);
-		font-size: 48px;
+		left: 8px;
+		top: 16px;
+		height: 32px;
+		width: calc(100% - 128px);
+		font-size: 16px;
 	}
+
 	#contacts_search_btn{
 		position: relative;
 		float: right;
 		left: -16px;
-		width: 120px;
-		height: 120px;
-		top: 96px;
+		width: 48px;
+		height: 48px;
+		top: 16px;
 
 	}
 	#contacts_list {
 		position: relative;
-		height: calc(100% - 98px);
+		height: calc(100% - 32px);
 		overflow: auto;
-		top: 128px;
+		top: 32px;
 		width: 100%;
 	}
 
@@ -290,40 +304,41 @@
 	}
 
 	.contact_element {
-		height: 160px;
+		height: 48px;
+		border-style: solid;
 	}
 
 
 	.contact_checkbox {
 		position: relative;
-		top: -14px;
+		top: 0px;
 		left: 5px;
-		height: 64px;
-		width: 64px;
+		height: 16px;
+		width: 16px;
 		border-radius: 16px;
 	}
 
 	.contact_icon {
 		position: relative;
-		width: 128px;
+		width: 32px;
 		left: 8px;
-		top: 16px;
+		top: 8px;
 	}
 
 	.contact_name {
 		position: relative;
 		left: 16px;
-		top: -16px;
-		font-size: 72px;
+		top: 0px;
+		font-size: 24px;
 	}
 
 	.contact_status {
 		font-family: "Material Icons";
-		font-size: 48px;
+		font-size: 16px;
 		position: relative;
 		float: right;
 		left: -24px;
-		top: 56px;
+		top: 10px;
 	}
 
 	.online{
@@ -349,29 +364,43 @@
 		border-style:solid;
 		border-radius: 32px 32px 0 32px;
 	}
-	#chat_and_contacts_panel{
-		height: 100%;
-	}
-	.panel_close{
-		z-index: 56;
-		position: fixed;
-		float: right;
-		left: calc(100% - 180px);
-   	 	top: calc(100% - 180px);
-		text-align: center;
-		font-size: 32px;
-		height: 128px;
-		width: 128px;
-		border-radius: 256px;
-		color: white;
-		background: dodgerblue;
-		border-color: transparent;
+	#cec_footer{
+		top:-16px;
 	}
 	#cec_startchat{
+		float:left;
+		top: -72px;
+		left: 16px;
+		width: 64px;
+		height: 64px;
+	}
+	#cec_new_contact_btn{
+		font-size: 16px;
+		left: 17px;
+		top: -5px;
+	}
+	.contact_delete{
+		left: -12px;
+		top: 9px;
+	}
+	#input_panel{
+		z-index: 70;
+		height: 100px;
+		width: calc(100% - 24px);
+		left: 12px;
+	}
+	#input_close{
+		left: calc(100% - 46px);
+		width: 32px;
+		height: 32px;
+		font-size: 12px;
+		top: 11px;
 		float: right;
-		left: -50px;
-		top: -400px;
-		width: 128px;
-		height: 128px;
+	}
+	#input_panel_btn_confirm{
+		font-size: 14px;
+	    width: 31px;
+	    height: 31px;
+
 	}
 }

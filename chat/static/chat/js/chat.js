@@ -277,7 +277,8 @@ function openCECPanel(mode) {
 function closeChatThread() {
     if (isMobile) {
         $("#chat").css("left", "100%");
-        $("#new_thread").hide();
+        $("#new_thread").css("visibility", "visible");
+        $("#new_thread").toggle(250);
         $(".chat_thread").css("background", "transparent");
         $("#thread_bubbles").empty();
         currentChat = 0;
@@ -289,8 +290,8 @@ function closeChatThread() {
 function openThread(chat_id) {
     if (isMobile) {
         $("#chat").css("left", "0");
-        $("#new_thread").hide();
-
+       // $("#new_thread").css("visibility", "hidden");
+        $("#new_thread").toggle(250);
     }
     currentChat = chat_id;
 
@@ -504,33 +505,34 @@ function startChat(){
         console.log(id);
         chat_ids.push(id);
     });
-    var chat_ids_json = JSON.stringify(chat_ids);
-    $.ajax({
-        type: "POST",
-        url: "send_data/",
-        data: {
-            'req': 'create_chat',
-            'user_ids_json': chat_ids_json,
-        },
+    if(chat_ids.length > 0) {
+        var chat_ids_json = JSON.stringify(chat_ids);
+        $.ajax({
+            type: "POST",
+            url: "send_data/",
+            data: {
+                'req': 'create_chat',
+                'user_ids_json': chat_ids_json,
+            },
 
-        beforeSend: function (request, settings) {
-            if (!(/^http:.*/.test(settings.url) || /^https:.*/.test(settings.url))) {
-                request.setRequestHeader("X-CSRFToken", csrfcookie());
+            beforeSend: function (request, settings) {
+                if (!(/^http:.*/.test(settings.url) || /^https:.*/.test(settings.url))) {
+                    request.setRequestHeader("X-CSRFToken", csrfcookie());
+                }
+            },
+            dataType: 'json',
+            success: function (data) {
+
+                console.log(data);
+                if (data[0].result == "ok") {
+                    closePanel("chat_and_contacts_panel");
+                    //   $("#thread_list").append(getThreadItem(data[0].name, data[0].id));
+                    //vengono aggiunti automaticamente in push su tutti i dispositivi
+                }
+
             }
-        },
-        dataType: 'json',
-        success: function (data) {
-
-            console.log(data);
-            if(data[0].result == "ok"){
-                closePanel("chat_and_contacts_panel");
-             //   $("#thread_list").append(getThreadItem(data[0].name, data[0].id));
-                //vengono aggiunti automaticamente in push su tutti i dispositivi
-            }
-
-        }
-    });
-
+        });
+    }
 }
 
 function getThreadItem(chat_name, id) {
@@ -568,4 +570,16 @@ function getThreadItem(chat_name, id) {
                 $(div).attr("id", "thread_"+id);
                 $(div).attr("onclick", "openThread("+id+")");
    return div
+}
+
+function injectNativeAppCSS(){
+    var file = "/static/chat/css/mobile_native.css"
+
+    var link = document.createElement( "link" );
+    link.href = file;
+    link.type = "text/css";
+    link.rel = "stylesheet";
+    link.media = "screen,print";
+
+    document.getElementsByTagName( "head" )[0].appendChild( link );
 }
