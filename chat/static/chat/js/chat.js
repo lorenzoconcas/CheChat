@@ -73,7 +73,7 @@ push_socket.onmessage = function(e) {
                             n.notification_count++;
                             notifications.push(n);
                         }
-                        new_thread_title = $("#thread_title_" + n.thread_id).text() + " (" + n.notification_count + ")"
+                        new_thread_title = $("#thread_title_" + n.thread_id).text().replace("("+n.notification_count-1+")") + " (" + n.notification_count + ")"
 
                     }
 
@@ -292,6 +292,11 @@ function openThread(chat_id) {
         $("#chat").css("left", "0");
        // $("#new_thread").css("visibility", "hidden");
         $("#new_thread").toggle(250);
+    }else{
+        $("#thread_status_" + chat_id).text("");
+        $(".chat_thread").css("background", "transparent");
+        $("#chat_title").text($("#thread_title_" + chat_id).text());
+        $("#thread_" + chat_id).css("background", "dodgerblue");
     }
     currentChat = chat_id;
 
@@ -311,17 +316,9 @@ function openThread(chat_id) {
 
     unreaded_messages > 0 ? document.title = "Nuovo messaggio (" + unreaded_messages + ")" : document.title = "ISW Chat"
 
-    $("#thread_status_" + chat_id).text("");
-    $(".chat_thread").css("background", "transparent");
-    $("#chat_title").text($("#thread_title_" + chat_id).text());
-
-    $("#thread_" + chat_id).css("background", "dodgerblue");
 
     $("#chat").show();
     loadMessages(chat_id);
-    window.location = "#";
-
-
 }
 
 function loadMessages(chat_id) {
@@ -338,7 +335,7 @@ function loadMessages(chat_id) {
         },
         dataType: 'json',
         success: function(data) {
-            console.log(data);
+          //  console.log(data);
             $("#thread_bubbles").empty();
             $("#thread_bubbles").append("<br>");
             $("#thread_bubbles").append("<br>");
@@ -528,6 +525,7 @@ function startChat(){
                     closePanel("chat_and_contacts_panel");
                     //   $("#thread_list").append(getThreadItem(data[0].name, data[0].id));
                     //vengono aggiunti automaticamente in push su tutti i dispositivi
+                    openThread(data[0].id);
                 }
 
             }

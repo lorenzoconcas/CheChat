@@ -36,8 +36,7 @@
 		left: 50px;
 	}
 	#open_contacts_btn{
-		float:right;
-		right:-2px
+		left:-67px;
 	}
 
 	#logout{
