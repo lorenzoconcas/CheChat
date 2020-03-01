@@ -4,6 +4,9 @@ from datetime import datetime, timezone
 
 
 # Create your models here.
+from chat.consumers import PushMobile
+
+
 class Utente(models.Model):
     nome = models.CharField(max_length=200)
     cognome = models.CharField(max_length=200)
@@ -16,11 +19,17 @@ class Utente(models.Model):
     def login(self, mail, password):
         return (self.email == mail) and (self.password == password)
 
+    class Meta:
+        verbose_name = 'Utente'
+        verbose_name_plural = 'Utenti'
 
 class Rubrica(models.Model):
     owner = models.ForeignKey(to=Utente, on_delete=models.CASCADE, related_name='owner')
     contatto = models.ForeignKey(to=Utente, on_delete=models.CASCADE, related_name='contact')
 
+    class Meta:
+        verbose_name = 'Rubrica'
+        verbose_name_plural = 'Rubriche'
 
 def insertcontact(phonebook_owner, contact):
     if Rubrica.objects.filter(owner=phonebook_owner, contatto=contact).exists():
@@ -69,6 +78,10 @@ class Partecipanti(models.Model):  # i partcipanti di una chat
     chat = models.ForeignKey(to=Chat, on_delete=models.CASCADE)
     contatto = models.ForeignKey(to=Utente, on_delete=models.CASCADE)
 
+    class Meta:
+        verbose_name = 'Partecipanti'
+        verbose_name_plural = 'Partecipanti'
+
 
 def sendmessage(utente, messaggio, chat):
     m = Messaggio(mittente=utente, contenuto=messaggio, chat=chat, dataora=datetime.utcnow())
@@ -100,3 +113,6 @@ class Messaggio(models.Model):
     def __str__(self):
         return self.mittente.__str__() + " dice : " + self.contenuto + ", nella chat : " + self.chat.nome
 
+    class Meta:
+        verbose_name = 'Messaggio'
+        verbose_name_plural = 'Messaggi'
