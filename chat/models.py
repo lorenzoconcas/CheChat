@@ -23,6 +23,7 @@ class Utente(models.Model):
         verbose_name = 'Utente'
         verbose_name_plural = 'Utenti'
 
+
 class Rubrica(models.Model):
     owner = models.ForeignKey(to=Utente, on_delete=models.CASCADE, related_name='owner')
     contatto = models.ForeignKey(to=Utente, on_delete=models.CASCADE, related_name='contact')
@@ -30,6 +31,10 @@ class Rubrica(models.Model):
     class Meta:
         verbose_name = 'Rubrica'
         verbose_name_plural = 'Rubriche'
+
+    def __str__(self):
+        return "Contatto : " + self.contatto.__str__() + ", nella rubrica di " + self.owner.__str__()
+
 
 def insertcontact(phonebook_owner, contact):
     if Rubrica.objects.filter(owner=phonebook_owner, contatto=contact).exists():
@@ -50,6 +55,9 @@ def remove_contact(phonebook_owner, contact):
 class Chat(models.Model):
     creatore = models.ForeignKey(to=Utente, on_delete=models.CASCADE)
     nome = models.CharField(max_length=200)
+
+    def __str__(self):
+        return self.nome + ",  creata da " + self.creatore.__str__()
 
 
 def createchat(utente, id_utenti):
@@ -81,6 +89,10 @@ class Partecipanti(models.Model):  # i partcipanti di una chat
     class Meta:
         verbose_name = 'Partecipanti'
         verbose_name_plural = 'Partecipanti'
+
+    def __str__(self):
+        return self.contatto.__str__() + " partecipa nella chat " + \
+               self.chat.nome.replace(self.contatto.nome+" "+self.contatto.cognome, "").replace("-&/&-", "")
 
 
 def sendmessage(utente, messaggio, chat):
