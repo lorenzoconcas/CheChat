@@ -73,9 +73,10 @@
 #chat_user_status {
 	color: green;
 }
-#chat_thread_detail{
+.chat_thread_header_btn{
 	color: black;
-	cursor: pointer;
+    cursor: pointer;
+
 }
 
 .outgoing {

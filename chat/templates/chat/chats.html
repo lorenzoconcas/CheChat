@@ -106,7 +106,9 @@
                 <img   id="chat_user_icon" src="{% static 'chat/icons/generic_user.png' %}" alt="username">
                 <label id="chat_title"></label>
                 <label id="chat_user_status"></label>
-                <label id="chat_thread_detail" onclick="openChatThreadDetail()"></label>
+                 <label class="chat_thread_header_btn" onclick="deleteChat()"></label>
+                <label class="chat_thread_header_btn" onclick="addPartecipant()"></label>
+
             </div>
             <div id="thread_bubbles">
               <br><br><br>

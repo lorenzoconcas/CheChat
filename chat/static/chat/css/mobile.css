@@ -155,7 +155,7 @@
 		 border-style: solid;
 		border-color: transparent;
 	}
-	#chat_thread_detail{
+	.chat_thread_header_btn{
 		font-size: 96px;
 		top:16px;
 		left:-16px;

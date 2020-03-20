@@ -85,7 +85,7 @@ body {
 #chat_user_status {
 	color: green;
 }
-#chat_thread_detail{
+.chat_thread_header_btn{
 	color: white;
 	cursor: pointer;
 }

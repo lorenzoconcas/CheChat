@@ -30,7 +30,10 @@ class PushMessages(WebsocketConsumer):
     def receive(self, text_data):
         session = self.scope["session"]
         current_user = session['user_id']
-        chat_partecipanti = Partecipanti.objects.filter(contatto_id=current_user)
+        try:
+            chat_partecipanti = Partecipanti.objects.filter(contatto_id=current_user)
+        except:
+            return
 
         req = json.loads(text_data)
         if req['ready']:

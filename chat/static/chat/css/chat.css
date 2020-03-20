@@ -242,13 +242,21 @@ a:link {
 	position: relative;
 	left: 24px;
 }
-#chat_thread_detail{
+.chat_thread_header_btn{
 	font-family: "Material Icons";
 	font-size: 24px;
 	position: relative;
 	float:right;
-	right: 16px;
-	top:12px;
+	right: 4px;
+	top:5px;
+	padding: 4px;
+
+	 background: rgba(181, 181, 181, 0.39);
+    border-radius: 32px;
+    border-style: solid;
+    border-color: transparent;
+    margin-right: 10px;
+    backdrop-filter: blur(10px);
 }
 #thread_bubbles {
 	top:0px;
