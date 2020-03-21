@@ -3,17 +3,7 @@ import json
 from django.http import HttpResponse
 from django.shortcuts import render, redirect
 from chat.models import *
-import asyncio
-from channels.consumer import AsyncConsumer
-
-
-def get_client_ip(request):
-    x_forwarded_for = request.META.get('HTTP_X_FORWARDED_FOR')
-    if x_forwarded_for:
-        ip = x_forwarded_for.split(',')[0]
-    else:
-        ip = request.META.get('REMOTE_ADDR')
-    return ip
+from chat.utils import *  # importa tutte le funzioni dal file utils.py
 
 
 # Create your views here.
@@ -81,24 +71,11 @@ def register(request):
         return render(request, 'chat/register.html')
 
 
-def info(request):
-    if request.is_ajax():
-        msg = request.POST['msg']
-        print(msg)
-        if msg == 'personal_id':
-            resp = HttpResponse(request.session['user_id'])
-            print(resp)
-            return resp
-        else:
-            return HttpResponse("")
-    else:
-        return HttpResponse("")
-
-
 def home(request):
     test = "static/chat/icons/"
     try:
-        islogged = request.session.__getitem__("logged")
+        #  islogged = request.session.__getitem__("logged")
+        islogged = request.session['logged']
     except:
         islogged = False
         request.session.__setitem__("logged", islogged)
@@ -174,20 +151,7 @@ def test(request):
     return render(request, "chat/test.html")
 
 
-def snmsg(request):
-    if request.is_ajax():
-        msg = request.POST['msg']
-        user_id = request.session['user_id']
-        chat_id = request.POST['chat_id']
-        u = Utente.objects.get(id=user_id)
-        c = Chat.objects.get(id=chat_id)
-        sendmessage(u, msg, c)
-        return HttpResponse("sent")
-    else:
-        return redirect("/")
-
-
-def send_data(request):
+def client_requests(request):
     if request.is_ajax():
         req = request.POST['req']
         resp = ""
@@ -228,69 +192,36 @@ def send_data(request):
 
             c = createchat(u, ids)
 
-            resp = '[{"result":"ok","id":"' + str(c.id) + '","name":"' + c.nome.replace(str(u), "").\
+            resp = '[{"result":"ok","id":"' + str(c.id) + '","name":"' + c.nome.replace(str(u), ""). \
                 replace("-&/&-", "") + '"}]'
+        elif req == 'delete_chat':
+            print("to do")
+        elif req == 'personal_id':
+            resp = request.session['user_id']
+        elif req == 'getAllMessages':
+            chat_id = request.POST["chat_id"]
+            messaggi = Messaggio.objects.filter(chat_id=chat_id)
+            msg = []
+            for m in messaggi:
+                if m.mittente_id == user_id:
+                    msg.append(JSONMsg(m.dataora, m.contenuto, True, ""))
+                else:
+                    msg.append(JSONMsg(m.dataora, m.contenuto, False, m.mittente.nome + " " + m.mittente.cognome))
+            json_response = "["
+            for x in msg:
+                json_response = json_response + json_element(x.ora, x.contenuto, x.inviato, x.mittente) + ","
+
+            json_response += "]"
+        elif req == 'send_message':
+            msg = request.POST['msg']
+            chat_id = request.POST['chat_id']
+            u = Utente.objects.get(id=user_id)
+            c = Chat.objects.get(id=chat_id)
+            sendmessage(u, msg, c)
+            resp = "sent"
         return HttpResponse(resp)
     else:
         return redirect("/")
-
-
-def lstmsg(request):
-    if request.is_ajax():
-        user_id = request.session['user_id']
-        u = Utente.objects.get(id=user_id)
-        chat_id = request.POST['chat_id']
-        c = Chat.objects.get(id=chat_id)
-
-        msg = getlastmessage(c)
-
-        try:
-            sent = msg.mittente == u
-        except:
-            sent = False
-
-        if not sent:
-            response = "[" + getJSONLine(dataora=msg.dataora, contenuto=msg.contenuto, sent=sent,
-                                         mittente=(msg.mittente.nome + " " + msg.mittente.cognome)) + "]"
-        else:
-            response = ""
-        return HttpResponse(response)
-
-    else:
-        return HttpResponse("")
-
-
-def getJSONLine(dataora, contenuto, sent, mittente):
-    return '{"dataora":"' + dataora.strftime("%Y-%m-%d %H:%M:%S") + '", "contenuto":"' \
-           + contenuto + '", "inviato":"' + str(sent) + '", "mittente":"' + mittente + '"}'
-
-
-class MyJsonEncoder:
-    def default(self, obj):
-        if isinstance(obj, JSONMsg):
-            return {}  # dict representation of your object
-        return super(MyJsonEncoder, self).dumps(obj)
-
-
-def allmsg(request):
-    if request.is_ajax():
-        chat_id = request.POST["chat_id"]
-        user_id = request.session['user_id']
-        messaggi = Messaggio.objects.filter(chat_id=chat_id)
-        msg = []
-        for m in messaggi:
-            if m.mittente_id == user_id:
-                msg.append(JSONMsg(m.dataora, m.contenuto, True, ""))
-            else:
-                msg.append(JSONMsg(m.dataora, m.contenuto, False, m.mittente.nome + " " + m.mittente.cognome))
-        json_response = "["
-        for x in msg:
-            json_response = json_response + getJSONLine(x.ora, x.contenuto, x.inviato, x.mittente) + ","
-
-        json_response += "]"
-        return HttpResponse(json_response.replace(",]", "]"))
-
-    return redirect("/")
 
 
 class JSONMsg(object):

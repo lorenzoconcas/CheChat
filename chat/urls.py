@@ -5,14 +5,12 @@ from . import views
 
 app_name = 'chat'
 urlpatterns = [
+    # urls delle pagine (views)
     path('', views.index, name='index'),
     path('register', views.register, name='register'),
     path('home', views.home, name="home"),
     path('logout', views.logout, name="logout"),
     path('test', views.test, name="test"),
-    url(r'^sendmessage/', views.snmsg),
-    url(r'^lastmessage/', views.lstmsg),
-    url(r'^allmessages/', views.allmsg),
-    url(r'^info/', views.info),
-    url(r'^send_data/', views.send_data),
+    # urls delle richieste json
+    url(r'^client_reqs/', views.client_requests),
 ]

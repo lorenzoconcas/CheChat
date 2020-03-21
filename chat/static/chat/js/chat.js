@@ -1,96 +1,10 @@
-var isMobile = false;
-var dark_mode = false;
-var currentChat = 0;
-var unreaded_messages = 0;
-var notification_sound = new Audio('/static/chat/audio/notify.ogg');
+let isMobile = false;
+let dark_mode = false;
+let currentChat = 0;
+let unreaded_messages = 0;
 
-const notification = {
-    thread_id: 0,
-    notification_count: 0
-}
-let notifications = []
-
-let push_socket = new WebSocket("ws://" + window.location.host + "/ws/push_messages");
-
-push_socket.onopen = function(event) {
-    askForMessages();
-}
-push_socket.onmessage = function(e) {
-    let n;
-    var msg = JSON.parse(e.data)
-      console.log(msg);
-    switch(msg.type){
-        case 'new_chat':{
-
-            $("#thread_list").append(getThreadItem(msg.name, msg.id));
-            break;
-        }
-        case 'new_message': {
-            $("#thread_preview_" + msg.chat_id).text(msg.contenuto)
-            $("#thread_status_" + msg.chat_id).text("");
-
-            notification_sound.play();
-
-
-            if (currentChat == msg.chat_id) {
-                divElement = getBubble(msg);
-                $("#thread_bubbles").append(divElement).append("<br>");
-
-                var curHeight = $(divElement).css("height");
-                $(divElement).css("height", "0");
-                 $(divElement).css("width", "0");
-                $("#thread_bubbles").animate({
-                    scrollTop: $('#thread_bubbles').prop("scrollHeight")
-                }, 1000);
-                $(divElement).animate({
-                    width: "45%",
-                    height:  $(divElement).get(0).scrollHeight
-                }, 250, function () {
-                     $(this).height('auto');
-                });
-            }
-            else {
-
-                let new_thread_title = "";
-                unreaded_messages++;
-                if (notifications.length == 0) {
-                    n = Object.create(notification);
-                    n.thread_id = msg.chat_id;
-                    n.notification_count++;
-                    notifications.push(n);
-                    new_thread_title = $("#thread_title_" + msg.chat_id).text() + " (1)"
-
-                } else {
-                    let size = notifications.length;
-
-                    for (let i = 0; i < size; i++) {
-                        n = notifications[i];
-                        if (n.thread_id == msg.chat_id)
-                            n.notification_count++;
-                        else {
-                            n = Object.create(notification);
-                            n.thread_id = msg.chat_id;
-                            n.notification_count++;
-                            notifications.push(n);
-                        }
-                        new_thread_title = $("#thread_title_" + n.thread_id).text().replace("("+n.notification_count-1+")") + " (" + n.notification_count + ")"
-
-                    }
-
-                }
-                $("#thread_title_" + n.thread_id).text(new_thread_title);
-            }
-            if (unreaded_messages > 0)
-                document.title = "Nuovo messaggio (" + unreaded_messages + ")";
-
-            break;
-        }
-    }
-}
-
-function funcs() {
-    //toggleTheme();
-
+function setup() {
+    //calcolo se ci troviamo su un dispositivo mobile o a vista singola
     isMobile = $("#user_name").css("visibility") == "hidden" ? true : false;
 
     $("#chat_title").text($("#chat_thread_1").text());
@@ -98,12 +12,7 @@ function funcs() {
         getPersonalID();
 }
 
-function askForMessages() {
-    let message = JSON.stringify({
-        'ready': 'True'
-    })
-    push_socket.send(message);
-}
+//il cookie per le chiamate POST
 let csrfcookie = function() {
     let cookieValue = null,
         name = "csrftoken";
@@ -123,9 +32,9 @@ let csrfcookie = function() {
 function getPersonalID() {
     $.ajax({
         type: "POST",
-        url: "info/",
+        url: "client_reqs/",
         data: {
-            'msg': 'personal_id'
+            'req': 'personal_id'
         },
         dataType: 'json',
         beforeSend: function(request, settings) {
@@ -144,8 +53,9 @@ function sendMessage() {
     if (msg.value !== '') {
         $.ajax({
             type: "POST",
-            url: "/sendmessage/",
+            url: "client_reqs/",
             data: {
+                'req' : 'send_message',
                 'msg': msg.value,
                 'chat_id': currentChat
             },
@@ -159,9 +69,6 @@ function sendMessage() {
 
             },
         });
-
-
-
 
         var br = document.createElement("br");
         var msg_text = document.createElement("label");
@@ -217,73 +124,12 @@ function sendMessage() {
     }
 
 }
-
 function sendMessageOnEnter(e) {
     if (e.keyCode === 13) {
         var msg = document.getElementById("message_box");
         e.preventDefault();
         sendMessage();
     }
-
-}
-
-function closePanel(panel_name) {
-    $("#" + panel_name).css("top", "150%");
-}
-
-function openPanel(panel_name) {
-    if (isMobile)
-        $("#" + panel_name).css("top", 0);
-    else
-        $("#" + panel_name).css("top", "25%");
-}
-
-function openInputPanel() {
-
-    $("#input_panel").css("top", "calc(50% - 50px)");
-
-
-    $("#input_panel").css("height", "100px");
-    $("#input_panel_error").hide();
-    $("#input_panel_title").text("Nuovo contatto");
-    $("#input_panel_text").attr("placeholder", "Inserisci un indirizzo mail");
-    $("#input_panel_btn_confirm").on("keypress", addContact2);
-    $("#input_panel_btn_confirm").click(addContact);
-
-}
-
-function openCECPanel(mode) {
-    openPanel("chat_and_contacts_panel");
-
-    if (mode) { //se nuova chat
-        $("#cec_title").text("Nuova Chat");
-        $("#contacts_list").css("height", "calc(100% - 98px)");
-        $("#cec_footer").hide();
-        $(".contact_checkbox").show();
-        $(".contact_delete").hide();
-
-        $("#cec_startchat").show();
-
-    } else {
-        $("#cec_title").text("Rubrica");
-        $("#contacts_list").css("height", "calc(100% - 132px)");
-        $("#cec_footer").show();
-        $(".contact_checkbox").hide();
-        $(".contact_delete").show();
-        $("#cec_startchat").hide();
-    }
-}
-
-function closeChatThread() {
-    if (isMobile) {
-        $("#chat").css("left", "100%");
-        $("#new_thread").css("visibility", "visible");
-        $("#new_thread").toggle(250);
-        $(".chat_thread").css("background", "transparent");
-        $("#thread_bubbles").empty();
-        currentChat = 0;
-    }
-
 
 }
 
@@ -300,7 +146,6 @@ function openThread(chat_id) {
     }
     currentChat = chat_id;
 
-
     let size = notifications.length;
     for (let i = 0; i < size; i++) {
         let n = notifications[i];
@@ -313,19 +158,17 @@ function openThread(chat_id) {
         }
     }
 
-
     unreaded_messages > 0 ? document.title = "Nuovo messaggio (" + unreaded_messages + ")" : document.title = "ISW Chat"
-
 
     $("#chat").show();
     loadMessages(chat_id);
 }
-
 function loadMessages(chat_id) {
     $.ajax({
         type: "POST",
-        url: "/allmessages/",
+        url: "client_reqs/",
         data: {
+            'req' : 'getAllMessages',
             'chat_id': chat_id
         },
         beforeSend: function(request, settings) {
@@ -355,65 +198,13 @@ function loadMessages(chat_id) {
     });
 }
 
-function getBubble(messaggio) {
-    var bubble = document.createElement("div");
-    $(bubble).addClass("bubble_container");
-
-    if (messaggio.inviato == "True")
-        $(bubble).addClass("outgoing");
-    else
-        $(bubble).addClass("incoming");
-
-    if (messaggio.mittente != "") {
-        var mittente = document.createElement("label")
-        $(mittente).text(messaggio.mittente);
-        $(mittente).addClass("bubble_sender_name");
-        $(bubble).append(mittente);
-        $(bubble).append("<br>");
-    }
-
-
-    var msg = document.createElement("label");
-    $(msg).text(messaggio.contenuto);
-    $(bubble).append(msg);
-
-    return bubble;
-}
-
-function openChatThreadDetail() {
-    alert("to do");
-}
-
-function toggleTheme() {
-
-    if (dark_mode) {
-        dark_mode = false;
-        document.getElementById('theme').href = "/static/chat/css/light.css";
-        document.getElementById("theme_mode_btn").innerText = "";
-    } else {
-        dark_mode = true;
-        document.getElementById("theme").href = "/static/chat/css/dark.css";
-        document.getElementById("theme_mode_btn").innerText = "";
-    }
-    if (isMobile)
-        B4A.CallSub('darkMode', true, dark_mode + "")
-}
-
-function tooltip(wich, visible) {
-    status = visible ? "visible" : "hidden";
-    $("#" + wich).css("visibility", status);
-}
-
+//utilizzate per salvare un nuovo contatto in rubrica
 function addContact() {
-    $("#input_panel").css("height", "100px");
-
-    $("#input_panel_error").show();
-    $("#input_panel_error").css("visibility", "hidden");
-    $("#input_panel_error").text("");
+    hideInputPanel();
     let mail = $("#input_panel_text").val();
     $.ajax({
         type: "POST",
-        url: "send_data/",
+        url: "client_reqs/",
         data: {
             'req' : 'add_contact',
             'mail': mail,
@@ -465,18 +256,18 @@ function addContact() {
         },
     });
 }
-
+//alla pressione del tasto invio
 function addContact2() {
     if (e.keyCode === 13) {
         addContact()
     }
 }
-
+//auto esplicativa
 function removeFromContacts(id){
 
     $.ajax({
         type: "POST",
-        url: "send_data/",
+        url: "client_reqs/",
         data: {
             'req' : 'remove_contact',
             'id': id,
@@ -493,7 +284,7 @@ function removeFromContacts(id){
     });
 
 }
-
+//crea una nuova chat dati i contatti selezionati
 function startChat(){
     var chat_ids = [];
     $('#contacts_list input:checked').each(function() {
@@ -506,7 +297,7 @@ function startChat(){
         var chat_ids_json = JSON.stringify(chat_ids);
         $.ajax({
             type: "POST",
-            url: "send_data/",
+            url: "client_reqs/",
             data: {
                 'req': 'create_chat',
                 'user_ids_json': chat_ids_json,
@@ -523,7 +314,7 @@ function startChat(){
                 console.log(data);
                 if (data[0].result == "ok") {
                     closePanel("chat_and_contacts_panel");
-                    //   $("#thread_list").append(getThreadItem(data[0].name, data[0].id));
+                    $("#thread_list").append(getThreadItem(data[0].name, data[0].id));
                     //vengono aggiunti automaticamente in push su tutti i dispositivi
                     openThread(data[0].id);
                 }
@@ -533,51 +324,13 @@ function startChat(){
     }
 }
 
-function getThreadItem(chat_name, id) {
-  let div = document.createElement("div");
-                let img = document.createElement("img");
-                let name = document.createElement("label");
-                let status = document.createElement("label");
-                let preview = document.createElement("label");
-
-                $(div).addClass("chat_thread");
-
-                $(img).attr("src", "/static/chat/icons/generic_user.png"); //modificare con icona gruppi
-                $(img).addClass("thread_icon")
-                $(name).text(chat_name);
-                if (chat_name.length > 28) {
-                    $(name).text(chat_name.substring(0, 28) + '...');
-                     $(name).css("font-size", "16px");
-                }
-                $(name).addClass("thread_title");
-                $(status).addClass("thread_status");
-                $(preview).addClass("thread_preview");
-                $(name).attr("id", "thread_title_"+id);
-                $(status).attr("id", "thread_status_"+id);
-                $(status).text("")
-                $(preview).addClass("id", "thread_preview_"+id);
+function deleteChat(){
+    if(currentChat == 0)
+        return;
 
 
-                $(div).append(img);
-                $(div).append(name);
-                $(div).append(status);
-                $(div).append("<br>");
-                $(div).append(preview);
-
-
-                $(div).attr("id", "thread_"+id);
-                $(div).attr("onclick", "openThread("+id+")");
-   return div
 }
 
-function injectNativeAppCSS(){
-    var file = "/static/chat/css/mobile_native.css"
+function addPartecipant() {
 
-    var link = document.createElement( "link" );
-    link.href = file;
-    link.type = "text/css";
-    link.rel = "stylesheet";
-    link.media = "screen,print";
-
-    document.getElementsByTagName( "head" )[0].appendChild( link );
 }
