@@ -1,16 +1,16 @@
-//Questa funzione costruisce l'elemento "bolla" da inserire nelle conversazioni
-function getBubble(messaggio) {
+//Questa funzione costruisce l'elemento "bolla" da inserire nelle conversazioni (vale per i messaggi ricevuti dal server=
+function getBubble(message) {
     var bubble = document.createElement("div");
     $(bubble).addClass("bubble_container");
 
-    if (messaggio.inviato == "True")
+    if (message.inviato === "True")
         $(bubble).addClass("outgoing");
     else
         $(bubble).addClass("incoming");
 
-    if (messaggio.mittente != "") {
+    if (message.mittente !== "") {
         var mittente = document.createElement("label")
-        $(mittente).text(messaggio.mittente);
+        $(mittente).text(message.mittente);
         $(mittente).addClass("bubble_sender_name");
         $(bubble).append(mittente);
         $(bubble).append("<br>");
@@ -18,7 +18,7 @@ function getBubble(messaggio) {
 
 
     var msg = document.createElement("label");
-    $(msg).text(messaggio.contenuto);
+    $(msg).text(message.contenuto);
     $(bubble).append(msg);
 
     return bubble;
@@ -148,13 +148,65 @@ function closeChatThread() {
 
 //usato dall'app mobile (opzionale)
 function injectNativeAppCSS(){
-    var file = "/static/chat/css/mobile_native.css"
+    let file = "/static/chat/css/mobile_native.css"
 
-    var link = document.createElement( "link" );
+    let link = document.createElement( "link" );
     link.href = file;
     link.type = "text/css";
     link.rel = "stylesheet";
     link.media = "screen,print";
 
     document.getElementsByTagName( "head" )[0].appendChild( link );
+}
+
+function addBubble(message){
+        let br = document.createElement("br");
+        let msg_text = document.createElement("label");
+        msg_text.textContent = message
+        let msg_bubble = document.createElement("div");
+
+        msg_bubble.appendChild(msg_text);
+        $(msg_bubble).addClass("lastElement");
+        let target = document.getElementById("thread_bubbles");
+
+        let bubble_clone = $(msg_bubble).clone();
+
+        $(bubble_clone).addClass("bubble_container");
+        $(bubble_clone).addClass("outgoing");
+        if (isMobile) {
+            $(bubble_clone).appendTo(target);
+            target.appendChild(br).scrollIntoView(true);
+        } else {
+           // let bcW = $(bubble_clone).css("width");
+            $(bubble_clone).addClass("bubble_container");
+            $(bubble_clone).addClass("outgoing");
+            $(bubble_clone).css("opacity", "0");
+            $(bubble_clone).appendTo(target);
+            target.appendChild(br).scrollIntoView(true);
+
+            $(msg_bubble).addClass("moving_bubble");
+
+            $("#send_box").append(msg_bubble);
+
+            $(msg_bubble).animate({
+                top: "-42px",
+                left: "52%",
+                width: "-=240px",
+                height: "-=6px",
+
+            }, 250, "linear", function() {
+                $(bubble_clone).animate({
+                        opacity: 1,
+                    },
+                    250,
+                    "linear",
+                    function() {
+                        $(msg_bubble).fadeTo(350, 0);
+
+                        target.appendChild(br).scrollIntoView(true);
+                        $(msg_bubble).remove();
+                    }
+                )
+            });
+        }
 }

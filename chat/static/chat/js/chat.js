@@ -49,7 +49,7 @@ function getPersonalID() {
 }
 
 function sendMessage() {
-    var msg = document.getElementById("message_box");
+    let msg = document.getElementById("message_box");
     if (msg.value !== '') {
         $.ajax({
             type: "POST",
@@ -65,60 +65,11 @@ function sendMessage() {
                 }
             },
             success: function(data) {
-                console.log(data)
-
+               // console.log(data)
             },
         });
 
-        var br = document.createElement("br");
-        var msg_text = document.createElement("label");
-        msg_text.textContent = msg.value;
-        var msg_bubble = document.createElement("div");
-
-        msg_bubble.appendChild(msg_text);
-        $(msg_bubble).addClass("lastElement");
-        var target = document.getElementById("thread_bubbles");
-
-        var bubble_clone = $(msg_bubble).clone();
-
-        $(bubble_clone).addClass("bubble_container");
-        $(bubble_clone).addClass("outgoing");
-        if (isMobile) {
-            $(bubble_clone).appendTo(target);
-            target.appendChild(br).scrollIntoView(true);
-        } else {
-            var bcW = $(bubble_clone).css("width");
-            $(bubble_clone).addClass("bubble_container");
-            $(bubble_clone).addClass("outgoing");
-            $(bubble_clone).css("opacity", "0");
-            $(bubble_clone).appendTo(target);
-            target.appendChild(br).scrollIntoView(true);
-
-            $(msg_bubble).addClass("moving_bubble");
-
-            $("#send_box").append(msg_bubble);
-
-            $(msg_bubble).animate({
-                top: "-42px",
-                left: "52%",
-                width: "-=240px",
-                height: "-=6px",
-
-            }, 250, "linear", function() {
-                $(bubble_clone).animate({
-                        opacity: 1,
-                    },
-                    250,
-                    "linear",
-                    function() {
-                        $(msg_bubble).fadeTo(350, 0);
-
-                        target.appendChild(br).scrollIntoView(true);
-                        $(msg_bubble).remove();
-                    }
-                )
-            });
-        }
+       addBubble(msg.value);
          $("#thread_preview_"+currentChat).text("Tu: "+msg.value.substring(0, 20));
         msg.value = '';
     }
@@ -149,7 +100,7 @@ function openThread(chat_id) {
     let size = notifications.length;
     for (let i = 0; i < size; i++) {
         let n = notifications[i];
-        if (n.thread_id == chat_id) {
+        if (n.thread_id === chat_id) {
             let actual_title = $("#thread_title_" + n.thread_id).text()
             let new_thread_title = actual_title.replace('- (' + n.notification_count + ')')
             $("#thread_title_" + n.thread_id).text(new_thread_title);
@@ -325,10 +276,8 @@ function startChat(){
 }
 
 function deleteChat(){
-    if(currentChat == 0)
+    if(currentChat === 0)
         return;
-
-
 }
 
 function addPartecipant() {

@@ -82,13 +82,13 @@ def home(request):
         return redirect('/')
 
     try:
-        mail = request.session.__getitem__("mail")
+        mail = request.session['mail']
     except:
         mail = request.POST.get('mail', '')
         mail = mail.lower()
 
     try:
-        password = request.session.__getitem__("password")
+        password = request['password']
     except:
         password = request.POST.get('password', '')
 
@@ -207,11 +207,12 @@ def client_requests(request):
                     msg.append(JSONMsg(m.dataora, m.contenuto, True, ""))
                 else:
                     msg.append(JSONMsg(m.dataora, m.contenuto, False, m.mittente.nome + " " + m.mittente.cognome))
-            json_response = "["
+            resp = "["
             for x in msg:
-                json_response = json_response + json_element(x.ora, x.contenuto, x.inviato, x.mittente) + ","
+                resp = resp + json_element(x.ora, x.contenuto, x.inviato, x.mittente) + ","
 
-            json_response += "]"
+            resp += "]"
+
         elif req == 'send_message':
             msg = request.POST['msg']
             chat_id = request.POST['chat_id']
