@@ -111,7 +111,7 @@ function openThread(chat_id) {
 
     unreaded_messages > 0 ? document.title = "Nuovo messaggio (" + unreaded_messages + ")" : document.title = "ISW Chat"
 
-    $("#chat").show();
+    $("#chat").css("visibility", "visible");
     loadMessages(chat_id);
 }
 function loadMessages(chat_id) {
@@ -119,7 +119,7 @@ function loadMessages(chat_id) {
         type: "POST",
         url: "client_reqs/",
         data: {
-            'req' : 'getAllMessages',
+            'req' : 'get_all_messages',
             'chat_id': chat_id
         },
         beforeSend: function(request, settings) {
@@ -129,7 +129,6 @@ function loadMessages(chat_id) {
         },
         dataType: 'json',
         success: function(data) {
-          //  console.log(data);
             $("#thread_bubbles").empty();
             $("#thread_bubbles").append("<br>");
             $("#thread_bubbles").append("<br>");
@@ -146,6 +145,7 @@ function loadMessages(chat_id) {
             }, 125);
 
         },
+
     });
 }
 
@@ -276,8 +276,33 @@ function startChat(){
 }
 
 function deleteChat(){
+    console.log("Deleting chat "+currentChat);
     if(currentChat === 0)
         return;
+
+     $.ajax({
+        type: "POST",
+        url: "client_reqs/",
+        data: {
+            'req' : 'delete_chat',
+            'chat_id': currentChat,
+        },
+
+        beforeSend: function(request, settings) {
+            if (!(/^http:.*/.test(settings.url) || /^https:.*/.test(settings.url))) {
+                request.setRequestHeader("X-CSRFToken", csrfcookie());
+            }
+        }, dataType: 'json',
+        success: function(data) {
+            console.log(data);
+            if(data[0].delete === "ok"){
+                alert("chat eliminata");
+                $("#thread_"+currentChat).remove();
+                closeChatThread();
+                $("#chat").hide();
+            }
+        },
+    });
 }
 
 function addPartecipant() {

@@ -1,5 +1,6 @@
 import json
-
+from django.core import exceptions
+from django.db.models import Model
 from django.http import HttpResponse
 from django.shortcuts import render, redirect
 from chat.models import *
@@ -19,14 +20,14 @@ def index(request):
         logged = False
 
     print(isdatavalid)
-    ip = get_client_ip(request)
-    print(ip)
-    if not ip.startswith('192.168'):
-        with open("index.txt", "a+") as myfile:
-            myfile.write(ip)
-            myfile.write("\t")
-            myfile.write(datetime.now().strftime("%d/%m/%Y %H:%M:%S"))
-            myfile.write(" \n")
+    # ip = get_client_ip(request)
+    # print(ip)
+    # if not ip.startswith('192.168'):
+    #     with open("index.txt", "a+") as myfile:
+    #         myfile.write(ip)
+    #         myfile.write("\t")
+    #         myfile.write(datetime.now().strftime("%d/%m/%Y %H:%M:%S"))
+    #         myfile.write(" \n")
 
     if logged:
         return redirect("/home")
@@ -115,18 +116,17 @@ def home(request):
             return redirect('/')
 
     if mail == 'lore@iswchat.com':
-        user_icon = "lorec.png"
+        user_icon = "static/chat/icons/lorec.png"
     else:
-        user_icon = "generic_user.png"
+        user_icon = "static/chat/icons/generic_user.png"
 
-    final_icon = test + user_icon
     user = Utente.objects.get(email=mail)
     request.session.__setitem__("user_id", user.id)
     threads = Partecipanti.objects.filter(contatto=user)
 
     for t in threads:
         if not t.chat.nome.startswith("Gruppo"):
-            t.chat.nome = t.chat.nome.replace(user.nome + " " + user.cognome, "").replace("-&/&-", "")
+            t.chat.nome = t.chat.nome.replace(user.nome + " " + user.cognome, "")
 
     try:
         contacts = Rubrica.objects.filter(owner=user)
@@ -136,7 +136,7 @@ def home(request):
     return render(request, 'chat/chats.html', {
         'name_to_show': user.nome + " " + user.cognome,
         'user': user,
-        'user_icon': final_icon,
+        'user_icon': user_icon,
         'Threads': threads,
         'contacts': contacts,
     })
@@ -179,40 +179,49 @@ def client_requests(request):
             id = request.POST['id']
             try:
                 utente = Utente.objects.get(id=id)
-                remove_contact(u, utente)
+                removecontact(u, utente)
             except:
                 print("err")
         elif req == 'create_chat':
             ids_json = json.loads(request.POST['user_ids_json'])
             ids = []
-
             for e in ids_json:
                 print(e)
                 ids.append(int(e))
-
             c = createchat(u, ids)
-
             resp = '[{"result":"ok","id":"' + str(c.id) + '","name":"' + c.nome.replace(str(u), ""). \
                 replace("-&/&-", "") + '"}]'
         elif req == 'delete_chat':
-            print("to do")
+            print("User request deletion of chat "+request.POST['chat_id'])
+            deletechat(user_id, request.POST['chat_id'])
+            resp = '[{"delete":"ok"}]'
         elif req == 'personal_id':
             resp = request.session['user_id']
-        elif req == 'getAllMessages':
+        elif req == 'get_all_messages':  # restituisce tutti i messaggi di una data conversazione
             chat_id = request.POST["chat_id"]
-            messaggi = Messaggio.objects.filter(chat_id=chat_id)
-            msg = []
-            for m in messaggi:
-                if m.mittente_id == user_id:
-                    msg.append(JSONMsg(m.dataora, m.contenuto, True, ""))
-                else:
-                    msg.append(JSONMsg(m.dataora, m.contenuto, False, m.mittente.nome + " " + m.mittente.cognome))
-            resp = "["
-            for x in msg:
-                resp = resp + json_element(x.ora, x.contenuto, x.inviato, x.mittente) + ","
-
-            resp += "]"
-
+            try:
+                chat = Chat.objects.get(id=chat_id)
+            except exceptions.ObjectDoesNotExist:
+                print("la chat non esiste")
+                return HttpResponse("[]")
+            print(chat)
+            # controlliamo che l'utente sia effettivamente in quella chat
+            if Partecipanti.objects.filter(chat=chat, contatto=u).exists():
+                messaggi = Messaggio.objects.filter(chat_id=chat_id)
+                resp = "["
+                # trasformiamo i messaggi in una linea json e la aggiungiamo alla risposta
+                for m in messaggi:
+                    if m.mittente_id == user_id:
+                        resp = resp + json_element(m.dataora, m.contenuto, True, (m.mittente.nome + " " +
+                                                                                  m.mittente.cognome)) + ","
+                    else:
+                        resp = resp + json_element(m.dataora, m.contenuto, False, (m.mittente.nome + " " +
+                                                                                   m.mittente.cognome)) + ","
+                resp = resp[:-1]
+                resp += "]"
+            else:
+                print("l'utente non ha accesso alla chat")
+                resp = "[]"
         elif req == 'send_message':
             msg = request.POST['msg']
             chat_id = request.POST['chat_id']
@@ -220,20 +229,7 @@ def client_requests(request):
             c = Chat.objects.get(id=chat_id)
             sendmessage(u, msg, c)
             resp = "sent"
+
         return HttpResponse(resp)
     else:
         return redirect("/")
-
-
-class JSONMsg(object):
-    ora = datetime.now()
-    contenuto = ""
-    inviato = True
-    mittente = ""
-
-    # The class "constructor" - It's actually an initializer
-    def __init__(self, ora, contenuto, inviato, mittente):
-        self.ora = ora
-        self.contenuto = contenuto
-        self.inviato = inviato
-        self.mittente = mittente

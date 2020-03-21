@@ -134,7 +134,7 @@ function getThreadItem(chat_name, id) {
     $(div).attr("onclick", "openThread(" + id + ")");
     return div
 }
-//nasconde la chat quando si è collegati da un cellulare (o visualizzazione singola)
+//nasconde la chat
 function closeChatThread() {
     if (isMobile) {
         $("#chat").css("left", "100%");
@@ -162,7 +162,7 @@ function injectNativeAppCSS(){
 function addBubble(message){
         let br = document.createElement("br");
         let msg_text = document.createElement("label");
-        msg_text.textContent = message
+        msg_text.textContent = message;
         let msg_bubble = document.createElement("div");
 
         msg_bubble.appendChild(msg_text);

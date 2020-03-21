@@ -17,7 +17,7 @@ push_socket.onopen = function() {
 push_socket.onmessage = function(e) {
     let n;
     let msg = JSON.parse(e.data)
-      console.log(msg);
+    console.log(msg);
     switch(msg.type){
         case 'new_chat':{
 
@@ -31,24 +31,24 @@ push_socket.onmessage = function(e) {
             notification_sound.play();
 
 
+            let divElement;
             if (currentChat == msg.chat_id) {
                 divElement = getBubble(msg);
                 $("#thread_bubbles").append(divElement).append("<br>");
 
                 var curHeight = $(divElement).css("height");
                 $(divElement).css("height", "0");
-                 $(divElement).css("width", "0");
+                $(divElement).css("width", "0");
                 $("#thread_bubbles").animate({
                     scrollTop: $('#thread_bubbles').prop("scrollHeight")
                 }, 1000);
                 $(divElement).animate({
                     width: "45%",
-                    height:  $(divElement).get(0).scrollHeight
+                    height: $(divElement).get(0).scrollHeight
                 }, 250, function () {
-                     $(this).height('auto');
+                    $(this).height('auto');
                 });
-            }
-            else {
+            } else {
 
                 let new_thread_title = "";
                 unreaded_messages++;
@@ -72,7 +72,7 @@ push_socket.onmessage = function(e) {
                             n.notification_count++;
                             notifications.push(n);
                         }
-                        new_thread_title = $("#thread_title_" + n.thread_id).text().replace("("+n.notification_count-1+")") + " (" + n.notification_count + ")"
+                        new_thread_title = $("#thread_title_" + n.thread_id).text().replace("(" + n.notification_count - 1 + ")") + " (" + n.notification_count + ")"
 
                     }
 
