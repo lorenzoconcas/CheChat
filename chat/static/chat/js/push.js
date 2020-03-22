@@ -17,7 +17,7 @@ push_socket.onopen = function() {
 push_socket.onmessage = function(e) {
     let n;
     let msg = JSON.parse(e.data)
-    console.log(msg);
+    console.log("new data from ws "+msg);
     switch(msg.type){
         case 'new_chat':{
 

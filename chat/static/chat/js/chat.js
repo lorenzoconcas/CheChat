@@ -110,7 +110,7 @@ function openThread(chat_id) {
     }
 
     unreaded_messages > 0 ? document.title = "Nuovo messaggio (" + unreaded_messages + ")" : document.title = "ISW Chat"
-
+ $("#thread_bubbles").empty();
     $("#chat").css("visibility", "visible");
     loadMessages(chat_id);
 }
@@ -295,10 +295,9 @@ function deleteChat(){
         success: function(data) {
             console.log(data);
             if(data[0].delete === "ok"){
-                alert("chat eliminata");
                 $("#thread_"+currentChat).remove();
                 closeChatThread();
-                $("#chat").hide();
+                $("#chat").css("visibility", "hidden");
             }
         },
     });
