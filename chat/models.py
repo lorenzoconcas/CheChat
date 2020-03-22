@@ -29,7 +29,7 @@ class Rubrica(models.Model):
         verbose_name_plural = 'Rubriche'
 
     def __str__(self):
-        return "Contatto : " + self.contatto.__str__() + ", nella rubrica di " + self.owner.__str__()
+        return "Contatto : " + str(self.contatto) + ", nella rubrica di " + str(self.owner)
 
 
 class Chat(models.Model):
@@ -37,7 +37,7 @@ class Chat(models.Model):
     nome = models.CharField(max_length=200)
 
     def __str__(self):
-        return self.nome + ",  creata da " + self.creatore.__str__()
+        return self.nome + ",  creata da " + str(self.creatore)
 
 
 class Partecipanti(models.Model):  # i partcipanti di una chat
@@ -49,8 +49,8 @@ class Partecipanti(models.Model):  # i partcipanti di una chat
         verbose_name_plural = 'Partecipanti'
 
     def __str__(self):
-        return self.contatto.__str__() + " partecipa nella chat " + \
-               self.chat.nome.replace(self.contatto.nome+" "+self.contatto.cognome, "").replace("-&/&-", "")
+        return str(self.contatto) + " partecipa nella chat " + \
+               self.chat.nome.replace(self.contatto.nome+" "+self.contatto.cognome, "")
 
 
 class Messaggio(models.Model):
@@ -60,7 +60,7 @@ class Messaggio(models.Model):
     contenuto = models.CharField(max_length=2000)
 
     def __str__(self):
-        return self.mittente.__str__() + " dice : " + self.contenuto + ", nella chat : " + self.chat.nome
+        return str(self.mittente) + " dice : " + self.contenuto + ", nella chat : " + self.chat.nome
 
     class Meta:
         verbose_name = 'Messaggio'
@@ -93,13 +93,14 @@ def createchat(utente, id_utenti):
         chat_name = "Gruppo : "
         for i in id_utenti:
             chat_name = chat_name + str(Utente.objects.get(id=i)) + ", "
-        chat_name = chat_name + utente.__str__()
+        chat_name = chat_name + str(utente)
 
     c = Chat(creatore=utente, nome=chat_name)
     c.save()
     p = Partecipanti(chat=c, contatto=utente)
     p.save()
     for i in id_utenti:
+        print(i)
         u = Utente.objects.get(id=i)
         p = Partecipanti(chat=c, contatto=u)
         p.save()
@@ -134,7 +135,9 @@ def deletechat(user_id, chat_id):
     target_chat = Chat.objects.get(id=chat_id)
     users_in_chat = Partecipanti.objects.filter(chat=target_chat)  # restituisce tutti i partecipanti ad una chat
     try:
-        Partecipanti.objects.get(chat=target_chat, contatto=user).delete()  # togliamo l'accesso alla chat all'utente
+        p = Partecipanti.objects.filter(chat=target_chat, contatto=user)  # togliamo l'accesso alla chat all'utente
+        print(len(p))
+        p[0].delete()
     except models.ObjectDoesNotExist:
         print("L'utente sta cercando di cancellarsi da una chat non sua o non esiste in quella chat")
     if len(users_in_chat) == 0:  # se anche l'ultimo partecipante è stato cancellato eliminiamo la chat

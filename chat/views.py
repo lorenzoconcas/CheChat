@@ -76,7 +76,11 @@ def home(request):
         return redirect('/')  # lo rimandiamo al login
 
     # la mail è utile per vari scopi quindi cerchiamo di ottenerla anche se non ancora loggato (magari esiste!)
-    mail = request.POST.get('mail', '')  # questa funziona cerca l'elemento e se non lo trova resituisce
+    mail = request.POST.get('mail', '')  # questa funzione cerca l'elemento e se non lo trova resituisce
+    if mail is '':  # non vi è una richiesta di login da parte di index
+        mail = request.session.get('mail', '')
+    if mail is '':  # l'utente non era già loggato in sessione
+        return redirect('/')
     # il secondo valore passato
     mail = mail.lower()  # la rendiamo lowercase perchè sono tutte salvate in lowercase per evitare dati incoerenti
     # discorso simile per la psw ma solo per poter tentare il login automatico
@@ -87,7 +91,7 @@ def home(request):
         if Utente.objects.filter(email=mail).exists():
             u = Utente.objects.get(email=mail)
             if u.login(mail, password):  # se il login riesce segniamo in sessione il flag logged e l'id utente
-                # request.session.__setitem__("mail", mail)
+                request.session.__setitem__("mail", mail)
                 request.session.__setitem__("logged", True)
                 request.session.__setitem__("user_id", u.id)
             else:  # se non riesce rimandiamo al login, curandoci di settare il flag validdata a seconda del caso per
@@ -174,8 +178,24 @@ def client_requests(request):
             ids_json = json.loads(request.POST['user_ids_json'])
             ids = []
             for e in ids_json:
-                print(e)
                 ids.append(int(e))
+
+            adding_to_thread = request.POST['starting_thread']
+            if adding_to_thread is not None and adding_to_thread == 'true':
+                # significa che l'utente ha creato una chat
+                # aggiungendo dei partecipanti e dobbiamo essere sicuri
+                # che l'id dell'altro utente non sia già selezionato
+                thread_id = request.POST['base_thread']
+                if not thread_id == 0:
+                    try:
+                        chat = Chat.objects.get(id=thread_id)
+                        p = Partecipanti.objects.filter(chat=chat)
+                        if len(p) == 2:
+                            p1 = Partecipanti.objects.filter(chat=chat).exclude(contatto=u)[0]
+                            other_user = p1.contatto
+                            ids.append(int(other_user.id))
+                    except exceptions.ObjectDoesNotExist:
+                        print("L'utente sta cercando di aggiungere un partecipante ad una conversazione che non esiste")
             c = createchat(u, ids)
             resp = '[{"result":"ok","id":"' + str(c.id) + '","name":"' + c.nome.replace(str(u), "") + '"}]'
         elif req == 'delete_chat':

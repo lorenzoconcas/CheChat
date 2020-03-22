@@ -34,7 +34,8 @@ class PushMessages(WebsocketConsumer):
                     messaggi = Messaggio.objects.filter(chat=partecipante.chat)  # carichiamo i messaggi di quella chat
                     ultimo = messaggi.last()  # prendiamo l'ultimo
                     contiene_msg = ultimo in last_messages  # verifichiamo se abbiamo già notificato l'utente del msg
-                    if not contiene_msg and ultimo.mittente.id is None and current_user == ultimo.mittente.id:  # se non l'abbiamo fatto
+                    if not contiene_msg and ultimo is not None and ultimo.mittente.id is not None and current_user == ultimo.mittente.id:
+                        # se non l'abbiamo fatto
                         contiene_msg = True
                         update = True  # al prossimo ciclo controlliamo se ci sono nuovi messaggi
                         notifica = json.dumps({  # prepariamo il messaggio per il client

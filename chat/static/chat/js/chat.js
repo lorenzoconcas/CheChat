@@ -2,7 +2,7 @@ let isMobile = false;
 let dark_mode = false;
 let currentChat = 0;
 let unreaded_messages = 0;
-
+let adding_partecipant = false;
 function setup() {
     //calcolo se ci troviamo su un dispositivo mobile o a vista singola
     isMobile = $("#user_name").css("visibility") == "hidden" ? true : false;
@@ -250,8 +250,10 @@ function startChat(){
             type: "POST",
             url: "client_reqs/",
             data: {
-                'req': 'create_chat',
+               'req': 'create_chat',
                 'user_ids_json': chat_ids_json,
+                'starting_thread' : adding_partecipant,
+                'base_thread': currentChat,
             },
 
             beforeSend: function (request, settings) {
@@ -272,6 +274,7 @@ function startChat(){
             }
         });
     }
+    adding_partecipant = false;
 }
 
 function deleteChat(){
@@ -304,5 +307,6 @@ function deleteChat(){
 }
 
 function addPartecipant() {
-
+    adding_partecipant = true;
+    openCECPanel(1);
 }
