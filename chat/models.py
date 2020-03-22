@@ -133,6 +133,9 @@ def deletechat(user_id, chat_id):
     user = Utente.objects.get(id=user_id)
     target_chat = Chat.objects.get(id=chat_id)
     users_in_chat = Partecipanti.objects.filter(chat=target_chat)  # restituisce tutti i partecipanti ad una chat
-    Partecipanti.objects.get(chat=target_chat, contatto=user).delete()  # togliamo l'accesso alla chat all'utente
+    try:
+        Partecipanti.objects.get(chat=target_chat, contatto=user).delete()  # togliamo l'accesso alla chat all'utente
+    except models.ObjectDoesNotExist:
+        print("L'utente sta cercando di cancellarsi da una chat non sua o non esiste in quella chat")
     if len(users_in_chat) == 0:  # se anche l'ultimo partecipante è stato cancellato eliminiamo la chat
         target_chat.delete()

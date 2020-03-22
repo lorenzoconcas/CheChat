@@ -9,25 +9,16 @@ from chat.utils import *  # importa tutte le funzioni dal file utils.py
 
 # Create your views here.
 def index(request):
+    # questa è la pagina che si presenta all'utente la prima volta che visita il sito se non è loggato
     try:
-        logged = request.session.__getitem__("logged")
-        isdatavalid = request.session.__getitem__("validdata")
+        logged = request.session['logged']  # vediamo se è loggato
+        isdatavalid = request.session['validdata']  # e se i dati inseriti da un ipotetico redirect sono corretti
     except:
         # vuol dire che non vi sono quei dati in sessione, li impostiamo noi
         request.session.__setitem__("logged", False)
         request.session.__setitem__("validdata", True)
-        isdatavalid = True  # se non ci sono significa che
+        isdatavalid = True
         logged = False
-
-    print(isdatavalid)
-    # ip = get_client_ip(request)
-    # print(ip)
-    # if not ip.startswith('192.168'):
-    #     with open("index.txt", "a+") as myfile:
-    #         myfile.write(ip)
-    #         myfile.write("\t")
-    #         myfile.write(datetime.now().strftime("%d/%m/%Y %H:%M:%S"))
-    #         myfile.write(" \n")
 
     if logged:
         return redirect("/home")
@@ -37,102 +28,104 @@ def index(request):
 
 
 def register(request):
+    # questo controllo serve a capire se l'utente ha già inviato i dati per registrarsi (la pagina viene ricaricata
+    # alla pressione del tasto registra per verificare i dati
     try:
         registering = request.POST['register']
     except:
         registering = False
-    print(registering)
+
     if registering:
         mail = request.POST['mail']
         psw = request.POST['password']
         c_psw = request.POST['confirm_psw']
         name = request.POST['name']
         surname = request.POST['family-name']
-
+        # controlliamo non ci siano campi vuoti
         if mail == "" or psw == "" or name == "" or surname == "":
             return render(request, 'chat/register.html', {
                 'response': "Compila tutti i campi",
             })
-
+        # controlliamo la mail non sia già stata usata
         if Utente.objects.filter(email=mail).exists():
             return render(request, 'chat/register.html', {
                 'response': "Email già utilizzata",
             })
-
+        # controlliamo le due password coincidano
         if psw != c_psw:
             return render(request, 'chat/register.html', {
                 'response': "Le password non corrispondono",
             })
+        # avendo superato tutti i controlli aggiungiamo il nuovo utente e lo reindirizziamo al login
+        # (si potrebbe fare il login automatico)
         mail = mail.lower()
         new_user = Utente(email=mail, password=psw, nome=name, cognome=surname)
         new_user.save()
         return redirect('/')
-
     else:
         return render(request, 'chat/register.html')
 
 
 def home(request):
-    test = "static/chat/icons/"
+    # controlliamo che l'utente sia loggato prendendo il valore logged dalla sessione
     try:
-        #  islogged = request.session.__getitem__("logged")
-        islogged = request.session['logged']
-    except:
+        islogged = request.session.get('logged')
+    except:  # se il valore non è stato trovato l'utente non è loggato (sessione non valida per esempio)
         islogged = False
         request.session.__setitem__("logged", islogged)
-        return redirect('/')
+        return redirect('/')  # lo rimandiamo al login
 
-    try:
-        mail = request.session['mail']
-    except:
-        mail = request.POST.get('mail', '')
-        mail = mail.lower()
-
-    try:
-        password = request['password']
-    except:
-        password = request.POST.get('password', '')
-
+    # la mail è utile per vari scopi quindi cerchiamo di ottenerla anche se non ancora loggato (magari esiste!)
+    mail = request.POST.get('mail', '')  # questa funziona cerca l'elemento e se non lo trova resituisce
+    # il secondo valore passato
+    mail = mail.lower()  # la rendiamo lowercase perchè sono tutte salvate in lowercase per evitare dati incoerenti
+    # discorso simile per la psw ma solo per poter tentare il login automatico
+    password = request.POST.get('password', '')
+    # se non siamo loggati tentiamo il login
     if not islogged:
-        u = Utente.objects.filter(email=mail)
-
-        if u.exists():
+        # cerchiamo l'utente nel db e se esiste proviamo il login
+        if Utente.objects.filter(email=mail).exists():
             u = Utente.objects.get(email=mail)
-            if u.login(mail, password):
-                request.session.__setitem__("mail", mail)
+            if u.login(mail, password):  # se il login riesce segniamo in sessione il flag logged e l'id utente
+                # request.session.__setitem__("mail", mail)
                 request.session.__setitem__("logged", True)
                 request.session.__setitem__("user_id", u.id)
-            else:
+            else:  # se non riesce rimandiamo al login, curandoci di settare il flag validdata a seconda del caso per
+                # mostrare l'errore solo se davvero necessario
+                print("login fallito")
                 if mail == '':
                     request.session.__setitem__("validdata", True)
                 else:
                     request.session.__setitem__("validdata", False)
                 return redirect('/')
-        else:
+        else:  # se l'utente non esiste, come per tutti i casi non validi redirect al login
             if mail == '':
                 request.session.__setitem__("validdata", True)
             else:
                 request.session.__setitem__("validdata", False)
             return redirect('/')
-
+    # questo gestisce l'immagine del profilo, dovrebbe essere differente per ogni utente ma non verrà implementato
     if mail == 'lore@iswchat.com':
         user_icon = "static/chat/icons/lorec.png"
     else:
         user_icon = "static/chat/icons/generic_user.png"
 
+    # qui ci occupiamo di caricare tutte le chat dell'utente (quelle nella barra laterale)
     user = Utente.objects.get(email=mail)
-    request.session.__setitem__("user_id", user.id)
+    # request.session.__setitem__("user_id", user.id)
     threads = Partecipanti.objects.filter(contatto=user)
-
+    # puliamo le chat singole dal nome dell'utente (le chat singole hanno come nome quello dei partecipanti
+    # separato da spazio)
     for t in threads:
         if not t.chat.nome.startswith("Gruppo"):
             t.chat.nome = t.chat.nome.replace(user.nome + " " + user.cognome, "")
 
+    # carichiamo i contatti dell'utente, se non è corrisponde ad un array vuoto
     try:
         contacts = Rubrica.objects.filter(owner=user)
-    except:
+    except models.ObjectDoesNotExist:
         contacts = []
-
+    # chiamiamo la pagina passando alcune variabili
     return render(request, 'chat/chats.html', {
         'name_to_show': user.nome + " " + user.cognome,
         'user': user,
@@ -147,13 +140,9 @@ def logout(request):
     return redirect("/")
 
 
-def test(request):
-    return render(request, "chat/test.html")
-
-
 def client_requests(request):
     if request.is_ajax():
-        req = request.POST['req']
+        req = request.POST['req']  # otteniamo l'obbiettivo della richiesta
         resp = ""
         user_id = request.session['user_id']
         u = Utente.objects.get(id=user_id)
@@ -162,7 +151,7 @@ def client_requests(request):
             email = request.POST['mail']
             try:
                 utente = Utente.objects.get(email=email)
-            except:
+            except models.ObjectDoesNotExist:
                 resp = '[{"result":"err","error":"Utente non trovato"}]'
                 return HttpResponse(resp)
 
@@ -171,28 +160,25 @@ def client_requests(request):
                 return HttpResponse(resp)
 
             if insertcontact(u, utente) == "ok":
-                resp = '[{"result":"ok","name":"' + utente.__str__() + '", "id":"' + str(utente.id) + '"}]'
+                resp = '[{"result":"ok","name":"' + str(utente) + '", "id":"' + str(utente.id) + '"}]'
             else:
                 resp = '[{"result":"err","error":"Utente già in rubrica"}]'
         elif req == 'remove_contact':
-
-            id = request.POST['id']
             try:
-                utente = Utente.objects.get(id=id)
+                utente = Utente.objects.get(id=request.POST['id'])
                 removecontact(u, utente)
-            except:
+            except models.ObjectDoesNotExist:
                 print("err")
         elif req == 'create_chat':
+            # prendiamo dal json tutti gli id degli utenti da aggiungere alla chat
             ids_json = json.loads(request.POST['user_ids_json'])
             ids = []
             for e in ids_json:
                 print(e)
                 ids.append(int(e))
             c = createchat(u, ids)
-            resp = '[{"result":"ok","id":"' + str(c.id) + '","name":"' + c.nome.replace(str(u), ""). \
-                replace("-&/&-", "") + '"}]'
+            resp = '[{"result":"ok","id":"' + str(c.id) + '","name":"' + c.nome.replace(str(u), "") + '"}]'
         elif req == 'delete_chat':
-            print("User request deletion of chat "+request.POST['chat_id'])
             deletechat(user_id, request.POST['chat_id'])
             resp = '[{"delete":"ok"}]'
         elif req == 'personal_id':
@@ -204,7 +190,6 @@ def client_requests(request):
             except exceptions.ObjectDoesNotExist:
                 print("la chat non esiste")
                 return HttpResponse("[]")
-            print(chat)
             # controlliamo che l'utente sia effettivamente in quella chat
             if Partecipanti.objects.filter(chat=chat, contatto=u).exists():
                 messaggi = Messaggio.objects.filter(chat_id=chat_id)
@@ -227,8 +212,11 @@ def client_requests(request):
             chat_id = request.POST['chat_id']
             u = Utente.objects.get(id=user_id)
             c = Chat.objects.get(id=chat_id)
-            sendmessage(u, msg, c)
-            resp = "sent"
+            if Partecipanti.objects.filter(chat=c, contatto=u).exists():
+                sendmessage(u, msg, c)
+                resp = "sent"
+            else:
+                resp = "non allowed"
 
         return HttpResponse(resp)
     else:

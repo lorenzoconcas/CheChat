@@ -10,7 +10,6 @@ urlpatterns = [
     path('register', views.register, name='register'),
     path('home', views.home, name="home"),
     path('logout', views.logout, name="logout"),
-    path('test', views.test, name="test"),
     # urls delle richieste json
     url(r'^client_reqs/', views.client_requests),
 ]

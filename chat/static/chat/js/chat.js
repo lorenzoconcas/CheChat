@@ -262,14 +262,13 @@ function startChat(){
             dataType: 'json',
             success: function (data) {
 
-                console.log(data);
                 if (data[0].result == "ok") {
                     closePanel("chat_and_contacts_panel");
-                    $("#thread_list").append(getThreadItem(data[0].name, data[0].id));
-                    //vengono aggiunti automaticamente in push su tutti i dispositivi
+
+                    // la nuova chat viene aggiunta alla lista da un messaggio websocket
+                    //$("#thread_list").append(getThreadItem(data[0].name, data[0].id)); //questo è ormai inutile
                     openThread(data[0].id);
                 }
-
             }
         });
     }

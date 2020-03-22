@@ -1,28 +1,13 @@
-from datetime import datetime
-from time import sleep
 from chat.models import *
 from channels.generic.websocket import WebsocketConsumer
 
 import json
 
 
-class ChatConsumer(WebsocketConsumer):
-    def connect(self):
-        self.accept()
-
-    def disconnect(self, close_code):
-        pass
-
-    def receive(self, text_data):
-        while True:
-            self.send(text_data=json.dumps({
-                'message': datetime.now().strftime("%d/%m/%Y %H:%M:%S")
-            }))
-
-
 class PushMessages(WebsocketConsumer):
     def connect(self):
         self.accept()
+        # async_to_sync(self.channel_layer.group_add)("push", self.channel_name)
 
     def disconnect(self, close_code):
         pass
@@ -32,7 +17,7 @@ class PushMessages(WebsocketConsumer):
         current_user = session['user_id']
         try:
             chat_partecipanti = Partecipanti.objects.filter(contatto_id=current_user)
-        except:
+        except models.ObjectDoesNotExist:
             return
 
         req = json.loads(text_data)
