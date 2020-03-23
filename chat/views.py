@@ -193,7 +193,8 @@ def client_requests(request):
                         if len(p) == 2:
                             p1 = Partecipanti.objects.filter(chat=chat).exclude(contatto=u)[0]
                             other_user = p1.contatto
-                            ids.append(int(other_user.id))
+                            if int(other_user.id) not in ids:
+                                ids.append(int(other_user.id))
                     except exceptions.ObjectDoesNotExist:
                         print("L'utente sta cercando di aggiungere un partecipante ad una conversazione che non esiste")
             c = createchat(u, ids)
