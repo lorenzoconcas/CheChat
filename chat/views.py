@@ -181,6 +181,7 @@ def client_requests(request):
                 ids.append(int(e))
 
             adding_to_thread = request.POST['starting_thread']
+            print(adding_to_thread)
             if adding_to_thread is not None and adding_to_thread == 'true':
                 # significa che l'utente ha creato una chat
                 # aggiungendo dei partecipanti e dobbiamo essere sicuri
@@ -189,16 +190,21 @@ def client_requests(request):
                 if not thread_id == 0:
                     try:
                         chat = Chat.objects.get(id=thread_id)
-                        p = Partecipanti.objects.filter(chat=chat)
-                        if len(p) == 2:
-                            p1 = Partecipanti.objects.filter(chat=chat).exclude(contatto=u)[0]
-                            other_user = p1.contatto
+                        partecipanti = Partecipanti.objects.filter(chat=chat).exclude(contatto=u)
+                        len(partecipanti)
+                        if len(partecipanti) == 1:  # se ci sono due partecipanti è una chat singola
+                            altro_partecipante = partecipanti[0]
+                            other_user = altro_partecipante.contatto
                             if int(other_user.id) not in ids:
                                 ids.append(int(other_user.id))
+                        elif len(partecipanti) > 1:  # altrimenti è un gruppo, quindi esiste
+                            for partecipante in partecipanti:
+                                addusertochat(chat, partecipante.contatto)
+                            return HttpResponse('[{"result":"ok", "id":"'+str(chat.id)+'" }]')
                     except exceptions.ObjectDoesNotExist:
                         print("L'utente sta cercando di aggiungere un partecipante ad una conversazione che non esiste")
             c = createchat(u, ids)
-            resp = '[{"result":"ok","id":"' + str(c.id) + '","name":"' + c.nome.replace(str(u), "") + '"}]'
+            resp = '[{"result":"ok","id":"' + str(c.id) + '"}]'
         elif req == 'delete_chat':
             deletechat(user_id, request.POST['chat_id'])
             resp = '[{"delete":"ok"}]'
