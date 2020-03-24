@@ -17,26 +17,30 @@ push_socket.onopen = function() {
 push_socket.onmessage = function(e) {
     let n;
     let msg = JSON.parse(e.data)
-    console.log("new data from ws "+msg);
+
     switch(msg.type){
         case 'new_chat':{
+            notification_sound.play();
+            let new_thread_div = getThreadItem(msg.name, msg.id)
+            $("#thread_list").prepend(new_thread_div);
 
-            $("#thread_list").append(getThreadItem(msg.name, msg.id));
+            $("#thread_list").prepend($("#search_seaparator"));
+            $("#thread_list").prepend($("#search_container"));
             break;
         }
         case 'new_message': {
             $("#thread_preview_" + msg.chat_id).text(msg.contenuto)
             $("#thread_status_" + msg.chat_id).text("");
-
-            notification_sound.play();
-
+            if(msg.inviato == false){
+                notification_sound.play();
+            }
 
             let divElement;
             if (currentChat == msg.chat_id) {
                 divElement = getBubble(msg);
                 $("#thread_bubbles").append(divElement).append("<br>");
 
-                var curHeight = $(divElement).css("height");
+                let curHeight = $(divElement).css("height");
                 $(divElement).css("height", "0");
                 $(divElement).css("width", "0");
                 $("#thread_bubbles").animate({

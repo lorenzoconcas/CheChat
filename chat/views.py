@@ -1,6 +1,6 @@
 import json
 from django.core import exceptions
-from django.db.models import Model
+from django.db.models import Model, QuerySet
 from django.http import HttpResponse
 from django.shortcuts import render, redirect
 from chat.models import *
@@ -116,15 +116,9 @@ def home(request):
 
     # qui ci occupiamo di caricare tutte le chat dell'utente (quelle nella barra laterale)
     user = Utente.objects.get(email=mail)
-    # request.session.__setitem__("user_id", user.id)
-    threads = Partecipanti.objects.filter(contatto=user)
-    # puliamo le chat singole dal nome dell'utente (le chat singole hanno come nome quello dei partecipanti
-    # separato da spazio)
-    for t in threads:
-        if not t.chat.nome.startswith("Gruppo"):
-            t.chat.nome = t.chat.nome.replace(user.nome + " " + user.cognome, "")
 
-    # carichiamo i contatti dell'utente, se non è corrisponde ad un array vuoto
+    chats = getorderedchats(user)
+    # carichiamo i contatti dell'utente, se non esistono elementi restituiamo un array vuoto
     try:
         contacts = Rubrica.objects.filter(owner=user)
     except models.ObjectDoesNotExist:
@@ -134,7 +128,7 @@ def home(request):
         'name_to_show': user.nome + " " + user.cognome,
         'user': user,
         'user_icon': user_icon,
-        'Threads': threads,
+        'chats': chats,
         'contacts': contacts,
     })
 
@@ -191,7 +185,6 @@ def client_requests(request):
                     try:
                         chat = Chat.objects.get(id=thread_id)
                         partecipanti = Partecipanti.objects.filter(chat=chat).exclude(contatto=u)
-                        len(partecipanti)
                         if len(partecipanti) == 1:  # se ci sono due partecipanti è una chat singola
                             altro_partecipante = partecipanti[0]
                             other_user = altro_partecipante.contatto
@@ -199,8 +192,9 @@ def client_requests(request):
                                 ids.append(int(other_user.id))
                         elif len(partecipanti) > 1:  # altrimenti è un gruppo, quindi esiste
                             for partecipante in partecipanti:
-                                addusertochat(chat, partecipante.contatto)
-                            return HttpResponse('[{"result":"ok", "id":"'+str(chat.id)+'" }]')
+                                if not Partecipanti.objects.filter(chat=chat, contatto=partecipante.contatto).exists():
+                                    addusertochat(chat, partecipante.contatto)
+                            return HttpResponse('[{"result":"ok", "id":"' + str(chat.id) + '" }]')
                     except exceptions.ObjectDoesNotExist:
                         print("L'utente sta cercando di aggiungere un partecipante ad una conversazione che non esiste")
             c = createchat(u, ids)
@@ -224,8 +218,7 @@ def client_requests(request):
                 # trasformiamo i messaggi in una linea json e la aggiungiamo alla risposta
                 for m in messaggi:
                     if m.mittente_id == user_id:
-                        resp = resp + json_element(m.dataora, m.contenuto, True, (m.mittente.nome + " " +
-                                                                                  m.mittente.cognome)) + ","
+                        resp = resp + json_element(m.dataora, m.contenuto, True, "") + ","
                     else:
                         resp = resp + json_element(m.dataora, m.contenuto, False, (m.mittente.nome + " " +
                                                                                    m.mittente.cognome)) + ","

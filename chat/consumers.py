@@ -15,6 +15,7 @@ class PushMessages(WebsocketConsumer):
     def receive(self, text_data):
         session = self.scope["session"]
         current_user = session['user_id']
+
         try:
             chat_partecipanti = Partecipanti.objects.filter(contatto_id=current_user) # le chat a cui partecipa l'utente
         except models.ObjectDoesNotExist:
@@ -34,16 +35,25 @@ class PushMessages(WebsocketConsumer):
                     messaggi = Messaggio.objects.filter(chat=partecipante.chat)  # carichiamo i messaggi di quella chat
                     ultimo = messaggi.last()  # prendiamo l'ultimo
                     contiene_msg = ultimo in last_messages  # verifichiamo se abbiamo già notificato l'utente del msg
-                    if not contiene_msg and ultimo is not None and ultimo.mittente.id is not None and current_user == ultimo.mittente.id:
+                    if not contiene_msg and ultimo is not None and ultimo.mittente.id is not None:
                         # se non l'abbiamo fatto
                         contiene_msg = True
+                        if current_user == ultimo.mittente.id:
+                            is_inviato = 'True'
+                            mittente = ""
+                        else:
+                            is_inviato = 'false'
+                            mittente = str(ultimo.mittente)
+
                         update = True  # al prossimo ciclo controlliamo se ci sono nuovi messaggi
                         notifica = json.dumps({  # prepariamo il messaggio per il client
                             'type': 'new_message',
                             'chat_id': ultimo.chat.id,
-                            'mittente': str(ultimo.mittente),
+                            'mittente': mittente,
                             'dataora': ultimo.dataora.strftime("%Y-%m-%d %H:%M:%S"),
-                            'contenuto': ultimo.contenuto
+                            'contenuto': ultimo.contenuto,
+                            'inviato':  is_inviato
+
                          })
                         self.send(notifica)
                     else:

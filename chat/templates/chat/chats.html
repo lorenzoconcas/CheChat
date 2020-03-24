@@ -82,13 +82,13 @@
         </div>
 
         <div id="thread_list">
-            <div>
+            <div id="search_container">
                 <button id="new_thread" class="generic_btn" onclick="openCECPanel(1)"></button>
                 <input  id="search_box" class="input_box" type="text" placeholder="Cerca fra le chat">
                 <button id="search_btn" class="generic_btn"></button>
             </div>
-        <br>
-            {% for chat_thread in Threads %}
+            <br id="search_seaparator">
+            {% for chat_thread in chats %}
                 <div class="chat_thread"  id="thread_{{ chat_thread.chat_id }}" onclick="openThread({{ chat_thread.chat_id }})">
                     <img   class="thread_icon" src="{% static 'chat/icons/generic_user.png' %}" alt="username">
                     <label class="thread_title"  id="thread_title_{{ chat_thread.chat_id }}">{{ chat_thread.chat.nome|cut:'24' }}</label>
@@ -97,7 +97,6 @@
                     <label class="thread_preview" id="thread_preview_{{ chat_thread.chat_id }}">{{ chat_thread|getltsmsg:"32" }}</label>
                 </div>
             {% endfor %}
-        </div>
 
         <div id="chat_hidden">
                 <label>Premi una chat per iniziare</label>

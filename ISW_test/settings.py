@@ -27,7 +27,6 @@ DEBUG = True
 
 ALLOWED_HOSTS = ['*']  # permette di collegarsi con qualsiasi ip
 
-
 # Application definition
 
 INSTALLED_APPS = [

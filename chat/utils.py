@@ -8,7 +8,6 @@ def json_element(dataora, contenuto, sent, mittente):
     return '{"dataora":"' + dataora.strftime("%Y-%m-%d %H:%M:%S") + '", "contenuto":"' \
            + contenuto + '", "inviato":"' + str(sent) + '", "mittente":"' + mittente + '"}'
 
-#
 # def get_client_ip(request):
 #     x_forwarded_for = request.META.get('HTTP_X_FORWARDED_FOR')
 #     if x_forwarded_for:
@@ -16,5 +15,3 @@ def json_element(dataora, contenuto, sent, mittente):
 #     else:
 #         ip = request.META.get('REMOTE_ADDR')
 #     return ip
-
-

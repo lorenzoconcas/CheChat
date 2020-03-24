@@ -10,6 +10,11 @@ function setup() {
     $("#chat_title").text($("#chat_thread_1").text());
     if (isMobile)
         getPersonalID();
+
+    var x = document.cookie;
+    dark_mode = getCookie("darkmode");
+    toggleTheme();
+
 }
 
 //il cookie per le chiamate POST
@@ -69,7 +74,7 @@ function sendMessage() {
             },
         });
 
-       addBubble(msg.value);
+        // addBubble(msg.value);
          $("#thread_preview_"+currentChat).text("Tu: "+msg.value.substring(0, 20));
         msg.value = '';
     }
@@ -110,7 +115,10 @@ function openThread(chat_id) {
     }
 
     unreaded_messages > 0 ? document.title = "Nuovo messaggio (" + unreaded_messages + ")" : document.title = "ISW Chat"
- $("#thread_bubbles").empty();
+    $("#thread_bubbles").empty();
+    $("#chat").append("<br>");
+    $("#chat").append("<br>");
+    $("#chat").append("<br>");
     $("#chat").css("visibility", "visible");
     loadMessages(chat_id);
 }
@@ -309,4 +317,26 @@ function deleteChat(){
 function addPartecipant() {
     adding_partecipant = true;
     openCECPanel(1);
+}
+
+function getCookie(cname) {
+  var name = cname + "=";
+  var decodedCookie = decodeURIComponent(document.cookie);
+  var ca = decodedCookie.split(';');
+  for(var i = 0; i <ca.length; i++) {
+    var c = ca[i];
+    while (c.charAt(0) == ' ') {
+      c = c.substring(1);
+    }
+    if (c.indexOf(name) == 0) {
+      return c.substring(name.length, c.length);
+    }
+  }
+  return "";
+}
+function setCookie(cname, cvalue, exdays) {
+  var d = new Date();
+  d.setTime(d.getTime() + (exdays*24*60*60*1000));
+  var expires = "expires="+ d.toUTCString();
+  document.cookie = cname + "=" + cvalue + ";" + expires + ";path=/";
 }

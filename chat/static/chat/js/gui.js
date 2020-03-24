@@ -1,14 +1,15 @@
 //Questa funzione costruisce l'elemento "bolla" da inserire nelle conversazioni (vale per i messaggi ricevuti dal server=
 function getBubble(message) {
+
     var bubble = document.createElement("div");
     $(bubble).addClass("bubble_container");
 
-    if (message.inviato === "True")
+    if (message.inviato == "True")
         $(bubble).addClass("outgoing");
     else
         $(bubble).addClass("incoming");
 
-    if (message.mittente !== "") {
+    if (message.mittente != "") {
         var mittente = document.createElement("label")
         $(mittente).text(message.mittente);
         $(mittente).addClass("bubble_sender_name");
@@ -52,6 +53,15 @@ function toggleTheme() {
         document.getElementById("theme").href = "/static/chat/css/dark.css";
         document.getElementById("theme_mode_btn").innerText = "";
     }
+
+    setCookie("darkmode", dark_mode, 365*75);
+
+
+
+
+
+
+
     // if (isMobile)
     //     B4A.CallSub('darkMode', true, dark_mode + "")
 }

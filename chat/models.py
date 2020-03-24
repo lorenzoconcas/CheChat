@@ -117,7 +117,6 @@ def sendmessage(utente, messaggio, chat):
 
 def getlastmessagecontent(chat):
     msg_list = Messaggio.objects.filter(chat=chat)
-
     try:
         return msg_list.latest('dataora').contenuto
     except models.ObjectDoesNotExist:
@@ -149,3 +148,25 @@ def deletechat(user_id, chat_id):
 
 def addusertochat(chat, user):
     Partecipanti(chat=chat, contatto=user).save()
+
+
+# restituisce le chat a cuipartecipa l'utente (già col nome filtrato)
+def getchats(user):
+    threads = Partecipanti.objects.filter(contatto=user)
+    for t in threads:
+        if not t.chat.nome.startswith("Gruppo"):
+            t.chat.nome = t.chat.nome.replace(user.nome + " " + user.cognome, "")
+    return threads
+
+
+def getorderedchats(user):
+    threads = []
+    for t in Partecipanti.objects.filter(contatto=user).order_by('chat__messaggio__dataora').reverse():
+        if t not in threads:
+            threads.append(t)
+
+    for t in threads:
+        if not t.chat.nome.startswith("Gruppo"):
+            t.chat.nome = t.chat.nome.replace(user.nome + " " + user.cognome, "")
+
+    return threads
