@@ -50,7 +50,7 @@ class Partecipanti(models.Model):  # i partcipanti di una chat
 
     def __str__(self):
         return str(self.contatto) + " partecipa nella chat " + \
-               self.chat.nome.replace(self.contatto.nome+" "+self.contatto.cognome, "")
+               self.chat.nome.replace(self.contatto.nome + " " + self.contatto.cognome, "")
 
 
 class Messaggio(models.Model):
@@ -150,6 +150,14 @@ def addusertochat(chat, user):
     Partecipanti(chat=chat, contatto=user).save()
 
 
+def getchat(chat_id):
+    try:
+        c = Chat.objects.get(id=chat_id)
+        return c
+    except models.ObjectDoesNotExist:
+        return ""
+
+
 # restituisce le chat a cuipartecipa l'utente (già col nome filtrato)
 def getchats(user):
     threads = Partecipanti.objects.filter(contatto=user)
@@ -170,3 +178,22 @@ def getorderedchats(user):
             t.chat.nome = t.chat.nome.replace(user.nome + " " + user.cognome, "")
 
     return threads
+
+
+def getuser(user_id):
+    try:
+        u = Utente.objects.get(id=id)
+        return u
+    except models.ObjectDoesNotExist:
+        return ""
+
+
+def getotheruserinchat(chat, current_user):
+    try:
+        u = Partecipanti.objects.filter(chat=chat).exclude(contatto=current_user)
+        if len(u) > 1:
+            return "group"
+        else:
+            return u[0].contatto
+    except models.ObjectDoesNotExist:
+        return ""

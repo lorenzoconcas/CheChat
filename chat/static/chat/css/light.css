@@ -21,7 +21,7 @@
 }
 /*Thred list look*/
 
-#thread_list {
+#box_left {
 	border-right-style: solid;
 	border-right-color: #dfdfdf;
 	border-top-color: #dfdfdf;
@@ -32,7 +32,15 @@
 	border-bottom-color: lightgray;
 	border-bottom-width: 1px;
 }
-
+#box_footer{
+	-webkit-backdrop-filter: blur(8px);
+	backdrop-filter: blur(8px);
+	background: rgba(235, 235, 235, 0.8);
+	background: linear-gradient(#ededed, #ededed);
+	border-top-color: #e0e0e0;
+	border-top-style: solid;
+    border-top-width: 0.5px;
+}
 .thread_status {
 	color: white;
 	background-color: darkgrey;

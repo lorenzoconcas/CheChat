@@ -4,7 +4,7 @@
 <html lang="it">
     <head>
         <meta charset="UTF-8">
-        <title>ISWChat</title>
+        <title>CheChat</title>
         <link rel="shortcut icon" type="image/png" href="{% static 'favicon.ico' %}"/>
         <link rel="stylesheet" type="text/css" href="{% static 'chat/css/chat.css' %}">
         <link rel="stylesheet" type="text/css" href="{% static 'chat/css/light.css' %}" id="theme">
@@ -15,27 +15,21 @@
           <script src="{% static 'chat/js/gui.js' %}"></script>
           <script src="{% static 'chat/js/push.js' %}"></script>
           <script src="{% static 'chat/js/jquery.js' %}"></script>
-        <meta http-equiv="refresh"content="500">
+
     </head>
     <body onLoad="setup()">
         <navbar id="navbar">
             <div id="navbar_section_logo" class="navbar_section">
                  <img id="logo" src="{% static 'chat/icons/chat_icon.png' %}" alt="ISWChat">
-                 <a id="navbar_title" href="/home">ISW Chat</a>
+                 <a id="navbar_title" href="/home">CheChat</a>
             </div>
-            <div id="navbar_section_buttons" class="navbar_section">
-                <button id="open_contacts_btn" class="navbar_button" onclick="openCECPanel(0)" onmouseover="tooltip('tooltip_contacts', 1)" onmouseleave="tooltip('tooltip_contacts', 0)"></button>
-                <span id="tooltip_contacts" class="tooltip">Contatti</span>
-                <button id="theme_mode_btn" class="navbar_button" onclick="toggleTheme()"  onmouseover="tooltip('tooltip_theme', 1)" onmouseleave="tooltip('tooltip_theme', 0)"></button>
-                <span id="tooltip_theme" class="tooltip">Alterna tema</span>
 
-            </div>
             <div id="navbar_section_profile" class="navbar_section">
-                <a id="logout" href="logout" onmouseover="tooltip('tooltip_exit', 0)" onmouseleave="tooltip('tooltip_exit', 0)"></a>
+                <a id="logout" href="logout" onmouseover="tooltip('tooltip_exit', 1)" onmouseleave="tooltip('tooltip_exit', 0)"></a>
                 <span id="tooltip_exit" class="tooltip">Premi per fare il logout</span>
-                <img id="user_icon" onmouseover="tooltip('tooltip_edit_profile', 0)" onmouseleave="tooltip('tooltip_edit_profile', 0)" src="{{ user_icon }}" alt="{{ name_to_show }}">
-                <a id="user_name" onmouseover="tooltip('tooltip_edit_profile', 0)" onmouseleave="tooltip('tooltip_edit_profile', 0)">{{ name_to_show }}</a>
-                <span id="tooltip_edit_profile" class="tooltip">Modifica il profilo</span>
+                <img id="user_icon" onmouseover="tooltip('tooltip_edit_profile', 1)" onmouseleave="tooltip('tooltip_edit_profile', 0)" src="{{ user_icon }}" alt="{{ name_to_show }}">
+                <a id="user_name" onmouseover="tooltip('tooltip_edit_profile', 1)" onmouseleave="tooltip('tooltip_edit_profile', 0)">{{ name_to_show }}</a>
+                <span id="tooltip_edit_profile" class="tooltip">Quello sei tu</span>
             </div>
 
         </navbar>
@@ -49,66 +43,65 @@
             <label id="personal_info_delete_profile" >Elimina profilo</label>
             <br>
         </div>
-        <div id="input_panel" class="popup_panel">
-            <label id="input_panel_title"></label>
-            <button class="panel_close" id="input_close" onclick="closePanel('input_panel')"></button>
-            <br>
-            <input id="input_panel_text" class="input_box" type="email"/>
-            <button id="input_panel_btn_confirm"  class="generic_btn" ></button>
-            <label id="input_panel_error">Errore</label>
-        </div>
+
         <div id="chat_and_contacts_panel" class="popup_panel">
             <label id="cec_title">Nuova chat</label>
             <br>
-            <button class="panel_close" onclick="closePanel('chat_and_contacts_panel'); closePanel('input_panel')"></button>
+            <button class="panel_close" onclick="closePanel('chat_and_contacts_panel');"></button>
             <br>
-            <input  id="contacts_search_box" class="input_box" type="text" placeholder="Cerca fra i contatti">
-            <button id="contacts_search_btn" class="generic_btn"></button>
+            <input  id="contacts_search_box" class="input_box" type="text" placeholder="Digita una mail per aggiungere un contatto">
+            <button id="contacts_search_btn" class="generic_btn" onclick="addContact()"></button>
+            <label id="input_panel_error">Errore</label>
+
             <br>
             <div id="contacts_list">
                 {% for contact in contacts %}
                     <div class="contact_element" id="contact_{{  contact.contatto.id  }}">
                         <input class="contact_checkbox" id="c_{{ contact.contatto.id }}" type="checkbox">
-                        <img   class="contact_icon" src="{% static 'chat/icons/generic_user.png' %}" alt="username">
+                        <img   class="contact_icon" id="contact_icon_{{ contact.contatto.id }}" src="{% static 'chat/icons/user_icon_1.png' %}" alt="username">
                         <label class="contact_name">{{ contact.contatto }}</label>
                         <button class="contact_delete" onclick="removeFromContacts({{ contact.contatto.id }})"></button>
                     </div>
                 {% endfor %}
             </div>
             <button id="cec_startchat" class="generic_btn" onclick="startChat()"></button>
-            <div id="cec_footer">
-                <button id="cec_new_contact_btn" onclick="openInputPanel()">Aggiungi Contatto</button>
+
+        </div>
+        <div id="box_left">
+            <label id="box_left_title">Conversazioni</label>
+            <div id="thread_list">
+                {% for chat_thread in chats %}
+                    <div class="chat_thread"  id="thread_{{ chat_thread.chat_id }}" onclick="openThread({{ chat_thread.chat_id }})">
+                        <img   class="thread_icon"  id="thread_icon_{{ chat_thread.chat_id }}" src="{% static 'chat/icons/user_icon_1.png' %}" alt="username">
+                        <label class="thread_title"  id="thread_title_{{ chat_thread.chat_id }}">{{ chat_thread.chat.nome}}</label>
+                        <label class="thread_status" id="thread_status_{{ chat_thread.chat_id }}"></label>
+                        <br>
+                        <label class="thread_preview" id="thread_preview_{{ chat_thread.chat_id }}">{{ chat_thread|getltsmsg }}</label>
+                    </div>
+                {% endfor %}
+            </div>
+            <div id="box_footer">
+
+                <button id="" class="box_footer_btn" onmouseover="tooltip('tooltip_new_chat', 1)" onmouseleave="tooltip('tooltip_new_chat', 0)" onclick="openCECPanel(1)"><img class="box_footer_btn_image" src="{%  static 'chat/icons/new_chat.png' %}"></button>
+                <span id="tooltip_new_chat" class="tooltip tooltip_bottom">Nuova Chat</span>
+
+                <button id="" class="box_footer_btn" onmouseover="tooltip('tooltip_open_contacts', 1)" onmouseleave="tooltip('tooltip_open_contacts', 0)" onclick="openCECPanel(0)"><img class="box_footer_btn_image" src="{%  static 'chat/icons/contacts.png' %}"></button>
+                <span id="tooltip_open_contacts" class="tooltip tooltip_bottom">Contatti</span>
+
+                <button id="" class="box_footer_btn" onmouseover="tooltip('tooltip_toggletheme', 1)" onmouseleave="tooltip('tooltip_toggletheme', 0)" onclick="toggleTheme()"><img id="themeImg" class="box_footer_btn_image" src="{%  static 'chat/icons/light_mode.png' %}"></button>
+                 <span id="tooltip_toggletheme" class="tooltip tooltip_bottom">Alterna tema</span>
             </div>
         </div>
-
-        <div id="thread_list">
-            <div id="search_container">
-                <button id="new_thread" class="generic_btn" onclick="openCECPanel(1)"></button>
-                <input  id="search_box" class="input_box" type="text" placeholder="Cerca fra le chat">
-                <button id="search_btn" class="generic_btn"></button>
-            </div>
-            <br id="search_seaparator">
-            {% for chat_thread in chats %}
-                <div class="chat_thread"  id="thread_{{ chat_thread.chat_id }}" onclick="openThread({{ chat_thread.chat_id }})">
-                    <img   class="thread_icon" src="{% static 'chat/icons/generic_user.png' %}" alt="username">
-                    <label class="thread_title"  id="thread_title_{{ chat_thread.chat_id }}">{{ chat_thread.chat.nome|cut:'24' }}</label>
-                    <label class="thread_status" id="thread_status_{{ chat_thread.chat_id }}"></label>
-                    <br>
-                    <label class="thread_preview" id="thread_preview_{{ chat_thread.chat_id }}">{{ chat_thread|getltsmsg:"32" }}</label>
-                </div>
-            {% endfor %}
-
         <div id="chat_hidden">
                 <label>Premi una chat per iniziare</label>
             </div>
         <div id="chat">
             <div id="thread_header">
                 <button id="chat_close" onclick="closeChatThread()"></button>
-                <img   id="chat_user_icon" src="{% static 'chat/icons/generic_user.png' %}" alt="username">
+                <img   id="chat_user_icon" src="{% static 'chat/icons/user_icon_1.png' %}" alt="username">
                 <label id="chat_title"></label>
-                <label id="chat_user_status"></label>
-                 <label class="chat_thread_header_btn" onclick="deleteChat()"></label>
-                <label class="chat_thread_header_btn" onclick="addPartecipant()"></label>
+                <btn class="" onclick="deleteChat()"><img class="chat_thread_header_btn" src="{%  static 'chat/icons/delete_chat.png' %}"></btn>
+                <btn class="" onclick="addPartecipant()"><img class="chat_thread_header_btn" src="{%  static 'chat/icons/add_partecipant.png' %}"></btn>
 
             </div>
             <div id="thread_bubbles">

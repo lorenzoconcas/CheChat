@@ -33,11 +33,12 @@ function openPanel(panel_name) {
     if (isMobile)
         $("#" + panel_name).css("top", 0);
     else
-        $("#" + panel_name).css("top", "25%");
+        $("#" + panel_name).css("top", "48px");
 }
 
 //mostra all'utente i tooltip al passaggio del mouse
 function tooltip(wich, visible) {
+
     status = visible ? "visible" : "hidden";
     $("#" + wich).css("visibility", status);
 }
@@ -46,12 +47,24 @@ function tooltip(wich, visible) {
 function toggleTheme() {
     if (dark_mode) {
         dark_mode = false;
-        document.getElementById('theme').href = "/static/chat/css/light.css";
-        document.getElementById("theme_mode_btn").innerText = "";
+
+
+         $(".thread_title").css("color", "black");
+        $(".thread_preview").css("color", "black");
+        $(".thread_icon").css("background", "white");
+        $(".contact_icon").css("background", "white");
+         document.getElementById("themeImg").src = "/static/chat/icons/light_mode.png";
+         document.getElementById('theme').href = "/static/chat/css/light.css";
     } else {
         dark_mode = true;
-        document.getElementById("theme").href = "/static/chat/css/dark.css";
-        document.getElementById("theme_mode_btn").innerText = "";
+
+        document.getElementById("themeImg").src = "/static/chat/icons/dark_mode.png";
+
+        $(".thread_title").css("color", "white");
+        $(".thread_preview").css("color", "white");
+        $(".thread_icon").css("background", "#1a1a1a");
+        $(".contact_icon").css("background", "#1a1a1a");
+         document.getElementById("theme").href = "/static/chat/css/dark.css";
     }
 
     setCookie("darkmode", dark_mode, 365*75);
@@ -78,6 +91,10 @@ function openCECPanel(mode) {
         $(".contact_delete").hide();
 
         $("#cec_startchat").show();
+        $("#contacts_search_box").css("visibility", "hidden");
+        $("#contacts_search_btn").css("visibility", "hidden");
+        $("#contacts_list").css("top", "-24px");
+
 
     } else {
         $("#cec_title").text("Rubrica");
@@ -86,6 +103,9 @@ function openCECPanel(mode) {
         $(".contact_checkbox").hide();
         $(".contact_delete").show();
         $("#cec_startchat").hide();
+         $("#contacts_search_box").css("visibility", "visible");
+        $("#contacts_search_btn").css("visibility", "visible");
+         $("#contacts_list").css("top", "10px");
     }
 }
 

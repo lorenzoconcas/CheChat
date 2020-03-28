@@ -6,6 +6,7 @@ body{
     background-repeat: no-repeat;
     background-attachment: fixed;
     background-image: linear-gradient(to bottom, white, rgba(232, 232, 232, 0.33));
+    overflow: auto;
 }
 a:link{
     text-decoration: none;
@@ -20,7 +21,8 @@ a:link{
     left:50%;
 }
 #logo_box{
-    left:10%;
+    left:0;
+    width: 50%;
 }
 #register_box{
     left:50%;
@@ -30,15 +32,16 @@ a:link{
     --icon-size: 256px;
     position: relative;
     width: var(--icon-size);
+    top: 36px;
 }
 #greeting_message{
     color:black;
     font-size: 24px;
     font-family: "Product Sans", sans-serif;
-    width:auto;
+    width:100%;
     text-align: center;
     position: relative;
-
+    top: 42px;
 }
 #separator{
     position: absolute;
@@ -102,9 +105,6 @@ footer{
     #login_box{
         left:60%;
     }
-    #logo_box{
-        left:10%;
-    }
     #register_box{
         left:60%;
         top:20%;
@@ -130,22 +130,23 @@ footer{
 }
 @media only screen and (max-width: 580px){
     .box{
-
         height: 30%;
         left:0;
         width: 100%;
     }
     #logo_box{
         top:10%;
-         left:0;
-
+        left:0;
+        width: 100%;
     }
     #login_box{
-       top:30%;
-        left:0;
-
+       top: calc(35% + 16px);
+       left:0;
     }
-      #register_box{
+    #greeting_message{
+        top: -12px;
+    }
+    #register_box{
         left:0%;
         top:30%;
     }
@@ -153,6 +154,8 @@ footer{
         background: transparent;
     }
     #chat_logo{
-        width: 180px;
+        width: 70%;
+
+        top:0px;
     }
 }

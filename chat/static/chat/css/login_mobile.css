@@ -9,7 +9,8 @@
     }
     #logo_box{
         top:10%;
-         left:0;
+        left:0;
+        width: 100%;
 
     }
     #login_box{

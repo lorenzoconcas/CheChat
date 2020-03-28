@@ -5,6 +5,7 @@ from django.http import HttpResponse
 from django.shortcuts import render, redirect
 from chat.models import *
 from chat.utils import *  # importa tutte le funzioni dal file utils.py
+from django.template import RequestContext
 
 
 # Create your views here.
@@ -112,7 +113,10 @@ def home(request):
     if mail == 'lore@iswchat.com':
         user_icon = "static/chat/icons/lorec.png"
     else:
-        user_icon = "static/chat/icons/generic_user.png"
+        icon_id = int(request.session['user_id'] % 5)
+        if icon_id == 0:
+            icon_id = 1
+        user_icon = 'static/chat/icons/user_icon_' + str(icon_id) + '.png'
 
     # qui ci occupiamo di caricare tutte le chat dell'utente (quelle nella barra laterale)
     user = Utente.objects.get(email=mail)
@@ -230,13 +234,32 @@ def client_requests(request):
         elif req == 'send_message':
             msg = request.POST['msg']
             chat_id = request.POST['chat_id']
-            u = Utente.objects.get(id=user_id)
             c = Chat.objects.get(id=chat_id)
             if Partecipanti.objects.filter(chat=c, contatto=u).exists():
                 sendmessage(u, msg, c)
                 resp = "sent"
             else:
                 resp = "non allowed"
+        elif req == 'search_chats':
+            resp = ''
+        elif req == 'get_chat_icon':
+            chat_id = request.POST['chat_id']
+            chat = getchat(chat_id)
+            if chat == "":
+                resp = ""
+            else:
+                other_user = getotheruserinchat(chat, u)
+                if other_user == "":
+                    resp = 'static/chat/icons/user_icon_1.png'
+                elif other_user == "group":
+                    resp = 'static/chat/icons/user_group.png'
+                else:
+                    other_id = other_user.id
+                    img_id = int(other_id) % 5
+
+                    if img_id == 0:
+                        img_id = 1
+                    resp = 'static/chat/icons/user_icon_' + str(img_id) + '.png'
 
         return HttpResponse(resp)
     else:

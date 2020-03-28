@@ -15,6 +15,8 @@ function setup() {
     dark_mode = getCookie("darkmode");
     toggleTheme();
 
+    putAllIcons();
+
 }
 
 //il cookie per le chiamate POST
@@ -97,8 +99,15 @@ function openThread(chat_id) {
     }else{
         $("#thread_status_" + chat_id).text("");
         $(".chat_thread").css("background", "transparent");
+        if(!dark_mode){
+             $(".thread_title").css("color", "black");
+             $(".thread_preview").css("color", "black");
+        }
+
         $("#chat_title").text($("#thread_title_" + chat_id).text());
         $("#thread_" + chat_id).css("background", "dodgerblue");
+        $("#thread_title_" + chat_id).css("color", "white");
+        $("#thread_preview_" + chat_id).css("color", "white");
     }
     currentChat = chat_id;
 
@@ -113,7 +122,9 @@ function openThread(chat_id) {
             n.notification_count = 0;
         }
     }
-
+    //chat_user_icon
+    //
+    document.getElementById("chat_user_icon").src = $("#thread_icon_"+currentChat).attr("src");
     unreaded_messages > 0 ? document.title = "Nuovo messaggio (" + unreaded_messages + ")" : document.title = "ISW Chat"
     $("#thread_bubbles").empty();
     $("#chat").append("<br>");
@@ -159,8 +170,7 @@ function loadMessages(chat_id) {
 
 //utilizzate per salvare un nuovo contatto in rubrica
 function addContact() {
-    hideInputPanel();
-    let mail = $("#input_panel_text").val();
+    let mail = $("#contacts_search_box").val();
     $.ajax({
         type: "POST",
         url: "client_reqs/",
@@ -187,8 +197,10 @@ function addContact() {
 
                 $(div).addClass("contact_element");
                 $(checkbox).addClass("contact_checkbox");
-                $(checkbox).attr("id", data[0].id)
-                $(img).attr("src", "/static/chat/icons/generic_user.png");
+                $(checkbox).attr("id", data[0].id);
+                let img_id =  parseInt(data[0].id % 5);
+                let img_src = "/static/chat/icons/user_icon_"+ img_id +".png"
+                $(img).attr("src", img_src );
                 $(img).addClass("contact_icon")
                 $(name).text(data[0].name);
                 $(name).addClass("contact_name");
@@ -339,4 +351,56 @@ function setCookie(cname, cvalue, exdays) {
   d.setTime(d.getTime() + (exdays*24*60*60*1000));
   var expires = "expires="+ d.toUTCString();
   document.cookie = cname + "=" + cvalue + ";" + expires + ";path=/";
+}
+
+function searchChat(e){
+
+}
+
+function setChatIcon(threadID){
+     let icon = document.getElementById("thread_icon_"+threadID);
+     $.ajax({
+            type: "POST",
+            url: "client_reqs/",
+            data: {
+               'req': 'get_chat_icon',
+               'chat_id': threadID,
+            },
+
+            beforeSend: function (request, settings) {
+                if (!(/^http:.*/.test(settings.url) || /^https:.*/.test(settings.url))) {
+                    request.setRequestHeader("X-CSRFToken", csrfcookie());
+                }
+            },
+            success: function (data) {
+
+                icon.src = data;
+            },
+            error: function () {
+                icon.src =   'static/chat/icons/user_group.png'
+            }
+     });
+}
+
+function setContactIcon(userID){
+     let icon = document.getElementById("contact_icon_"+userID);
+     let icon_id = parseInt(userID % 5);
+     icon_id = icon_id == 0 ?  1 : icon_id;
+     icon.src = 'static/chat/icons/user_icon_'+icon_id+'.png'
+
+}
+
+
+function putAllIcons(){
+    console.log("Putting icons");
+     $(".chat_thread").each(function (index) {
+        let id = $(this).attr('id');
+        id = id.replace("thread_", "");
+        setChatIcon(id);
+    })
+    $(".contact_icon").each(function (index) {
+        let id = $(this).attr('id');
+        id = id.replace("contact_icon_", "");
+        setContactIcon(id);
+    })
 }

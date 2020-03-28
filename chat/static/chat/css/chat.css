@@ -51,8 +51,20 @@ a:link {
 	cursor: pointer;
 }
 #open_contacts_btn{
-	left: calc(50% - 12px);
-	cursor: pointer;
+
+	position: absolute;
+    top: calc(100% - 96px);
+
+    left: 0;
+	font-family: "Material Icons", sans-serif;
+  /*  height: 49px;
+    background: black;
+    border-style: solid;
+    border-radius: 16px 16px 0 0;
+    color: white;
+
+    font-size: 24px;
+    text-align: center;*/
 }
 #user_name {
 	position: relative;
@@ -69,7 +81,11 @@ a:link {
 	text-align: left;
 	float: right;
 	left: -20px;
-	top: 8px;
+	top: 6px;
+	    border-style: solid;
+    border-radius: 256px;
+    border-width: 0.5px;
+    border-color: #ffffff00;
 }
 
 #navbar {
@@ -84,7 +100,7 @@ a:link {
 }
 .navbar_section{
 	position: absolute;
-	width: 33%;
+	width: 50%;
 	height: 48px;
 }
 
@@ -103,21 +119,55 @@ a:link {
 
 /*Thred list look*/
 
-#thread_list {
+#box_left {
 	position: absolute;
 	width: 33%;
 	left: 0px;
 	top: 48px;
-	height: 100%;
-	overflow: auto;
+	height: calc(100% - 48px);
 }
+#box_left_title{
+	font-family: "Libel Suit", sans-serif;
+	font-size: 24px;
+	position: absolute;
+    width: 100%;
+    text-align: center;
+	top: 4px;
 
+}
+#box_footer{
+	position: absolute;
+    width: 100%;
+    left: 0;
+  height: 63.5px;
+    top: calc(100% - 63.5px);
+	 display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.box_footer_btn{
+	background: transparent;
+    border-color: transparent;
+	position: relative;
+
+}
+.box_footer_btn_image{
+	width: 48px;
+}
+#thread_list{
+	position: relative;
+    top: 32px;
+}
 .thread_icon {
 	position: relative;
 	height: 32px;
 	left: 8px;
 	top: 16px;
-
+	border-style: solid;
+    border-radius: 256px;
+    border-width: 0px;
+    border-color: #1e90ff00;
+    background: white;
 }
 
 .chat_thread {
@@ -129,16 +179,26 @@ a:link {
 }
 
 .thread_title {
-	position: relative;
-	left: 16px;
-	font-size: 20px;
-	font-weight: bold;
+    position: absolute;
+    left: 50px;
+    top: 12px;
+    font-size: 20px;
+    font-weight: bold;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    width: calc(100% - 110px);
+    white-space: nowrap;
 }
 
 .thread_preview {
-	position: relative;
-	left: 52px;
-	font-size: 12px;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    width: calc(100% - 120px);
+    white-space: nowrap;
+    position: absolute;
+    left: 50px;
+    font-size: 12px;
+    top: 37px;
 }
 
 .thread_status {
@@ -205,13 +265,15 @@ a:link {
 	visibility: visible;
 	text-align: center;
  vertical-align: middle;
-	font-family: "Product Sans", serif;
+	font-family: "Libel Suit", serif;
+    font-size: 24px;
 }
 #thread_header {
 	z-index: 2;
 	position: relative;
 	width: 100%;
 	height: 48px;
+
 }
 #chat_close{
 	font-size: 0;
@@ -235,6 +297,10 @@ a:link {
 	width: 32px;
 	top: 8px;
 	left: 8px;
+	border-style: solid;
+    border-radius: 256px;
+    border-width: 0px;
+    border-color: #1e90ff00;
 }
 
 #chat_user_status {
@@ -243,20 +309,20 @@ a:link {
 	left: 24px;
 }
 .chat_thread_header_btn{
-	font-family: "Material Icons";
-	font-size: 24px;
-	position: relative;
-	float:right;
-	right: 4px;
-	top:5px;
-	padding: 4px;
-
-	 background: rgba(181, 181, 181, 0.39);
-    border-radius: 32px;
-    border-style: solid;
-    border-color: transparent;
+    font-size: 24px;
+    position: relative;
+    float: right;
+    right: 4px;
+    top: 5px;
+    padding: 4px;
+    /* background: rgba(181, 181, 181, 0.39); */
     margin-right: 10px;
-    backdrop-filter: blur(10px);
+    width: 32px;
+    border-style: solid;
+    /* border-radius: 256px; */
+    border-width: 0px;
+    border-color: #1e90ff00;
+
 }
 #thread_bubbles {
 	top:0px;
@@ -366,17 +432,21 @@ a:link {
 .popup_panel{
 	z-index: 50;
 	position: fixed;
-	height: 50%;
-	width: 30%;
-	left: 35%;
+	height: calc(100% - 48px);
 	top: 150%;
+
+    left: 0px;
+    width: 33%;
     border-style: solid;
-    border-width: 0.5px;
-	border-radius: 16px;
+    border-width: 0px;
+
 	-webkit-transition:all 0.3s ease-out;
     -moz-transition:all 0.3s ease-out;
     -o-transition:all 0.3s ease-out;
     transition:all 0.3s ease-out;
+
+
+
 }
 #input_panel{
 	height: 100px;
@@ -500,6 +570,14 @@ a:link {
 	position: relative;
 	left: 8px;
 	top: 3px;
+    height: 32px;
+    left: 8px;
+
+    border-style: solid;
+    border-radius: 256px;
+    border-width: 0px;
+    border-color: #1e90ff00;
+    background: white;
 }
 .contact_name {
 	position: relative;
@@ -524,7 +602,7 @@ a:link {
     float: right;
     font-family: "Material Icons";
     font-size: 20px;
-    left: -4px;
+    left: -20px;
     top: 3px;
     border-radius: 64px;
     padding: 4px;
@@ -643,4 +721,17 @@ a:link {
   	opacity: 0.8;
   	transition: opacity 0.3s;
 	backdrop-filter: blur(50px);
+	z-index: 90;
+}
+.tooltip_bottom{
+	position: absolute;
+	top: -24px;
+	width: 128px;
+}
+
+#tooltip_open_contacts{
+	left: 50%;
+}
+#tooltip_toggletheme{
+	left: calc(66% - 4px);
 }

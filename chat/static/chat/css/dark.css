@@ -31,13 +31,25 @@ body {
 }
 /*Thred list look*/
 
-#thread_list {
+#box_left {
 	border-top-color: #212121;
 	border-width: 1px;
 	border-right-style: solid;
 	border-right-color: #212121;
 }
+#box_left_title{
+	color: white;
+}
+#box_footer{
+	-webkit-backdrop-filter: blur(8px);
+	backdrop-filter: blur(8px);
+	background: rgba(0, 0, 0, 0.8);
 
+	border-top-color: #202020;
+}
+.thread_icon{
+	background: #1a1a1a;
+}
 .chat_thread {
 	border-bottom-color: black;
 	border-bottom-width: 1px;
