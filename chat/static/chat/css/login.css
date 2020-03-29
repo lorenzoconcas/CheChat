@@ -29,10 +29,11 @@ a:link{
     top:20%;
 }
 #chat_logo{
-    --icon-size: 256px;
+
     position: relative;
-    width: var(--icon-size);
+    height: 70%;
     top: 36px;
+    object-fit: contain;
 }
 #greeting_message{
     color:black;
@@ -154,8 +155,9 @@ footer{
         background: transparent;
     }
     #chat_logo{
-        width: 70%;
-
-        top:0px;
+        top:0;
+    }
+    footer{
+        top:0;
     }
 }

@@ -8,15 +8,16 @@
 	}
 	#logo {
 		width: 128px;
+		top: auto;
 	}
 	#navbar_title {
-		top: -32px;
+
 		font-size: 64px;
 	}
 
 	.navbar_section{
 		position: absolute;
-		width: 33%;
+
 		height: 100%;
 	}
 
@@ -45,7 +46,7 @@
 		position: relative;
 		float:right;
 		font-size: 80px;
-		top:24px;
+
 
 		color:blue;
 	}
@@ -55,34 +56,58 @@
 	#user_icon {
 		left:-32px;
 		width: 128px;
-		top: -2px;
+
 	}
 	#box_left {
-		top: 128px;
-		position: relative;
-		width: 100%;
+		    top: 128px;
+    position: absolute;
+    width: 100%;
+    height: calc(100% - 128px);
 	}
+	#box_footer{
+		    height: 128px;
+    top: calc(100% - 128px);
+	}
+	#box_left_title{
+    font-size: 64px;
+    top: 12px;
+	}
+	.box_footer_btn_image{
+		width: 128px;
+	}
+	#thread_list {
+
+    top: 90px;
+}
 	.chat_thread {
 		position: relative;
 
-		height: 256px;
+		height: 200px;
 	}
 	.thread_icon {
-		position: relative;
-		height: 128px;
-		left: 8px;
-		top: 64px;
+    position: relative;
+    height: 128px;
+    left: 8px;
+    top: 34px;
+
+
 	}
 	.thread_title {
-		position: relative;
-		left: 16px;
-		top: -16px;
-		font-size: 72px;
+		display: inline-block;
+    position: relative;
+    font-size: 72px;
+    width: calc(100% - 220px);
+    left: 35px;
+    top: -11px;
+
 	}
+
 	.thread_preview {
-		position: relative;
-		left: 150px;
-		font-size: 48px;
+		    position: relative;
+    left: 170px;
+    font-size: 48px;
+    top: -22px;
+
 	}
 	.thread_status {
 		font-family: "Material Icons";
@@ -90,7 +115,7 @@
 		position: relative;
 		float: right;
 		left: -24px;
-		top: 100px;
+		top: 72px;
 	}
 	#new_thread {
 		z-index: 49;
@@ -156,9 +181,9 @@
 		border-color: transparent;
 	}
 	.chat_thread_header_btn{
-		font-size: 96px;
-		top:16px;
-		left:-16px;
+		    width: 96px;
+		    right: 12px;
+    top: 10px;
 	}
 	#chat_title {
 		position: relative;
@@ -180,10 +205,10 @@
 		top: -10px;
 	}
 	#thread_bubbles {
-		position: absolute;
-		top: 64px;
-		height: calc(100% - 272px);
-		overflow: auto;
+		    position: absolute;
+    top: 164px;
+    height: calc(100% - 350px);
+    overflow: auto;
 	}
 	.bubble_container {
 		position: relative;
@@ -306,17 +331,25 @@
 	.contact_icon {
 		position: relative;
 		width: 128px;
+		height: 128px;
 		left: 8px;
 		top: 16px;
 	}
 
 	.contact_name {
 		position: relative;
-		left: 16px;
-		top: -16px;
+		    left: 32px;
+    top: -24px;
 		font-size: 72px;
 	}
-
+	.contact_delete {
+	    width: 128px;
+    	height: 128px;
+	}
+	.contact_delete_icon{
+		 width: 128px;
+    	height: 128px;
+	}
 	.contact_status {
 		font-family: "Material Icons";
 		font-size: 48px;

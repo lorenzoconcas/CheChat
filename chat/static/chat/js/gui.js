@@ -105,7 +105,10 @@ function openCECPanel(mode) {
         $("#cec_startchat").hide();
          $("#contacts_search_box").css("visibility", "visible");
         $("#contacts_search_btn").css("visibility", "visible");
-         $("#contacts_list").css("top", "10px");
+        if(isMobile)
+             $("#contacts_list").css("top", "160px");
+        else
+             $("#contacts_list").css("top", "10px");
     }
 }
 

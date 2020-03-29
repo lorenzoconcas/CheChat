@@ -25,11 +25,12 @@
             </div>
 
             <div id="navbar_section_profile" class="navbar_section">
-                <a id="logout" href="logout" onmouseover="tooltip('tooltip_exit', 1)" onmouseleave="tooltip('tooltip_exit', 0)"></a>
-                <span id="tooltip_exit" class="tooltip">Premi per fare il logout</span>
-                <img id="user_icon" onmouseover="tooltip('tooltip_edit_profile', 1)" onmouseleave="tooltip('tooltip_edit_profile', 0)" src="{{ user_icon }}" alt="{{ name_to_show }}">
                 <a id="user_name" onmouseover="tooltip('tooltip_edit_profile', 1)" onmouseleave="tooltip('tooltip_edit_profile', 0)">{{ name_to_show }}</a>
                 <span id="tooltip_edit_profile" class="tooltip">Quello sei tu</span>
+                <img id="user_icon" onmouseover="tooltip('tooltip_edit_profile', 1)" onmouseleave="tooltip('tooltip_edit_profile', 0)" src="{{ user_icon }}" alt="{{ name_to_show }}">
+
+                <span id="tooltip_exit" class="tooltip">Premi per fare il logout</span>
+                <a id="logout" href="logout" onmouseover="tooltip('tooltip_exit', 1)" onmouseleave="tooltip('tooltip_exit', 0)"></a>
             </div>
 
         </navbar>
@@ -60,7 +61,7 @@
                         <input class="contact_checkbox" id="c_{{ contact.contatto.id }}" type="checkbox">
                         <img   class="contact_icon" id="contact_icon_{{ contact.contatto.id }}" src="{% static 'chat/icons/user_icon_1.png' %}" alt="username">
                         <label class="contact_name">{{ contact.contatto }}</label>
-                        <button class="contact_delete" onclick="removeFromContacts({{ contact.contatto.id }})"></button>
+                        <button class="contact_delete" onclick="removeFromContacts({{ contact.contatto.id }})"><img class="contact_delete_icon" src="{%  static 'chat/icons/remove_contact.png' %}"></button>
                     </div>
                 {% endfor %}
             </div>

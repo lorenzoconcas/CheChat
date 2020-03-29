@@ -20,13 +20,13 @@ a:link {
 	position: relative;
 	width: 32px;
 	left: 16px;
-	top: 8px;
+
 }
 
 #navbar_title {
 	position: relative;
 	padding-left: 10px;
-	top: -1px;
+
 	left: 16px;
 	font-family: "Libel Suit", sans-serif;
 	font-size: 20px;
@@ -71,7 +71,7 @@ a:link {
 	text-align: left;
 	float: right;
 	left: -24px;
-	top: 14px;
+
 	cursor: pointer;
 }
 
@@ -81,7 +81,7 @@ a:link {
 	text-align: left;
 	float: right;
 	left: -20px;
-	top: 6px;
+
 	    border-style: solid;
     border-radius: 256px;
     border-width: 0.5px;
@@ -100,8 +100,17 @@ a:link {
 }
 .navbar_section{
 	position: absolute;
-	width: 50%;
+
 	height: 48px;
+	    display: -ms-flexbox;
+    display: -webkit-flex;
+    display: flex;
+
+    -ms-flex-align: center;
+    -webkit-align-items: center;
+    -webkit-box-align: center;
+
+    align-items: center;
 }
 
 #navbar_section_logo{
@@ -532,15 +541,15 @@ a:link {
 	border-color: transparent;
 }
 #contacts_search_box{
-	width: calc(100% - 112px);
-	position: relative;
-	left:20px;
-	top:8px;
+	    width: calc(100% - 96px);
+    position: relative;
+    left: 8px;
+    top: 8px;
 }
 #contacts_search_btn{
 	position: relative;
 	top:12px;
-	left:20px;
+	left: 12px;
 }
 #contacts_list {
 	position: relative;
@@ -598,16 +607,17 @@ a:link {
 	padding: 4px;
 }
 .contact_delete{
-	position: relative;
-    float: right;
-    font-family: "Material Icons";
-    font-size: 20px;
-    left: -20px;
-    top: 3px;
+	    float: right;
+    right: 8px;
+
     border-radius: 64px;
-    padding: 4px;
     border-color: transparent;
-    color: #505050;
+    background: transparent;
+    position: fixed;
+}
+.contact_delete_icon{
+	width: 32px;
+	height: 32px;
 }
 .online{
 	background-color: transparent;
@@ -669,7 +679,7 @@ a:link {
 
 	float: right;
 	left: -16px;
-	top: 12px;
+
 	cursor: pointer;
 }
 #logout:hover{

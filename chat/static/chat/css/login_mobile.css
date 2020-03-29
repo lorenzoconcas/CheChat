@@ -31,6 +31,7 @@
     }
     #access_text{
           font-size: 80px;
+
     }
     #greeting_message{
         visibility: hidden;
@@ -72,11 +73,11 @@
         background: transparent;
     }
     #chat_logo{
-        width: 200px;
+        width: 50%;
         top: calc(50% - 100px);
     }
     #access_text{
-        font-size: 32px;
+        font-size: 96px;
         position: relative;
         top:32px;
     }
@@ -84,25 +85,25 @@
 
     }
     #register{
-        font-size: 16px;
+        font-size: 32px;
     }
     .input, .button{
          margin-top:20px;
-         padding: 15px;
-         font-size: 16px;
+         padding: 32px;
+         font-size: 48px;
          width: 80%;
-         border-radius: 32px;
+         border-radius: 256px;
     }
      .button{
          width:30%;
      }
      #footer_text{
          position: relative;
-         height: 16px;
-         top: calc(100% - 24px);
-         width: 100%;
-         text-align: center;
-         font-size: 16px;
+          height: 16px;
+          top: calc(100% - 64px);
+          width: 100%;
+          text-align: center;
+         font-size: 48px;
      }
 
 }
