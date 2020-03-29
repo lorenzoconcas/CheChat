@@ -69,14 +69,6 @@ function toggleTheme() {
 
     setCookie("darkmode", dark_mode, 365*75);
 
-
-
-
-
-
-
-    // if (isMobile)
-    //     B4A.CallSub('darkMode', true, dark_mode + "")
 }
 
 //si occupa di aprire il pannello dei contatti, che può essere aperto in modalità rubrica o in modalità nuova chat
@@ -131,7 +123,8 @@ function hideInputPanel(){
 }
 
 //restituisce l'elemento da aggiungere nella barra laterale delle chat
-function getThreadItem(chat_name, id) {
+function getThreadItem(chat_name, id, icon_path) {
+
     let div = document.createElement("div");
     let img = document.createElement("img");
     let name = document.createElement("label");
@@ -139,7 +132,9 @@ function getThreadItem(chat_name, id) {
     let preview = document.createElement("label");
 
     $(div).addClass("chat_thread");
-    $(img).attr("src", "/static/chat/icons/generic_user.png"); //modificare con icona gruppi
+
+    img.id = "thread_icon_"+id;
+    img.src = icon_path;
     $(img).addClass("thread_icon")
     $(name).text(chat_name);
 

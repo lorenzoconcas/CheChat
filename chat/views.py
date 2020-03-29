@@ -1,11 +1,9 @@
 import json
 from django.core import exceptions
-from django.db.models import Model, QuerySet
 from django.http import HttpResponse
 from django.shortcuts import render, redirect
 from chat.models import *
 from chat.utils import *  # importa tutte le funzioni dal file utils.py
-from django.template import RequestContext
 
 
 # Create your views here.

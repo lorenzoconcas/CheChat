@@ -3,6 +3,7 @@ let dark_mode = false;
 let currentChat = 0;
 let unreaded_messages = 0;
 let adding_partecipant = false;
+let open_new_thread = false;
 function setup() {
     //calcolo se ci troviamo su un dispositivo mobile o a vista singola
     isMobile = $("#user_name").css("visibility") == "hidden" ? true : false;
@@ -286,10 +287,8 @@ function startChat(){
 
                 if (data[0].result == "ok") {
                     closePanel("chat_and_contacts_panel");
+                    open_new_thread = true;
 
-                    // la nuova chat viene aggiunta alla lista da un messaggio websocket
-                    //$("#thread_list").append(getThreadItem(data[0].name, data[0].id)); //questo è ormai inutile
-                    openThread(data[0].id);
                 }
             }
         });
@@ -392,7 +391,7 @@ function setContactIcon(userID){
 
 
 function putAllIcons(){
-    console.log("Putting icons");
+
      $(".chat_thread").each(function (index) {
         let id = $(this).attr('id');
         id = id.replace("thread_", "");

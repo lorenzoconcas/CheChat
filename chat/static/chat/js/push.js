@@ -14,18 +14,23 @@ push_socket.onopen = function() {
     askForMessages();
 };
 //qui gestiamo i dati ricevuti
+
 push_socket.onmessage = function(e) {
     let n;
-    let msg = JSON.parse(e.data)
+
+    let msg = JSON.parse(e.data);
 
     switch(msg.type){
         case 'new_chat':{
             notification_sound.play();
-            let new_thread_div = getThreadItem(msg.name, msg.id)
-            $("#thread_list").prepend(new_thread_div);
+            let icon = msg.thread_icon;
 
-            $("#thread_list").prepend($("#search_seaparator"));
-            $("#thread_list").prepend($("#search_container"));
+            let new_thread_div = getThreadItem(msg.name, msg.id, icon)
+
+            $("#thread_list").prepend(new_thread_div);
+            if(open_new_thread)
+                openThread(msg.id);
+                 open_new_thread = false;
             break;
         }
         case 'new_message': {
