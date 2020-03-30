@@ -6,7 +6,6 @@ import json
 class PushMessages(WebsocketConsumer):
     def connect(self):
         self.accept()
-        # async_to_sync(self.channel_layer.group_add)("push", self.channel_name)
 
     def disconnect(self, close_code):
         pass
@@ -14,7 +13,7 @@ class PushMessages(WebsocketConsumer):
     def receive(self, text_data):
         session = self.scope["session"]
         current_user = session['user_id']
-        print(current_user)
+
         try:
             chat_partecipanti = Partecipanti.objects.filter(contatto_id=current_user) # le chat a cui partecipa l'utente
         except models.ObjectDoesNotExist:
@@ -37,24 +36,20 @@ class PushMessages(WebsocketConsumer):
                     if not contiene_msg and ultimo is not None and ultimo.mittente.id is not None:
                         # se non l'abbiamo fatto
                         contiene_msg = True
-                        if current_user == ultimo.mittente.id:
-                            is_inviato = 'True'
-                            mittente = ""
-                        else:
+                        if not current_user == ultimo.mittente.id:
                             is_inviato = 'false'
                             mittente = str(ultimo.mittente)
+                            notifica = json.dumps({  # prepariamo il messaggio per il client
+                                'type': 'new_message',
+                                'chat_id': ultimo.chat.id,
+                                'mittente': mittente,
+                                'dataora': ultimo.dataora.strftime("%Y-%m-%d %H:%M:%S"),
+                                'contenuto': ultimo.contenuto,
+                                'inviato':  is_inviato
 
+                             })
+                            self.send(notifica)
                         update = True  # al prossimo ciclo controlliamo se ci sono nuovi messaggi
-                        notifica = json.dumps({  # prepariamo il messaggio per il client
-                            'type': 'new_message',
-                            'chat_id': ultimo.chat.id,
-                            'mittente': mittente,
-                            'dataora': ultimo.dataora.strftime("%Y-%m-%d %H:%M:%S"),
-                            'contenuto': ultimo.contenuto,
-                            'inviato':  is_inviato
-
-                         })
-                        self.send(notifica)
                     else:
                         update = True  # significa che la chat non è ancora stata notificata
 
@@ -85,6 +80,9 @@ class PushMessages(WebsocketConsumer):
                                 'name': last_chat.nome,
                                 'thread_icon': thread_icon
                             })
-                    self.send(notifica)
+                    if not last_chat.creatore == user:  # se è stata creata dall'utente è già nella sua list
+                        # questo rimuove la sincronizzazione delle chat fra dispositivi,
+                        # ma è sicuro che la chat venga aggiunta graficamente
+                        self.send(notifica)
                     c_p_count = len(chat_partecipanti)  # lo aggiorno in modo da non avere
                     # conflitti con la cancellazione delle chat

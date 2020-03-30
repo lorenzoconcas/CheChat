@@ -19,44 +19,29 @@ push_socket.onmessage = function(e) {
     let n;
 
     let msg = JSON.parse(e.data);
-
+    console.log(msg);
     switch(msg.type){
         case 'new_chat':{
+            console.log("nuova chat");
             notification_sound.play();
             let icon = msg.thread_icon;
 
             let new_thread_div = getThreadItem(msg.name, msg.id, icon)
 
             $("#thread_list").prepend(new_thread_div);
-            if(open_new_thread)
-                openThread(msg.id);
-                 open_new_thread = false;
-            break;
+
         }
         case 'new_message': {
+            console.log("nuovo msg");
             $("#thread_preview_" + msg.chat_id).text(msg.contenuto)
             $("#thread_status_" + msg.chat_id).text("");
             if(msg.inviato == false){
                 notification_sound.play();
             }
 
-            let divElement;
-            if (currentChat == msg.chat_id) {
-                divElement = getBubble(msg);
-                $("#thread_bubbles").append(divElement).append("<br>");
 
-                let curHeight = $(divElement).css("height");
-                $(divElement).css("height", "0");
-                $(divElement).css("width", "0");
-                $("#thread_bubbles").animate({
-                    scrollTop: $('#thread_bubbles').prop("scrollHeight")
-                }, 1000);
-                $(divElement).animate({
-                    width: "45%",
-                    height: $(divElement).get(0).scrollHeight
-                }, 250, function () {
-                    $(this).height('auto');
-                });
+            if (currentChat == msg.chat_id) {
+                addBubble(msg);
             } else {
 
                 let new_thread_title = "";

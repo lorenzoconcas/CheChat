@@ -37,25 +37,6 @@ let csrfcookie = function() {
     return cookieValue;
 };
 
-function getPersonalID() {
-    $.ajax({
-        type: "POST",
-        url: "client_reqs/",
-        data: {
-            'req': 'personal_id'
-        },
-        dataType: 'json',
-        beforeSend: function(request, settings) {
-            if (!(/^http:.*/.test(settings.url) || /^https:.*/.test(settings.url))) {
-                request.setRequestHeader("X-CSRFToken", csrfcookie());
-            }
-        },
-        success: function(data) {
-            B4A.CallSub('SetID', false, data)
-        },
-    });
-}
-
 function sendMessage() {
     let msg = document.getElementById("message_box");
     if (msg.value !== '') {
@@ -76,8 +57,11 @@ function sendMessage() {
                // console.log(data)
             },
         });
-
-        // addBubble(msg.value);
+        /*
+         "type": "new_message","chat_id": "ultimo.chat.id,""mittente": "", "contenuto", "inviato":  "True"
+        * */
+        let bubble = JSON.parse('[{"type": "new_message", "mittente": "", "contenuto" : "'+ msg.value +'", "inviato":"True"}]');
+        addBubble(bubble[0]);
          $("#thread_preview_"+currentChat).text("Tu: "+msg.value.substring(0, 20));
         msg.value = '';
     }
@@ -105,11 +89,12 @@ function openThread(chat_id) {
              $(".thread_preview").css("color", "black");
         }
 
-        $("#chat_title").text($("#thread_title_" + chat_id).text());
+
         $("#thread_" + chat_id).css("background", "dodgerblue");
         $("#thread_title_" + chat_id).css("color", "white");
         $("#thread_preview_" + chat_id).css("color", "white");
     }
+     $("#chat_title").text($("#thread_title_" + chat_id).text());
     currentChat = chat_id;
 
     let size = notifications.length;
@@ -128,6 +113,7 @@ function openThread(chat_id) {
     document.getElementById("chat_user_icon").src = $("#thread_icon_"+currentChat).attr("src");
     unreaded_messages > 0 ? document.title = "Nuovo messaggio (" + unreaded_messages + ")" : document.title = "ISW Chat"
     $("#thread_bubbles").empty();
+    $("#chat").append("<br>");
     $("#chat").append("<br>");
     $("#chat").append("<br>");
     $("#chat").append("<br>");
@@ -195,6 +181,11 @@ function addContact() {
                 let img = document.createElement("img");
                 let name = document.createElement("label");
                 let del_btn = document.createElement("button");
+                let del_img = document.createElement("img");
+
+
+                $(del_img).addClass("contact_delete_icon");
+                del_img.src = "/static/chat/icons/remove_contact.png"
 
                 $(div).addClass("contact_element");
                 $(checkbox).addClass("contact_checkbox");
@@ -206,7 +197,7 @@ function addContact() {
                 $(name).text(data[0].name);
                 $(name).addClass("contact_name");
                 $(del_btn).addClass("contact_delete");
-                $(del_btn).text("")
+                $(del_btn).append(del_img);
 
                 $(div).append(checkbox);
                 $(checkbox).hide();
@@ -287,7 +278,14 @@ function startChat(){
 
                 if (data[0].result == "ok") {
                     closePanel("chat_and_contacts_panel");
-                    open_new_thread = true;
+                     let icon = data[0].icon;
+                     let chat_name =  data[0].chat_name;
+                     let chat_id = data[0].id;
+                    let new_thread_div = getThreadItem(chat_name, chat_id, icon)
+
+                    $("#thread_list").prepend(new_thread_div);
+                     openThread(chat_id);
+
 
                 }
             }

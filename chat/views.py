@@ -117,7 +117,10 @@ def home(request):
         user_icon = 'static/chat/icons/user_icon_' + str(icon_id) + '.png'
 
     # qui ci occupiamo di caricare tutte le chat dell'utente (quelle nella barra laterale)
-    user = Utente.objects.get(email=mail)
+    try:
+        user = Utente.objects.get(email=mail)
+    except models.ObjectDoesNotExist:
+        return redirect("/logout")
 
     chats = getorderedchats(user)
     # carichiamo i contatti dell'utente, se non esistono elementi restituiamo un array vuoto
@@ -200,7 +203,16 @@ def client_requests(request):
                     except exceptions.ObjectDoesNotExist:
                         print("L'utente sta cercando di aggiungere un partecipante ad una conversazione che non esiste")
             c = createchat(u, ids)
-            resp = '[{"result":"ok","id":"' + str(c.id) + '"}]'
+            if len(ids) > 1:
+                icon = '/static/chat/icons/user_group'
+            else:
+                other = getotheruserinchat(c, u)
+                ic_id = other.id % 5
+                if ic_id == 0:
+                    ic_id = 1
+                icon = '/static/chat/icons/user_icon_' + str(ic_id) + ".png"
+            resp = '[{"result":"ok","id":"' + str(c.id) + '", "icon":"' + icon + '", "chat_name":"' + \
+                   c.nome.replace(u.nome + " " + u.cognome, "") + '"}]'
         elif req == 'delete_chat':
             deletechat(user_id, request.POST['chat_id'])
             resp = '[{"delete":"ok"}]'

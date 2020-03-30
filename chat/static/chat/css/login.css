@@ -54,6 +54,12 @@ a:link{
    ' background: linear-gradient(90deg, rgba(255,255,255,1) 0%, rgba(0,0,0,1) 51%, rgba(255,255,255,1) 100%);
 
 }
+#response_message{
+        color: #8e0000;
+}
+#invalid_data_message{
+    color: #8e0000;
+}
 footer{
     position: absolute;
     height: 24px;

@@ -170,8 +170,9 @@ function closeChatThread() {
         $("#new_thread").toggle(250);
         $(".chat_thread").css("background", "transparent");
         $("#thread_bubbles").empty();
-        currentChat = 0;
+
     }
+      currentChat = 0;
 }
 
 //usato dall'app mobile (opzionale)
@@ -187,54 +188,29 @@ function injectNativeAppCSS(){
     document.getElementsByTagName( "head" )[0].appendChild( link );
 }
 
-function addBubble(message){
-        let br = document.createElement("br");
-        let msg_text = document.createElement("label");
-        msg_text.textContent = message;
-        let msg_bubble = document.createElement("div");
+function addBubble(msg){
+    let divElement;
+    let child_count = $("#thread_bubbles").children().length;
 
-        msg_bubble.appendChild(msg_text);
-        $(msg_bubble).addClass("lastElement");
-        let target = document.getElementById("thread_bubbles");
+    if (child_count === 0) {
+        $("#thread_bubbles").append("<br>");
+        $("#thread_bubbles").append("<br>");
+        $("#thread_bubbles").append("<br>");
+    }
 
-        let bubble_clone = $(msg_bubble).clone();
+    divElement = getBubble(msg);
+    $("#thread_bubbles").append(divElement).append("<br>");
 
-        $(bubble_clone).addClass("bubble_container");
-        $(bubble_clone).addClass("outgoing");
-        if (isMobile) {
-            $(bubble_clone).appendTo(target);
-            target.appendChild(br).scrollIntoView(true);
-        } else {
-           // let bcW = $(bubble_clone).css("width");
-            $(bubble_clone).addClass("bubble_container");
-            $(bubble_clone).addClass("outgoing");
-            $(bubble_clone).css("opacity", "0");
-            $(bubble_clone).appendTo(target);
-            target.appendChild(br).scrollIntoView(true);
-
-            $(msg_bubble).addClass("moving_bubble");
-
-            $("#send_box").append(msg_bubble);
-
-            $(msg_bubble).animate({
-                top: "-42px",
-                left: "52%",
-                width: "-=240px",
-                height: "-=6px",
-
-            }, 250, "linear", function() {
-                $(bubble_clone).animate({
-                        opacity: 1,
-                    },
-                    250,
-                    "linear",
-                    function() {
-                        $(msg_bubble).fadeTo(350, 0);
-
-                        target.appendChild(br).scrollIntoView(true);
-                        $(msg_bubble).remove();
-                    }
-                )
-            });
-        }
+    let curHeight = $(divElement).css("height");
+    $(divElement).css("height", "0");
+    $(divElement).css("width", "0");
+    $("#thread_bubbles").animate({
+        scrollTop: $('#thread_bubbles').prop("scrollHeight")
+    }, 1000);
+    $(divElement).animate({
+        width: "45%",
+        height: $(divElement).get(0).scrollHeight
+        }, 250, function () {
+            $(this).height('auto');
+        });
 }
