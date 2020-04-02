@@ -476,8 +476,11 @@ a:link {
 	visibility: hidden;
     position: absolute;
     left: 16px;
-    top: 96px;
     font-size: 12px;
+    top: 90px;
+    font-size: 12px;
+    font-family: "Product Sans", sans-serif;
+	color:red;
 }
 #input_panel_text{
 	top: 32px;

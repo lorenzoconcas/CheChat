@@ -73,8 +73,9 @@ function toggleTheme() {
 
 //si occupa di aprire il pannello dei contatti, che può essere aperto in modalità rubrica o in modalità nuova chat
 function openCECPanel(mode) {
+     $("#input_panel_error").css("visibility", "hidden");
     openPanel("chat_and_contacts_panel");
-
+    $("#contacts_search_box").text("");
     if (mode) { //se nuova chat
         $("#cec_title").text("Nuova Chat");
         $("#contacts_list").css("height", "calc(100% - 98px)");

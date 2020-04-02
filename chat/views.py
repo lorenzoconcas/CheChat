@@ -204,7 +204,7 @@ def client_requests(request):
                         print("L'utente sta cercando di aggiungere un partecipante ad una conversazione che non esiste")
             c = createchat(u, ids)
             if len(ids) > 1:
-                icon = '/static/chat/icons/user_group'
+                icon = '/static/chat/icons/user_group.png'
             else:
                 other = getotheruserinchat(c, u)
                 ic_id = other.id % 5

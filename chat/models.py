@@ -60,7 +60,7 @@ class Messaggio(models.Model):
     contenuto = models.CharField(max_length=2000)
 
     def __str__(self):
-        return str(self.mittente) + " dice: " + self.contenuto + ", nella chat: " + self.chat.nome
+        return str(self.mittente) + " dice : " + self.contenuto + ", nella chat : " + self.chat.nome
 
     class Meta:
         verbose_name = 'Messaggio'
@@ -90,11 +90,9 @@ def createchat(utente, id_utenti):
         altro_u = Utente.objects.get(id=id_utenti[0])
         chat_name = str(utente) + " " + str(altro_u)
     else:
-        chat_name = "Gruppo: "
+        chat_name = "Gruppo : "
         for i in id_utenti:
-         #   print(chat_name)
             chat_name = chat_name + str(Utente.objects.get(id=i)) + ", "
-         #   print(chat_name)
         chat_name = chat_name + str(utente)
 
     c = Chat(creatore=utente, nome=chat_name)
@@ -102,7 +100,6 @@ def createchat(utente, id_utenti):
     p = Partecipanti(chat=c, contatto=utente)
     p.save()
     for i in id_utenti:
-      #  print(i)
         u = Utente.objects.get(id=i)
         p = Partecipanti(chat=c, contatto=u)
         p.save()
@@ -158,7 +155,7 @@ def getchat(chat_id):
         return ""
 
 
-# restituisce le chat a cuipartecipa l'utente (già col nome filtrato)
+# restituisce le chat a cui partecipa l'utente (già col nome filtrato)
 def getchats(user):
     threads = Partecipanti.objects.filter(contatto=user)
     for t in threads:

@@ -64,6 +64,7 @@ function sendMessage() {
         addBubble(bubble[0]);
          $("#thread_preview_"+currentChat).text("Tu: "+msg.value.substring(0, 20));
         msg.value = '';
+        $("#thread_"+currentChat).prependTo("#thread_list");
     }
 
 }
@@ -158,6 +159,8 @@ function loadMessages(chat_id) {
 //utilizzate per salvare un nuovo contatto in rubrica
 function addContact() {
     let mail = $("#contacts_search_box").val();
+    if(mail === "")
+        return;
     $.ajax({
         type: "POST",
         url: "client_reqs/",
@@ -207,7 +210,8 @@ function addContact() {
 
                 $(div).attr("id", "contact_"+data[0].id);
                 $("#contacts_list").append(div);
-
+                  if($("#contacts_list").css("top") !== "10px")
+                    $("#contacts_list").css("top", "10px");
             }
             else{
                 //<label id="input_panel_error">Errore</label>
@@ -215,6 +219,8 @@ function addContact() {
                 $("#input_panel_error").show();
                 $("#input_panel_error").css("visibility", "visible");
                 $("#input_panel_error").text(data[0].error);
+                if($("#contacts_list").css("top") !== "32px")
+                    $("#contacts_list").css("top", "32px");
             }
         },
     });
