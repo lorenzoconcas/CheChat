@@ -40,7 +40,7 @@ class Chat(models.Model):
         return self.nome + ",  creata da " + str(self.creatore)
 
 
-class Partecipanti(models.Model):  # i partcipanti di una chat
+class Partecipanti(models.Model):  # i partecipanti di una chat
     chat = models.ForeignKey(to=Chat, on_delete=models.CASCADE)
     contatto = models.ForeignKey(to=Utente, on_delete=models.CASCADE)
 
@@ -60,7 +60,7 @@ class Messaggio(models.Model):
     contenuto = models.CharField(max_length=2000)
 
     def __str__(self):
-        return str(self.mittente) + " dice : " + self.contenuto + ", nella chat : " + self.chat.nome
+        return str(self.mittente) + " dice: " + self.contenuto + ", nella chat: " + self.chat.nome
 
     class Meta:
         verbose_name = 'Messaggio'
@@ -90,11 +90,11 @@ def createchat(utente, id_utenti):
         altro_u = Utente.objects.get(id=id_utenti[0])
         chat_name = str(utente) + " " + str(altro_u)
     else:
-        chat_name = "Gruppo : "
+        chat_name = "Gruppo: "
         for i in id_utenti:
-            print(chat_name)
+         #   print(chat_name)
             chat_name = chat_name + str(Utente.objects.get(id=i)) + ", "
-            print(chat_name)
+         #   print(chat_name)
         chat_name = chat_name + str(utente)
 
     c = Chat(creatore=utente, nome=chat_name)
@@ -102,7 +102,7 @@ def createchat(utente, id_utenti):
     p = Partecipanti(chat=c, contatto=utente)
     p.save()
     for i in id_utenti:
-        print(i)
+      #  print(i)
         u = Utente.objects.get(id=i)
         p = Partecipanti(chat=c, contatto=u)
         p.save()
@@ -182,7 +182,7 @@ def getorderedchats(user):
 
 def getuser(user_id):
     try:
-        u = Utente.objects.get(id=id)
+        u = Utente.objects.get(id=user_id)
         return u
     except models.ObjectDoesNotExist:
         return ""
