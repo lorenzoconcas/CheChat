@@ -1,5 +1,7 @@
 from django.test import TestCase, Client
 from chat.models import *
+
+
 class ViewsTestCase(TestCase):
     def setUp(self):
         Utente.objects.create(nome="Marco", email="marco@iswchat.com",  password="1234", cognome="Rossi")
@@ -57,3 +59,10 @@ class ViewsTestCase(TestCase):
                                         })
             session = self.client.session
             self.assertEqual(session['validdata'], False)
+
+    def test_logout(self):
+        # controlliamo che venga rimandato alla login
+        # e che la sessione non esista più
+        response = self.client.get("/logout")
+        self.assertEqual(response.status_code, 302)
+        self.assertEqual(hasattr(response, 'session'), False)
