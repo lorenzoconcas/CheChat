@@ -11,25 +11,12 @@ body {
 
 	border-bottom-color: #202020;
 }
-
-#navbar>a:link {
-	color: white;
-}
-
-#navbar>a {
-	color: white;
-}
 #navbar_title {
 	color:white;
-}
-.navbar_button{
-	background:	#3e3d3d;
-	color: white;
 }
 #chat_hidden {
 	color: white;
 }
-/*Thred list look*/
 
 #box_left {
 	border-top-color: #212121;
@@ -62,18 +49,12 @@ body {
 
 }
 
-#search_box {
-	background: rgba(128, 128, 128, 0.25);
-}
-
 .generic_btn {
 	color: white;
 	background: dodgerblue;
 	border-color: dodgerblue;
 	border-radius: 32px;
 }
-
-/*Thread view*/
 
 #chat {
 	border-top-style: solid;
@@ -94,38 +75,11 @@ body {
 	color:white;
 }
 
-#chat_user_status {
-	color: green;
-}
 .chat_thread_header_btn{
 	color: white;
 	cursor: pointer;
 }
 
-.outgoing {
-	color: white;
-	background: dodgerblue;
-}
-
-.incoming {
-	background: #07253a;
-	color: #e8e8e8;
-}
-
-.msg_status {
-	color: white;
-	background-color: darkgrey;
-}
-
-#send_box_bkg {
-
-	background: rgba(30, 30, 30, 0.25);
-
-	backdrop-filter: blur(8px);
-	border-top-style: solid;
-	border-top-width: 0.5px;
-	border-color: black;
-}
 .thread_title {
 	color:white;
 }
@@ -183,14 +137,7 @@ body {
 .contact_name {
 	color:white;
 }
-.online{
-	background-color: transparent;
-	color : limegreen;
-}
-.offline{
-	background-color: transparent;
-	color : #303030;
-}
+
 #personal_info_panel{
 	border-color: #07253a;
 	box-shadow: 0px 0px 50px rgb(93, 93, 93);

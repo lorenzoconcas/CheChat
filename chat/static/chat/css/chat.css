@@ -32,40 +32,7 @@ a:link {
 	font-size: 20px;
 	font-weight: bold;
 }
-.navbar_button{
-	font-family: "Material Icons";
-	top:7px;
-	font-size: 24px;
-	position: relative;
-	background:	white;
-	border-style: solid;
-	border-width: 0.5px;
-	border-radius: 4px;
-	border-color: transparent;
-	box-shadow: 0px 1px 13px 0px rgba(0, 0, 0, 0.35);
-	padding: 4px 12px;
 
-}
-#theme_mode_btn{
-	left: calc(50% - 12px);
-	cursor: pointer;
-}
-#open_contacts_btn{
-
-	position: absolute;
-    top: calc(100% - 96px);
-
-    left: 0;
-	font-family: "Material Icons", sans-serif;
-  /*  height: 49px;
-    background: black;
-    border-style: solid;
-    border-radius: 16px 16px 0 0;
-    color: white;
-
-    font-size: 24px;
-    text-align: center;*/
-}
 #user_name {
 	position: relative;
 	text-align: left;
@@ -102,7 +69,7 @@ a:link {
 	position: absolute;
 
 	height: 48px;
-	    display: -ms-flexbox;
+	display: -ms-flexbox;
     display: -webkit-flex;
     display: flex;
 
@@ -116,9 +83,6 @@ a:link {
 #navbar_section_logo{
 	left:0;
 }
-#navbar_section_buttons{
-	left:33.33333333333333333333333%;
-}
 #navbar_section_profile{
 	right:0;
 }
@@ -126,12 +90,10 @@ a:link {
 	color: black;
 }
 
-/*Thred list look*/
-
 #box_left {
 	position: absolute;
 	width: 33%;
-	left: 0px;
+	left: 0;
 	top: 48px;
 	height: calc(100% - 48px);
 }
@@ -174,7 +136,7 @@ a:link {
 	top: 16px;
 	border-style: solid;
     border-radius: 256px;
-    border-width: 0px;
+    border-width: 0;
     border-color: #1e90ff00;
     background: white;
 }
@@ -211,7 +173,7 @@ a:link {
 }
 
 .thread_status {
-	font-family: "Material Icons";
+	font-family: "Material Icons", sans-serif;
 	font-size: 16px;
 	position: relative;
 	float: right;
@@ -220,32 +182,8 @@ a:link {
 	padding: 4px;
 }
 
-#new_thread {
-	position: relative;
-	left: 16px;
-	top: 8px;
-}
-#search{
-	position: relative;
-	height: 24px;
-}
-#search_box {
-	position: relative;
-	left: 16px;
-	top: 4px;
-	height: 16px;
-	width: calc(100% - 140px);
-}
-
-#search_btn {
-	position: relative;
-	float: right;
-	left: -16px;
-	top: 8px;
-}
-
 .generic_btn {
-	font-family: "Material Icons";
+	font-family: "Material Icons", sans-serif;
 	font-size: 16px;
 	width: 32px;
 	height: 32px;
@@ -253,8 +191,6 @@ a:link {
     cursor: pointer;
 
 }
-
-/*Thread view*/
 
 #chat {
 	position: fixed;
@@ -308,15 +244,10 @@ a:link {
 	left: 8px;
 	border-style: solid;
     border-radius: 256px;
-    border-width: 0px;
+    border-width: 0;
     border-color: #1e90ff00;
 }
 
-#chat_user_status {
-	font-family: "Material Icons";
-	position: relative;
-	left: 24px;
-}
 .chat_thread_header_btn{
     font-size: 24px;
     position: relative;
@@ -329,12 +260,12 @@ a:link {
     width: 32px;
     border-style: solid;
     /* border-radius: 256px; */
-    border-width: 0px;
+    border-width: 0;
     border-color: #1e90ff00;
 
 }
 #thread_bubbles {
-	top:0px;
+	top:0;
 	height: calc(100% - 48px);
 	overflow: auto;
 	position: absolute;
@@ -357,20 +288,7 @@ a:link {
     -o-transition:all 0.3s ease-out;
     transition:all 0.3s ease-out;
 }
-.moving_bubble{
-	position:absolute;
-	left:8px;
-	z-index:1000;
-   	top: calc(50% - 22px);
-	height:24px;
-	width:calc(100% - 124px);
-	color:white;
-	background:dodgerblue;
 
-	padding:8px 16px;
-	border-style:solid;
-	border-radius: 32px 32px 0 32px;
-}
 .bubble_sender_name{
 	position: absolute;
 	width: calc(100% - 16px);
@@ -392,16 +310,6 @@ a:link {
 	border-radius: 0 16px 16px 16px;
 }
 
-.msg_status {
-	font-family: "Material Icons";
-	font-size: 8px;
-	float: right;
-	left: 128px;
-	top: 20px;
-	border-radius: 64px;
-	padding: 4px;
-}
-
 #send_box {
 	z-index: 16;
 	position: absolute;
@@ -412,7 +320,7 @@ a:link {
 }
 
 #send_btn {
-	font-family: "Material Icons";
+	font-family: "Material Icons", sans-serif;
 	z-index: 16;
 	position: relative;
 	float: right;
@@ -444,55 +352,25 @@ a:link {
 	height: calc(100% - 48px);
 	top: 150%;
 
-    left: 0px;
+    left: 0;
     width: 33%;
     border-style: solid;
-    border-width: 0px;
+    border-width: 0;
 
 	-webkit-transition:all 0.3s ease-out;
     -moz-transition:all 0.3s ease-out;
     -o-transition:all 0.3s ease-out;
     transition:all 0.3s ease-out;
-
-
-
 }
-#input_panel{
-	height: 100px;
-	z-index: 51;
 
-}
-#input_panel_title{
-	font-family: "Libel Suit", Serif;
-	position: absolute;
-	font-size: 24px;
-	padding-left: 24px;
-	padding-top: 4px;
-	padding-bottom: 4px;
-	top:8px;
-	/*on error show, panel increase +20px*/
-}
 #input_panel_error{
 	visibility: hidden;
     position: absolute;
     left: 16px;
     font-size: 12px;
     top: 90px;
-    font-size: 12px;
     font-family: "Product Sans", sans-serif;
 	color:red;
-}
-#input_panel_text{
-	top: 32px;
-    position: relative;
-    left: 8px;
-	width: calc(100% - 96px);
-}
-#input_panel_btn_confirm{
-	font-family: "Material Icons";
-	position: relative;
-    left: 12px;
-    top: 36px;
 }
 
 #cec_title {
@@ -511,26 +389,7 @@ a:link {
 	top: -24px;
 	left:-16px;
 }
-#cec_footer{
-	position: relative;
-	height: 32px;
-	text-align: left;
-	top: 10px;
-}
-#cec_new_contact_btn{
 
-	font-family: "Product Sans", serif;
-    background: rgba(220, 220, 220, 0.8);
-    border-color: transparent;
-    border-radius: 16px;
-    font-size: 16px;
-    top: 8px;
-	left: calc(50% - 76px);
-    position: relative;
-    backdrop-filter: blur(8px);
-    color: #565353;
-	padding: 4px 8px;
-}
 .panel_close{
 	z-index: 55;
 	font-family: "Material Icons", serif;
@@ -583,11 +442,10 @@ a:link {
 	left: 8px;
 	top: 3px;
     height: 32px;
-    left: 8px;
 
     border-style: solid;
     border-radius: 256px;
-    border-width: 0px;
+    border-width: 0;
     border-color: #1e90ff00;
     background: white;
 }
@@ -599,16 +457,7 @@ a:link {
 	top: -6px;
 }
 
-.contact_status {
-	position: relative;
-	float: right;
-	font-family: "Material Icons";
-	font-size: 24px;
-	left: -5px;
-	top: 4px;
-	border-radius: 64px;
-	padding: 4px;
-}
+
 .contact_delete{
 	    float: right;
     right: 8px;
@@ -622,14 +471,7 @@ a:link {
 	width: 32px;
 	height: 32px;
 }
-.online{
-	background-color: transparent;
-	color : limegreen;
-}
-.offline{
-	background-color: transparent;
-	color : #303030;
-}
+
 #personal_info_panel{
 	z-index: 51;
 	position: fixed;
@@ -658,7 +500,7 @@ a:link {
 	font-size: 24px;
 }
 #personal_info_panel_close{
-	font-family: "Material Icons";
+	font-family: "Material Icons", sans-serif;
 
 	position: absolute;
 	float:right;
@@ -674,7 +516,7 @@ a:link {
 
 }
 #logout{
-	font-family: "Material Icons";
+	font-family: "Material Icons", sans-serif;
 	font-size: 24px;
 
 
@@ -696,7 +538,7 @@ a:link {
 #tooltip_exit {
 	position: absolute;
 	float:right;
-	right:0px;
+	right:0;
 	top:40px;
 	width: 200px;
 }
@@ -707,20 +549,7 @@ a:link {
 	top:40px;
 	width: 150px;
 }
-#tooltip_theme{
-	position: absolute;
 
-	left:calc(50% + 48px);
-	top:46px;
-	width: 150px;
-}
-#tooltip_contacts{
-	position: absolute;
-
-	left:calc(50% + 0px);
-	top:46px;
-	width: 150px;
-}
 .tooltip{
 	visibility: hidden;
 	display: inline-block;
