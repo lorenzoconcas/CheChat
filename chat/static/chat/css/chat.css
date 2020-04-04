@@ -145,14 +145,14 @@ a:link {
 
 }
 #box_footer{
-	position: absolute;
-    width: 100%;
+	position: fixed;
+    width: 33%;
     left: 0;
-  height: 63.5px;
+  	height: 63.5px;
     top: calc(100% - 63.5px);
-	 display: flex;
-  align-items: center;
-  justify-content: center;
+	display: flex;
+  	align-items: center;
+  	justify-content: center;
 }
 .box_footer_btn{
 	background: transparent;

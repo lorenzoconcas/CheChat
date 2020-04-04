@@ -60,7 +60,7 @@ class UtenteTestCase(TestCase):
         self.assertEqual(str(self.c.creatore), str(self.ut2))
 
         self.assertTrue(Chat.objects.filter(creatore=self.ut3.id).exists())
-        self.assertEqual(self.d.nome, "Gruppo: " + str(self.ut1) + ", " + str(self.ut2) + ", " + str(self.ut3))
+        self.assertEqual(self.d.nome, "Gruppo : " + str(self.ut1) + ", " + str(self.ut2) + ", " + str(self.ut3))
         self.assertEqual(str(self.d.creatore), str(self.ut3))
 
     # controllo aggiunta di un membro da una chat

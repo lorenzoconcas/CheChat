@@ -1,7 +1,5 @@
 from django import template
 from chat.models import *
-
-
 register = template.Library()
 
 

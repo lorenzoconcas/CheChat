@@ -191,6 +191,9 @@ def getotheruserinchat(chat, current_user):
         if len(u) > 1:
             return "group"
         else:
-            return u[0].contatto
+            u_1 = u[0].contatto;
+            if u_1 is None:
+                return ""
+            return u_1
     except models.ObjectDoesNotExist:
         return ""

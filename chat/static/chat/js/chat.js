@@ -9,9 +9,7 @@ function setup() {
     isMobile = $("#user_name").css("visibility") == "hidden" ? true : false;
 
     $("#chat_title").text($("#chat_thread_1").text());
-    if (isMobile)
-        getPersonalID();
-
+   
     var x = document.cookie;
     dark_mode = getCookie("darkmode");
     toggleTheme();
