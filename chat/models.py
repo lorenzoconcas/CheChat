@@ -120,14 +120,6 @@ def getlastmessagecontent(chat):
         return ""
 
 
-def getlastmessage(chat):
-    msg_list = Messaggio.objects.filter(chat=chat)
-    try:
-        return msg_list.latest('dataora')
-    except models.ObjectDoesNotExist:
-        return ""
-
-
 def deletechat(user_id, chat_id):
     user = Utente.objects.get(id=user_id)
     target_chat = Chat.objects.get(id=chat_id)
