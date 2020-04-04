@@ -95,7 +95,6 @@ def home(request):
                 request.session.__setitem__("user_id", u.id)
             else:  # se non riesce rimandiamo al login, curandoci di settare il flag validdata a seconda del caso per
                 # mostrare l'errore solo se davvero necessario
-                print("login fallito")
                 if mail == '':
                     request.session.__setitem__("validdata", True)
                 else:
