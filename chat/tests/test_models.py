@@ -2,7 +2,7 @@ from django.test import TestCase
 from chat.models import *
 
 
-class UtenteTestCase(TestCase):
+class MoldesTestCase(TestCase): # <- modifica
 
     # creazione base test
     def setUp(self):
@@ -91,16 +91,17 @@ class UtenteTestCase(TestCase):
         except:
             self.assertTrue(True)
 
-    # controllo in quali chat è presente DA SISTEMARE
+    # controllo in quali chat è presente un utente DA SISTEMARE
     def test_getchats(self):
-        list = Partecipanti.objects.filter(contatto=self.ut1, chat=self.c)
+        list = Partecipanti.objects.filter(contatto=self.ut1)
         # da sistemare
-        # self.assertEqual(list, getchats(self.ut1))
+        #self.assertEqual(list, getchats(self.ut1))
+        print(list)
 
     # controllo invio messaggi DA SISTEMARE
-#    def test_sendmessage(self):
-        #self.assertEqual(str(Messaggio.objects.filter(chat=self.c, mittente=self.ut1)), "Marco Rossi dice: Ciao, nella chat: Antonio Verdi Marco Rossi")
-     #   print(str(Messaggio.objects.filter(chat=self.c, mittente=self.ut1)))
+    def test_sendmessage(self):
+        mess = Messaggio.objects.filter(chat=self.c, mittente=self.ut1)
+        self.assertEqual(mess[0].contenuto, "Ciao")
 
     # controllo contenuto dell'ultimo messaggio inviato
     def test_getlastmessagecontent(self):

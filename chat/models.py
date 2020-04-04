@@ -60,7 +60,7 @@ class Messaggio(models.Model):
     contenuto = models.CharField(max_length=2000)
 
     def __str__(self):
-        return str(self.mittente) + " dice : " + self.contenuto + ", nella chat : " + self.chat.nome
+        return str(self.mittente) + " dice: " + self.contenuto + ", nella chat: " + self.chat.nome
 
     class Meta:
         verbose_name = 'Messaggio'
