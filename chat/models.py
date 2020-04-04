@@ -29,7 +29,7 @@ class Rubrica(models.Model):
         verbose_name_plural = 'Rubriche'
 
     def __str__(self):
-        return "Contatto : " + str(self.contatto) + ", nella rubrica di " + str(self.owner)
+        return "Contatto: " + str(self.contatto) + ", nella rubrica di " + str(self.owner)
 
 
 class Chat(models.Model):
@@ -90,7 +90,7 @@ def createchat(utente, id_utenti):
         altro_u = Utente.objects.get(id=id_utenti[0])
         chat_name = str(utente) + " " + str(altro_u)
     else:
-        chat_name = "Gruppo : "
+        chat_name = "Gruppo: "
         for i in id_utenti:
             chat_name = chat_name + str(Utente.objects.get(id=i)) + ", "
         chat_name = chat_name + str(utente)
