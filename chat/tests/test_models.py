@@ -96,7 +96,8 @@ class MoldesTestCase(TestCase): # <- modifica
         list = Partecipanti.objects.filter(contatto=self.ut1)
         # da sistemare
         #self.assertEqual(list, getchats(self.ut1))
-        print(list)
+        print(str(list)) # stampa con andate a capo
+        # print(getchats(self.ut1))
 
     # controllo invio messaggi DA SISTEMARE
     def test_sendmessage(self):
