@@ -109,7 +109,14 @@ class MoldesTestCase(TestCase): # <- modifica
         self.assertNotEqual("Bye", getlastmessagecontent(self.c))
         self.assertEqual("", getlastmessagecontent(self.d))
 
-    #getorderedchats
+    # controllo ordine dell chat in base all'orario dell'ultimo messaggio
+    def test__getorderedchats(self):
+        threads = getorderedchats(self.ut1)
+        self.assertEqual(threads[0].chat, self.c)
+        sendmessage(self.ut1, "Hey", self.d)
+        threads = getorderedchats(self.ut1)
+        self.assertNotEqual(threads[0].chat, self.c)
+        self.assertEqual(threads[0].chat, self.d)
 
     #getotheruserinchat
 
