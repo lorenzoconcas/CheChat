@@ -83,21 +83,20 @@ class MoldesTestCase(TestCase): # <- modifica
             self.assertTrue(True)
 
     # controllo chat
-    def test_getchat(self):
-        self.assertEqual(getchat(self.c.id), self.c)
-        try:
-            self.assertEqual(getchat(0), self.c)
-            self.assertTrue(False)
-        except:
-            self.assertTrue(True)
 
     # controllo in quali chat è presente un utente DA SISTEMARE
     def test_getchats(self):
         list = Partecipanti.objects.filter(contatto=self.ut1)
-        # da sistemare
-        #self.assertEqual(list, getchats(self.ut1))
-        print(str(list)) # stampa con andate a capo
-        # print(getchats(self.ut1))
+        filtered_chat_list = getchats(self.ut1)
+        list_ids = []
+        filtered_ids = []
+        for l in list:
+            list_ids.append(l.chat_id)
+
+        for l in filtered_chat_list:
+            filtered_ids.append(l.chat_id)
+
+        self.assertEqual(list_ids, filtered_ids)
 
     # controllo invio messaggi DA SISTEMARE
     def test_sendmessage(self):

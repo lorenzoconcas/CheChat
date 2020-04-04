@@ -152,6 +152,8 @@ def getchats(user):
     threads = Partecipanti.objects.filter(contatto=user)
     for t in threads:
         if not t.chat.nome.startswith("Gruppo"):
+            # proviamo a togliere il nome se con la virgola e poi senza
+            t.chat.nome = t.chat.nome.replace(user.nome + " " + user.cognome + " ,", "")
             t.chat.nome = t.chat.nome.replace(user.nome + " " + user.cognome, "")
     return threads
 
