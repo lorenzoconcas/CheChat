@@ -123,7 +123,6 @@ class MoldesTestCase(TestCase): # <- modifica
         self.assertEqual(getotheruserinchat(self.c, self.ut1), self.ut2)
         self.assertEqual(getotheruserinchat(self.c, self.ut2), self.ut1)
         self.assertNotEqual(getotheruserinchat(self.c, self.ut1), self.ut3)
-
         self.assertEqual(getotheruserinchat(self.d, self.ut2), "group")
 
     # controllo login/logout
