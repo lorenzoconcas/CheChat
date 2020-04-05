@@ -182,12 +182,15 @@ def getuser(user_id):
 def getotheruserinchat(chat, current_user):
     try:
         u = Partecipanti.objects.filter(chat=chat).exclude(contatto=current_user)
-        if len(u) > 1:
+        u_len = len(u)
+        if u_len == 1:
+             u_1 = u[0].contatto
+             if u_1 is None:
+                 return ""
+             return u_1
+        elif u_len > 1:
             return "group"
         else:
-            u_1 = u[0].contatto;
-            if u_1 is None:
-                return ""
-            return u_1
+           return ""
     except models.ObjectDoesNotExist:
         return ""

@@ -84,7 +84,7 @@ class MoldesTestCase(TestCase): # <- modifica
 
     # controllo chat
 
-    # controllo in quali chat è presente un utente DA SISTEMARE
+    # controllo in quali chat è presente un utente
     def test_getchats(self):
         list = Partecipanti.objects.filter(contatto=self.ut1)
         filtered_chat_list = getchats(self.ut1)

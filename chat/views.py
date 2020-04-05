@@ -216,7 +216,7 @@ def client_requests(request):
             deletechat(user_id, request.POST['chat_id'])
             resp = '[{"delete":"ok"}]'
         elif req == 'personal_id':
-            resp = request.session['user_id']
+            resp = '[{"personal_id":"'+str(request.session['user_id'])+'"}]'
         elif req == 'get_all_messages':  # restituisce tutti i messaggi di una data conversazione
             chat_id = request.POST["chat_id"]
             try:
@@ -249,8 +249,6 @@ def client_requests(request):
                 resp = "sent"
             else:
                 resp = "non allowed"
-        elif req == 'search_chats':
-            resp = ''
         elif req == 'get_chat_icon':
             chat_id = request.POST['chat_id']
             chat = getchat(chat_id)

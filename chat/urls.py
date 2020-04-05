@@ -11,5 +11,6 @@ urlpatterns = [
     path('home', views.home, name="home"),
     path('logout', views.logout, name="logout"),
     # urls delle richieste json
-    url(r'^client_reqs/', views.client_requests),
+    # url(r'^client_reqs/', views.client_requests),
+    path('client_reqs', views.client_requests, name='c_req'),
 ]
