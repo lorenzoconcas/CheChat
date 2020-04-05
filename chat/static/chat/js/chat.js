@@ -8,9 +8,8 @@ function setup() {
     //calcolo se ci troviamo su un dispositivo mobile o a vista singola
     isMobile = detectMobile();//$("#user_name").css("visibility") == "hidden" ? true : false;
 
-    if(isMobile){
+    if(isMobile)
          loadMobileCSS();
-    }
 
     $("#chat_title").text($("#chat_thread_1").text());
    
@@ -55,7 +54,7 @@ function sendMessage() {
     if (msg.value !== '') {
         $.ajax({
             type: "POST",
-             url: "/client_reqs",
+              url: "client_reqs/",
             data: {
                 'req' : 'send_message',
                 'msg': msg.value,
@@ -137,7 +136,7 @@ function openThread(chat_id) {
 function loadMessages(chat_id) {
     $.ajax({
         type: "POST",
-         url: "/client_reqs",
+         url: "client_reqs/",
         data: {
             'req' : 'get_all_messages',
             'chat_id': chat_id
@@ -176,7 +175,7 @@ function addContact() {
         return;
     $.ajax({
         type: "POST",
-         url: "/client_reqs",
+          url: "client_reqs/",
         data: {
             'req' : 'add_contact',
             'mail': mail,
@@ -249,7 +248,7 @@ function removeFromContacts(id){
 
     $.ajax({
         type: "POST",
-         url: "/client_reqs",
+          url: "client_reqs/",
         data: {
             'req' : 'remove_contact',
             'id': id,
@@ -279,7 +278,7 @@ function startChat(){
         var chat_ids_json = JSON.stringify(chat_ids);
         $.ajax({
             type: "POST",
-             url: "/client_reqs",
+              url: "client_reqs/",
             data: {
                'req': 'create_chat',
                 'user_ids_json': chat_ids_json,
@@ -320,7 +319,7 @@ function deleteChat(){
 
      $.ajax({
         type: "POST",
-         url: "/client_reqs",
+          url: "client_reqs/",
         data: {
             'req' : 'delete_chat',
             'chat_id': currentChat,
@@ -369,15 +368,11 @@ function setCookie(cname, cvalue, exdays) {
   document.cookie = cname + "=" + cvalue + ";" + expires + ";path=/";
 }
 
-function searchChat(e){
-
-}
-
 function setChatIcon(threadID){
      let icon = document.getElementById("thread_icon_"+threadID);
      $.ajax({
             type: "POST",
-             url: "/client_reqs",
+              url: "client_reqs/",
             data: {
                'req': 'get_chat_icon',
                'chat_id': threadID,

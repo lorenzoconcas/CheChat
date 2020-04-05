@@ -1,0 +1,14 @@
+{
+   "short_name":"CheChat",
+   "description":"CheChat PWA Alpha",
+   "start_url":"/",
+   "display":"standalone",
+   "background_color":"#fff",
+   "theme_color":"#0A0302",
+   "icons":[
+      {
+         "src": "/static/favicon.ico",
+         "sizes": "500x500"
+      }
+   ]
+}

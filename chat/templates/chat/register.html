@@ -6,13 +6,12 @@
         <link rel="shortcut icon" type="image/png" href="{% static 'favicon.ico' %}"/>
         <link rel="shortcut icon" type="image/png" href="{% static 'favicon.ico' %}"/>
         <link rel="stylesheet" type="text/css" href="{% static 'chat/css/login.css' %}">
-        <link rel="stylesheet" type="text/css" href="{% static 'chat/css/login_mobile.css' %}">
         <link rel="stylesheet" type="text/css" href="{% static 'chat/css/fonts.css' %}">
         <script src="{% static 'chat/js/reactor.js' %}"></script>
         <title>CheChat - Registrazione</title>
 
     </head>
-    <body>
+    <body onload="init()">
         <div class="box" id="logo_box">
             <img id="chat_logo" src="{% static 'chat/icons/chat_icon.png' %}" alt="CheChat" />
             <br>

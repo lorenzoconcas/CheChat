@@ -15,7 +15,7 @@ class RequestsTestCase(TestCase):
 
     def test_personalid(self):
         data = {'req':'personal_id'}
-        response = self.client.post('/client_reqs', data, HTTP_X_REQUESTED_WITH='XMLHttpRequest')
+        response = self.client.post('/client_reqs/', data, HTTP_X_REQUESTED_WITH='XMLHttpRequest')
         json_response = json.loads(response.content)
         result_id = int(json_response[0]['personal_id'])
         self.assertEqual(result_id, self.ut1.id)
