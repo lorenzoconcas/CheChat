@@ -8,17 +8,24 @@
         <link rel="shortcut icon" type="image/png" href="{% static 'favicon.ico' %}"/>
         <link rel="stylesheet" type="text/css" href="{% static 'chat/css/chat.css' %}">
         <link rel="stylesheet" type="text/css" href="{% static 'chat/css/light.css' %}" id="theme">
+        <link rel="stylesheet" type="text/css" href="{% static 'chat/css/fonts.css' %}">
+        <script async src="{% static 'chat/js/chat.js' %}"></script>
+        <script async src="{% static 'chat/js/gui.js' %}"></script>
+        <script async src="{% static 'chat/js/push.js' %}"></script>
+        <script async src="{% static 'chat/js/jquery.js' %}"></script>
+        <meta name="theme-color" content="#ECECEC">
+
+        <!-- Queste proprietà servono per la PWA-->
         <link rel="manifest" href="{% static 'chat/manifest.webmanifest' %}">
         <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-
         <meta name="apple-mobile-web-app-capable" content="yes">
-        <meta name="theme-color" content="#ffffff">
-
-        <link rel="stylesheet" type="text/css" href="{% static 'chat/css/fonts.css' %}">
-          <script src="{% static 'chat/js/chat.js' %}"></script>
-          <script src="{% static 'chat/js/gui.js' %}"></script>
-          <script src="{% static 'chat/js/push.js' %}"></script>
-          <script src="{% static 'chat/js/jquery.js' %}"></script>
+        <link rel="shortcut icon" href="{% static 'favicon.ico' %}" type="image/x-icon">
+        <link rel="icon" type="image/png" sizes="32x32" href="{% static 'chat/icons/logo_32.png' %}">
+        <link rel="icon" type="image/png" sizes="16x16" href="{% static 'chat/icons/logo_16.png' %}">
+        <link rel="apple-touch-icon" sizes="180x180" href="{% static 'chat/icons/logo_180.png' %}">
+        <meta name="mobile-web-app-capable" content="yes">
+        <meta name="apple-mobile-web-app-title" content="CheChat">
+        <!-- Fine -->
 
     </head>
     <body onLoad="setup()">

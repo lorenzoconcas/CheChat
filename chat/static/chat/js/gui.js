@@ -47,15 +47,14 @@ function tooltip(wich, visible) {
 function toggleTheme() {
     if (dark_mode) {
         dark_mode = false;
-
-
-         $(".thread_title").css("color", "black");
+        $(".thread_title").css("color", "black");
         $(".thread_preview").css("color", "black");
         $(".thread_icon").css("background", "white");
         $(".contact_icon").css("background", "white");
          document.getElementById("themeImg").src = "/static/chat/icons/light_mode.png";
          document.getElementById('theme').href = "/static/chat/css/light.css";
-    } else {
+    }
+    else{
         dark_mode = true;
 
         document.getElementById("themeImg").src = "/static/chat/icons/dark_mode.png";
@@ -64,13 +63,19 @@ function toggleTheme() {
         $(".thread_preview").css("color", "white");
         $(".thread_icon").css("background", "#1a1a1a");
         $(".contact_icon").css("background", "#1a1a1a");
-         document.getElementById("theme").href = "/static/chat/css/dark.css";
+        document.getElementById("theme").href = "/static/chat/css/dark.css";
     }
-
+    toggleHeaderColor(dark_mode);
     setCookie("darkmode", dark_mode, 365*75);
 
 }
-
+function toggleHeaderColor(mode){
+    var metaThemeColor = document.querySelector("meta[name=theme-color]");
+    if(mode)
+        metaThemeColor.setAttribute("content","#050505");
+    else
+        metaThemeColor.setAttribute("content","#ECECEC");
+}
 //si occupa di aprire il pannello dei contatti, che può essere aperto in modalità rubrica o in modalità nuova chat
 function openCECPanel(mode) {
      $("#input_panel_error").css("visibility", "hidden");
@@ -175,20 +180,6 @@ function closeChatThread() {
     }
       currentChat = 0;
 }
-
-//usato dall'app mobile (opzionale)
-function injectNativeAppCSS(){
-    let file = "/static/chat/css/mobile_native.css"
-
-    let link = document.createElement( "link" );
-    link.href = file;
-    link.type = "text/css";
-    link.rel = "stylesheet";
-    link.media = "screen,print";
-
-    document.getElementsByTagName( "head" )[0].appendChild( link );
-}
-
 function addBubble(msg){
     let divElement;
     let child_count = $("#thread_bubbles").children().length;

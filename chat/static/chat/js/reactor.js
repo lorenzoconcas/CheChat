@@ -1,4 +1,9 @@
 function init(){
+      if ('serviceWorker' in navigator) {
+              navigator.serviceWorker.register('service-worker.js', )
+      } else {
+          console.log('Service workers are not supported.');
+      }
     if(detectMobile())
         loadMobileCSS();
 }

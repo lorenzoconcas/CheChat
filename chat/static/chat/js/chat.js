@@ -4,8 +4,12 @@ let currentChat = 0;
 let unreaded_messages = 0;
 let adding_partecipant = false;
 let open_new_thread = false;
+let deferredPrompt;
 function setup() {
-    //calcolo se ci troviamo su un dispositivo mobile o a vista singola
+    if ('serviceWorker' in navigator) {
+        navigator.serviceWorker.register('service-worker.js', )
+    }
+
     isMobile = detectMobile();//$("#user_name").css("visibility") == "hidden" ? true : false;
 
     if(isMobile)
@@ -18,6 +22,22 @@ function setup() {
     toggleTheme();
 
     putAllIcons();
+
+    // rende installabile la PWA quando siamo su localhost
+    window.addEventListener('beforeinstallprompt', (e) => {
+      // Prevent the mini-infobar from appearing on mobile
+      e.preventDefault();
+      // Stash the event so it can be triggered later.
+      deferredPrompt = e;
+             // Show the prompt
+      deferredPrompt.prompt();
+
+      // Wait for the user to respond to the prompt
+      deferredPrompt.userChoice
+        .then((choiceResult) => {
+          deferredPrompt = null;
+        });
+    });
 
 }
 function loadMobileCSS(){

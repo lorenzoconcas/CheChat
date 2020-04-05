@@ -163,3 +163,11 @@ body {
 #chat_close {
 	color: white;
 }
+.outgoing {
+	color: white;
+	background: dodgerblue;
+}
+.incoming {
+	background: #636363;
+	color: #e8e8e8;
+}

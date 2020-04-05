@@ -1,14 +1,33 @@
 {
+   "name": "CheChat",
    "short_name":"CheChat",
    "description":"CheChat PWA Alpha",
    "start_url":"/",
+   "scope":"/",
    "display":"standalone",
    "background_color":"#fff",
    "theme_color":"#0A0302",
+   "prefer_related_applications": false,
    "icons":[
+     {
+         "src": "/static/chat/icons/logo_16.png",
+         "sizes": "16x16",
+         "type": "image/png"
+      },
       {
-         "src": "/static/favicon.ico",
-         "sizes": "500x500"
+         "src": "/static/chat/icons/logo_32.png",
+         "sizes": "32x32",
+         "type": "image/png"
+      },
+      {
+         "src": "/static/chat/icons/logo_192.png",
+         "sizes": "192x192",
+         "type": "image/png"
+      },
+      {
+         "src": "/static/chat/icons/logo_512.png",
+         "sizes": "512x512",
+         "type": "image/png"
       }
    ]
 }
