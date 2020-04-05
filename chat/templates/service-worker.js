@@ -44,16 +44,27 @@ self.addEventListener('install', function(event) {
       })
   );
 });
-self.addEventListener('fetch', function(event) {
-  event.respondWith(
-    caches.match(event.request)
-      .then(function(response) {
-        // Cache hit - return response
-        if (response) {
-          return response;
-        }
-        return fetch(event.request);
-      }
-    )
-  );
-});
+self.addEventListener( 'fetch', ( event ) => {
+    let headers = new Headers();
+    headers.append( 'cache-control', 'no-cache' );
+    headers.append( 'pragma', 'no-cache' );
+    var req = new Request( 'test-connectivity.html', {
+        method: 'GET',
+        mode: 'same-origin',
+        headers: headers,
+        redirect: 'manual' // let browser handle redirects
+    } );
+    event.respondWith( fetch( req, {
+            cache: 'no-store'
+        } )
+        .then( function ( response ) {
+            return fetch( event.request )
+        } )
+        .catch( function ( err ) {
+            return new Response( '<div><h2>Uh oh that did not work</h2></div>', {
+                headers: {
+                    'Content-type': 'text/html'
+                }
+            } )
+        } ) )
+    } );

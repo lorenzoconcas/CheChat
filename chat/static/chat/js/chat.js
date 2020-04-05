@@ -29,8 +29,6 @@ function setup() {
       e.preventDefault();
       // Stash the event so it can be triggered later.
       deferredPrompt = e;
-             // Show the prompt
-      deferredPrompt.prompt();
 
       // Wait for the user to respond to the prompt
       deferredPrompt.userChoice
