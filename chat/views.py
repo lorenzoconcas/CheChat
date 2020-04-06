@@ -179,7 +179,7 @@ def client_requests(request):
                 ids.append(int(e))
 
             adding_to_thread = request.POST['starting_thread']
-            print(adding_to_thread)
+            # print(adding_to_thread)
             if adding_to_thread is not None and adding_to_thread == 'true':
                 # significa che l'utente ha creato una chat
                 # aggiungendo dei partecipanti e dobbiamo essere sicuri
