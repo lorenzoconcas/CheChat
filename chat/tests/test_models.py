@@ -76,14 +76,9 @@ class MoldesTestCase(TestCase): # <- modifica
         self.assertTrue(Partecipanti.objects.filter(chat=self.d, contatto=self.ut4).exists())
         deletechat(self.ut4.id, self.d.id)
         self.assertFalse(Partecipanti.objects.filter(chat=self.d, contatto=self.ut4).exists())
-        # provo a cancellare un utente non inserito in quella chat
-        try:
-            deletechat(self.ut4.id, self.d.id)
-            self.assertTrue(False)
-        except:
-            self.assertTrue(True)
 
-    # controllo chat
+        # provo a cancellare un utente non inserito in quella chat
+        self.assertEqual("err", deletechat(self.ut4.id, self.d.id))
 
     # controllo in quali chat è presente un utente
     def test_getchats(self):
@@ -127,11 +122,6 @@ class MoldesTestCase(TestCase): # <- modifica
 
         self.assertEqual(getotheruserinchat(self.d, self.ut2), "group")
 
-    # controllo login/logout
-
-    # controllo apertura chat
-
-    # controllo invio dei messaggi (destinatario e contenuto)
-
+    # TO DO:
     # controllo se un utente esterno può accedere ad una chat non sua
 
