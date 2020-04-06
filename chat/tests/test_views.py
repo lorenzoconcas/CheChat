@@ -38,7 +38,7 @@ class ViewsTestCase(TestCase):
         mail = "mirko@iswchat.com"
         psw = "1234"
         name = "Mirko"
-        family_name ="Argiolas"
+        family_name = "Argiolas"
 
         response = self.client.post("/register",
                                     {
