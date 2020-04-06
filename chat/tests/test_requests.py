@@ -24,12 +24,12 @@ class RequestsTestCase(TestCase):
         result_id = int(json_response[0]['personal_id'])
         self.assertEqual(result_id, self.ut1.id)
 
-    def test_deletechat(self):
-        # TODO : fixare questo test, gli id non sono passati correttamente
+    def test_create_group_chat(self):
         user_ids = []
-        user_ids.append(self.ut1.id)
-        user_ids.append(self.ut2.id)
-        user_ids.append(self.ut3.id)
+        user_ids.append(str(self.ut1.id))
+        user_ids.append(str(self.ut2.id))
+        user_ids.append(str(self.ut3.id))
+        user_ids = json.dumps(user_ids)
         data = {'req':'create_chat', 'user_ids_json': user_ids,
                 'starting_thread' : 'false', 'base_thread' : 0}
         response = self.client.post('/client_reqs/', data, HTTP_X_REQUESTED_WITH='XMLHttpRequest')
