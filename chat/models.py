@@ -129,9 +129,10 @@ def deletechat(user_id, chat_id):
         # print(len(p))
         p[0].delete()  # perchè [0] ? filter restituisce un queryset non un entry singola,
         # anche se restituirà un solo elemento
-    except models.ObjectDoesNotExist:
+    except (models.ObjectDoesNotExist, IndexError):
         print("L'utente sta cercando di cancellarsi da una chat non sua o non esiste in quella chat")
         return "err"
+
     if len(users_in_chat) == 0:  # se anche l'ultimo partecipante è stato cancellato eliminiamo la chat
         target_chat.delete()
 
