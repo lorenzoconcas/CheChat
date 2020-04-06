@@ -7,7 +7,6 @@ class ViewsTestCase(TestCase):
         Utente.objects.create(nome="Marco", email="marco@iswchat.com",  password="1234", cognome="Rossi")
         client = Client()
 
-
     def test_getlogin(self):
         response = self.client.get("/")
         self.assertEqual(response.status_code, 200)
@@ -16,12 +15,14 @@ class ViewsTestCase(TestCase):
         mail = "marco@iswchat.com"
         psw = "1234"
         response = self.client.post("/home",
-                                    {
-                                        'mail': mail,
-                                        'password': psw
-                                    })
+                                            {
+                                                'mail': mail,
+                                                'password': psw
+                                            })
         # se il login riesce ci ritroviamo nella home e non sulla login quindi non viene utilizzata la redirect
         self.assertEqual(response.status_code, 200)
+
+
 
     # simile al test precedente
     def test_login_failed(self):
@@ -31,6 +32,27 @@ class ViewsTestCase(TestCase):
                                         'password': "12345"
                                     })
         self.assertEqual(response.status_code, 302)
+
+    # questo test controlla registrazione
+    def test_registration(self):
+        mail = "mirko@iswchat.com"
+        psw = "1234"
+        name = "Mirko"
+        family_name ="Argiolas"
+
+        response = self.client.post("/register",
+                                    {
+                                        "register": True,
+                                        'mail': mail,
+                                        'password': psw,
+                                        'confirm_psw': psw,
+                                        'name': name,
+                                        'family-name':  family_name
+                                    })
+
+        # controllo l'effettiva registrazione dell'utente
+        u = Utente.objects.get(email=mail)
+        self.assertIsNotNone(u)
 
     # questo test controlla che gli attributi di sessione siano corretti
     def test_session_values(self):
