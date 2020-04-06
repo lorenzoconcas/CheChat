@@ -13,11 +13,12 @@ class RequestsTestCase(TestCase):
         self.ut1 = Utente.objects.get(email="marco@iswchat.com")
         self.ut2 = Utente.objects.get(email="anto@iswchat.com")
         self.ut3 = Utente.objects.get(email="lorena@iswchat.com")
+
+
+    def test_personalid(self):
         session = self.client.session
         session['user_id'] = self.ut1.id
         session.save()
-
-    def test_personalid(self):
         data = {'req':'personal_id'}
         response = self.client.post('/client_reqs/', data, HTTP_X_REQUESTED_WITH='XMLHttpRequest')
         json_response = json.loads(response.content)
