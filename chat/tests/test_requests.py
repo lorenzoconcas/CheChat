@@ -25,7 +25,7 @@ class RequestsTestCase(TestCase):
         self.assertEqual(result_id, self.ut1.id)
 
     def test_deletechat(self):
-
+        # TODO : fixare questo test, gli id non sono passati correttamente
         user_ids = []
         user_ids.append(self.ut1.id)
         user_ids.append(self.ut2.id)
