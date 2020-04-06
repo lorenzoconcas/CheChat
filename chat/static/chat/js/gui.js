@@ -78,7 +78,7 @@ function toggleHeaderColor(mode){
 }
 //si occupa di aprire il pannello dei contatti, che può essere aperto in modalità rubrica o in modalità nuova chat
 function openCECPanel(mode) {
-     $("#input_panel_error").css("visibility", "hidden");
+    $("#input_panel_error").css("visibility", "hidden");
     openPanel("chat_and_contacts_panel");
     $("#contacts_search_box").text("");
     if (mode) { //se nuova chat
@@ -92,7 +92,7 @@ function openCECPanel(mode) {
         $("#contacts_search_box").css("visibility", "hidden");
         $("#contacts_search_btn").css("visibility", "hidden");
         $("#contacts_list").css("top", "-24px");
-
+        $(".contact_checkbox").prop('checked', false);
 
     } else {
         $("#cec_title").text("Rubrica");

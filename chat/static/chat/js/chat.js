@@ -419,7 +419,6 @@ function setContactIcon(userID){
 
 }
 
-
 function putAllIcons(){
 
      $(".chat_thread").each(function (index) {
@@ -432,4 +431,15 @@ function putAllIcons(){
         id = id.replace("contact_icon_", "");
         setContactIcon(id);
     })
+}
+
+function toggleContact(id){
+    if($("#cec_title").html() === "Nuova Chat"){
+        //toggle checked item
+        let checkbox = $("#c_"+id)
+        let actual_status = $(checkbox).prop('checked');
+        let background = actual_status ? "transparent" : "dodgerblue";
+        $("#contact_"+id).css("background", background);
+        $(checkbox).prop('checked', !actual_status);
+    }
 }

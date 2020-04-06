@@ -68,7 +68,7 @@
             <br>
             <div id="contacts_list">
                 {% for contact in contacts %}
-                    <div class="contact_element" id="contact_{{  contact.contatto.id  }}">
+                    <div class="contact_element" id="contact_{{  contact.contatto.id  }}" onclick="toggleContact({{contact.contatto.id}})">
                         <input class="contact_checkbox" id="c_{{ contact.contatto.id }}" type="checkbox">
                         <img   class="contact_icon" id="contact_icon_{{ contact.contatto.id }}" src="{% static 'chat/icons/user_icon_1.png' %}" alt="username">
                         <label class="contact_name">{{ contact.contatto }}</label>
