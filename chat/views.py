@@ -213,8 +213,8 @@ def client_requests(request):
             resp = '[{"result":"ok","id":"' + str(c.id) + '", "icon":"' + icon + '", "chat_name":"' + \
                    c.nome.replace(u.nome + " " + u.cognome, "") + '"}]'
         elif req == 'delete_chat':
-            deletechat(user_id, request.POST['chat_id'])
-            resp = '[{"delete":"ok"}]'
+            result = deletechat(user_id, request.POST['chat_id'])
+            resp = '[{"delete":"'+ result +'"}]'
         elif req == 'personal_id':
             resp = '[{"personal_id":"'+str(request.session['user_id'])+'"}]'
         elif req == 'get_all_messages':  # restituisce tutti i messaggi di una data conversazione

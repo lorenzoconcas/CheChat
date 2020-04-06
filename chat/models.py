@@ -131,8 +131,11 @@ def deletechat(user_id, chat_id):
         # anche se restituirà un solo elemento
     except models.ObjectDoesNotExist:
         print("L'utente sta cercando di cancellarsi da una chat non sua o non esiste in quella chat")
+        return "err"
     if len(users_in_chat) == 0:  # se anche l'ultimo partecipante è stato cancellato eliminiamo la chat
         target_chat.delete()
+
+    return "ok"
 
 
 def addusertochat(chat, user):
