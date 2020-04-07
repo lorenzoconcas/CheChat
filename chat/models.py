@@ -80,9 +80,11 @@ def insertcontact(phonebook_owner, contact):
 
 def removecontact(phonebook_owner, contact):
     try:
-        Rubrica.objects.get(owner=phonebook_owner, contatto=contact).delete()
+        Rubrica.objects.get(owner=phonebook_owner, contatto=contact).deleteauth_user_groups()
+        return "ok"
     except models.ObjectDoesNotExist:
         print("contatto non trovato in rubrica")
+        return "err"
 
 
 def createchat(utente, id_utenti):

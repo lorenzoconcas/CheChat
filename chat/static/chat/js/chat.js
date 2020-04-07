@@ -269,7 +269,7 @@ function removeFromContacts(id){
           url: "client_reqs/",
         data: {
             'req' : 'remove_contact',
-            'id': id,
+            'remove_id': id,
         },
 
         beforeSend: function(request, settings) {

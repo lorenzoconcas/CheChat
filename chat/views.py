@@ -146,6 +146,9 @@ def client_requests(request):
     if request.is_ajax():
         req = request.POST['req']  # otteniamo l'obbiettivo della richiesta
         resp = ""
+        if 'user_id' not in request.session:
+            return redirect("/")
+
         user_id = request.session['user_id']
         u = Utente.objects.get(id=user_id)
 
@@ -167,10 +170,11 @@ def client_requests(request):
                 resp = '[{"result":"err","error":"Utente già in rubrica"}]'
         elif req == 'remove_contact':
             try:
-                utente = Utente.objects.get(id=request.POST['id'])
-                removecontact(u, utente)
+                utente = Utente.objects.get(id=request.POST['remove_id'])
+                result = removecontact(u, utente)
             except models.ObjectDoesNotExist:
-                print("err")
+                result = "err"
+            resp = '[{"result": "' + result + '"}]'
         elif req == 'create_chat':
             # prendiamo dal json tutti gli id degli utenti da aggiungere alla chat
             ids_json = json.loads(request.POST['user_ids_json'])

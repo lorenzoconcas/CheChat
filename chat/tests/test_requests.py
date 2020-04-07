@@ -14,16 +14,29 @@ class RequestsTestCase(TestCase):
         self.ut2 = Utente.objects.get(email="anto@iswchat.com")
         self.ut3 = Utente.objects.get(email="lorena@iswchat.com")
 
-
-    def test_personalid(self):
+        # questa parte va rivista (ricopiata) nei test che prevedono un id utente differente
         session = self.client.session
         session['user_id'] = self.ut1.id
         session.save()
+
+
+    def test_personalid(self):
         data = {'req':'personal_id'}
         response = self.client.post('/client_reqs/', data, HTTP_X_REQUESTED_WITH='XMLHttpRequest')
         json_response = json.loads(response.content)
         result_id = int(json_response[0]['personal_id'])
         self.assertEqual(result_id, self.ut1.id)
+    
+    def test_create_chat(self):
+        user_ids = []
+        user_ids.append(str(self.ut2.id))
+        user_ids = json.dumps(user_ids)
+        data = {'req': 'create_chat', 'user_ids_json': user_ids,
+                'starting_thread': 'true', 'base_thread': 0}
+        response = self.client.post('/client_reqs/', data, HTTP_X_REQUESTED_WITH='XMLHttpRequest')
+        json_response = json.loads(response.content)
+        result_id = json_response[0]['result']
+        self.assertEqual(result_id, 'ok')
 
     def test_create_group_chat(self):
         user_ids = []
@@ -34,6 +47,15 @@ class RequestsTestCase(TestCase):
         data = {'req':'create_chat', 'user_ids_json': user_ids,
                 'starting_thread' : 'false', 'base_thread' : 0}
         response = self.client.post('/client_reqs/', data, HTTP_X_REQUESTED_WITH='XMLHttpRequest')
+        json_response = json.loads(response.content)
+        result_id = json_response[0]['result']
+        self.assertEqual(result_id, 'ok')
+
+    def test_remove_contact(self):
+        Rubrica.objects.create(owner=self.ut1, contatto=self.ut2)
+        data = {'req': 'remove_contact', 'remove_id': self.ut2.id}
+        response = self.client.post('/client_reqs/', data, HTTP_X_REQUESTED_WITH='XMLHttpRequest')
+        self.assertNotEqual(response.status_code, 302)
         json_response = json.loads(response.content)
         result_id = json_response[0]['result']
         self.assertEqual(result_id, 'ok')
