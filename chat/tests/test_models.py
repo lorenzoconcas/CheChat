@@ -2,7 +2,7 @@ from django.test import TestCase
 from chat.models import *
 
 
-class MoldesTestCase(TestCase):
+class ModelsTestCase(TestCase):
 
     # creazione base test
     def setUp(self):
