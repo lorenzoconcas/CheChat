@@ -26,7 +26,7 @@ class RequestsTestCase(TestCase):
         json_response = json.loads(response.content)
         result_id = int(json_response[0]['personal_id'])
         self.assertEqual(result_id, self.ut1.id)
-    
+
     def test_create_chat(self):
         user_ids = []
         user_ids.append(str(self.ut2.id))
@@ -35,8 +35,8 @@ class RequestsTestCase(TestCase):
                 'starting_thread': 'true', 'base_thread': 0}
         response = self.client.post('/client_reqs/', data, HTTP_X_REQUESTED_WITH='XMLHttpRequest')
         json_response = json.loads(response.content)
-        result_id = json_response[0]['result']
-        self.assertEqual(result_id, 'ok')
+        result = json_response[0]['result']
+        self.assertEqual(result, 'ok')
 
     def test_create_group_chat(self):
         user_ids = []
@@ -48,8 +48,8 @@ class RequestsTestCase(TestCase):
                 'starting_thread' : 'false', 'base_thread' : 0}
         response = self.client.post('/client_reqs/', data, HTTP_X_REQUESTED_WITH='XMLHttpRequest')
         json_response = json.loads(response.content)
-        result_id = json_response[0]['result']
-        self.assertEqual(result_id, 'ok')
+        result = json_response[0]['result']
+        self.assertEqual(result, 'ok')
 
     def test_remove_contact(self):
         Rubrica.objects.create(owner=self.ut1, contatto=self.ut2)
@@ -57,5 +57,43 @@ class RequestsTestCase(TestCase):
         response = self.client.post('/client_reqs/', data, HTTP_X_REQUESTED_WITH='XMLHttpRequest')
         self.assertNotEqual(response.status_code, 302)
         json_response = json.loads(response.content)
-        result_id = json_response[0]['result']
-        self.assertEqual(result_id, 'ok')
+        result = json_response[0]['result']
+        self.assertEqual(result, 'ok')
+
+    def test_get_all_messages(self):
+        chat = createchat(self.ut1, [self.ut2.id])
+        for i in range(5):
+            sendmessage(self.ut1, "Messaggio : " + str(i), chat)
+            sendmessage(self.ut2, "Risposta : " + str(i), chat)
+
+        data = {'req': 'get_all_messages', 'chat_id': chat.id}
+        response = self.client.post('/client_reqs/', data, HTTP_X_REQUESTED_WITH='XMLHttpRequest')
+        self.assertNotEqual(response.status_code, 302)
+        #significa che la chat è piena (volendo si può controllare il contenuto)
+        self.assertNotEqual(response.content, "[]")
+
+    def test_get_all_messages_fail_not_in_chat(self):
+        session = self.client.session
+        session['user_id'] = self.ut3.id
+        session.save()
+
+        chat = createchat(self.ut1, [self.ut2.id])
+        for i in range(5):
+            sendmessage(self.ut1, "Messaggio : " + str(i), chat)
+            sendmessage(self.ut2, "Risposta : " + str(i), chat)
+
+        data = {'req': 'get_all_messages', 'chat_id': chat.id}
+        response = self.client.post('/client_reqs/', data, HTTP_X_REQUESTED_WITH='XMLHttpRequest')
+        self.assertNotEqual(response.status_code, 302)
+        result = json.loads(response.content)
+        # agli utenti non partecipanti tale chat risulta vuota (sia che esista sia che non esista)
+        self.assertEqual(result, [])
+
+    def test_get_all_messages_fail_chat_not_exist(self):
+        # essendo vuoto il db siamo sicuri che non ci sia la chat con id 2 (e nemmeno 1 ecc)
+        data = {'req': 'get_all_messages', 'chat_id': 2}
+        response = self.client.post('/client_reqs/', data, HTTP_X_REQUESTED_WITH='XMLHttpRequest')
+        self.assertNotEqual(response.status_code, 302)
+        result = json.loads(response.content)
+        # agli utenti non partecipanti tale chat risulta vuota (sia che esista sia che non esista)
+        self.assertEqual(result, [])

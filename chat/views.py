@@ -242,7 +242,6 @@ def client_requests(request):
                 resp = resp[:-1]
                 resp += "]"
             else:
-                print("l'utente non ha accesso alla chat")
                 resp = "[]"
         elif req == 'send_message':
             msg = request.POST['msg']
