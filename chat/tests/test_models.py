@@ -27,7 +27,7 @@ class ModelsTestCase(TestCase):
         self.d = createchat(self.ut3, ids)
         self.e = createchat(self.ut4, ids2)
 
-        #invio messagio
+        # invio messagio
         sendmessage(self.ut1, "Ciao", self.c)
 
     # controllo se i dati inseriti nell'oggetto Utente sono corretti
@@ -66,7 +66,7 @@ class ModelsTestCase(TestCase):
         self.assertEqual("ok", removecontact(self.ut1, self.ut2))
         # controllo se non è più presente
         self.assertFalse(Rubrica.objects.filter(owner=self.ut1, contatto=self.ut2).exists())
-        #provo a cancellare un contatto non presente in rubrica
+        # provo a cancellare un contatto non presente in rubrica
         self.assertEqual("err", removecontact(self.ut1, self.ut2))
 
     # controlli creazione chat e gruppi
@@ -101,11 +101,11 @@ class ModelsTestCase(TestCase):
 
     # controllo in quali chat è presente un utente
     def test_getchats(self):
-        list = Partecipanti.objects.filter(contatto=self.ut1)
+        list_chats = Partecipanti.objects.filter(contatto=self.ut1)
         filtered_chat_list = getchats(self.ut1)
         list_ids = []
         filtered_ids = []
-        for l in list:
+        for l in list_chats:
             list_ids.append(l.chat_id)
 
         for l in filtered_chat_list:
@@ -118,7 +118,7 @@ class ModelsTestCase(TestCase):
         mess = Messaggio.objects.filter(chat=self.c, mittente=self.ut1)
         self.assertEqual(mess[0].contenuto, "Ciao")
         # invio messaggio ad una chat in cui non si è partecipanti
-        sendmessage(self.ut1, "Ciao", self.e) # <----- dovrebbe dare errore
+        sendmessage(self.ut1, "Ciao", self.e)
 
     # controllo contenuto dell'ultimo messaggio inviato
     def test_getlastmessagecontent(self):

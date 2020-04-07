@@ -110,6 +110,8 @@ def createchat(utente, id_utenti):
 
 
 def sendmessage(utente, messaggio, chat):
+    if not Partecipanti.objects.filter(chat=chat, contatto=utente).exists():
+        return "err"
     m = Messaggio(mittente=utente, contenuto=messaggio, chat=chat, dataora=datetime.utcnow())
     m.save()
 
