@@ -118,7 +118,7 @@ class ModelsTestCase(TestCase):
         mess = Messaggio.objects.filter(chat=self.c, mittente=self.ut1)
         self.assertEqual(mess[0].contenuto, "Ciao")
         # invio messaggio ad una chat in cui non si è partecipanti
-        sendmessage(self.ut1, "Ciao", self.e)
+        sendmessage(self.ut1, "Ciao", self.e) # <----- dovrebbe dare errore
 
     # controllo contenuto dell'ultimo messaggio inviato
     def test_getlastmessagecontent(self):
