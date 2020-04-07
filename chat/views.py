@@ -220,8 +220,6 @@ def client_requests(request):
         elif req == 'delete_chat':
             result = deletechat(user_id, request.POST['chat_id'])
             resp = '[{"delete":"'+ result +'"}]'
-        elif req == 'personal_id':
-            resp = '[{"personal_id":"'+str(request.session['user_id'])+'"}]'
         elif req == 'get_all_messages':  # restituisce tutti i messaggi di una data conversazione
             chat_id = request.POST["chat_id"]
             try:

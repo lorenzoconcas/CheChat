@@ -70,14 +70,6 @@ class RequestsTestCase(TestCase):
         json_response = json.loads(response.content)[0]
         self.assertEqual(json_response['result'], 'err')
 
-    #test da rimuovere
-    def test_personalid(self):
-        data = {'req':'personal_id'}
-        response = self.client.post('/client_reqs/', data, HTTP_X_REQUESTED_WITH='XMLHttpRequest')
-        json_response = json.loads(response.content)
-        result_id = int(json_response[0]['personal_id'])
-        self.assertEqual(result_id, self.ut1.id)
-
     #test creazione chat
     def test_create_chat(self):
         user_ids = []
@@ -188,3 +180,16 @@ class RequestsTestCase(TestCase):
         response = self.client.post('/client_reqs/', data, HTTP_X_REQUESTED_WITH='XMLHttpRequest')
 
         self.assertEqual(response.content, b'not_allowed')
+
+    #test get chat icon
+    def test_get_chat_icon(self):
+        c = createchat(self.ut1, [self.ut2.id])
+        data = {'req': 'get_chat_icon', 'chat_id': c.id}
+        response = self.client.post('/client_reqs/', data, HTTP_X_REQUESTED_WITH='XMLHttpRequest')
+        self.assertEqual(response.content, b'static/chat/icons/user_icon_2.png')
+
+    def test_get_group_chat_icon(self):
+        c = createchat(self.ut1, [self.ut2.id, self.ut2.id])
+        data = {'req': 'get_chat_icon', 'chat_id': c.id}
+        response = self.client.post('/client_reqs/', data, HTTP_X_REQUESTED_WITH='XMLHttpRequest')
+        self.assertEqual(response.content, b'static/chat/icons/user_group.png')
