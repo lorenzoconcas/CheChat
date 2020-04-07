@@ -54,7 +54,7 @@ class RequestsTestCase(TestCase):
         self.assertEqual(json_response['result'], 'err')
         self.assertEqual(json_response['error'], 'Utente già in rubrica')
 
-    #test rimozione contatto
+    # test rimozione contatto
     def test_remove_contact(self):
         Rubrica.objects.create(owner=self.ut1, contatto=self.ut2)
         data = {'req': 'remove_contact', 'remove_id': self.ut2.id}
@@ -70,7 +70,7 @@ class RequestsTestCase(TestCase):
         json_response = json.loads(response.content)[0]
         self.assertEqual(json_response['result'], 'err')
 
-    #test creazione chat
+    # test creazione chat
     def test_create_chat(self):
         user_ids = []
         user_ids.append(str(self.ut2.id))
@@ -94,7 +94,7 @@ class RequestsTestCase(TestCase):
         result = json_response[0]['result']
         self.assertEqual(result, 'ok')
 
-    #test cancellazione chat
+    # test cancellazione chat
     def test_delete_chat(self):
         c = createchat(self.ut1, [self.ut2.id])
         data = {'req': 'delete_chat', 'chat_id': c.id}
@@ -115,7 +115,7 @@ class RequestsTestCase(TestCase):
         result = json.loads(response.content)[0]['delete']
         self.assertEqual(result, "err")
 
-    #test caricamento messaggi
+    # test caricamento messaggi
     def test_get_all_messages(self):
         chat = createchat(self.ut1, [self.ut2.id])
         for i in range(5):
@@ -154,7 +154,7 @@ class RequestsTestCase(TestCase):
         # agli utenti non partecipanti tale chat risulta vuota (sia che esista sia che non esista)
         self.assertEqual(result, [])
 
-    #test invio messaggi
+    # test invio messaggi
     def test_send_message(self):
         c = createchat(self.ut1, [self.ut2.id])
         data = {'req': 'send_message', 'msg': 'Prova',
@@ -181,7 +181,7 @@ class RequestsTestCase(TestCase):
 
         self.assertEqual(response.content, b'not_allowed')
 
-    #test get chat icon
+    # test get chat icon
     def test_get_chat_icon(self):
         c = createchat(self.ut1, [self.ut2.id])
         data = {'req': 'get_chat_icon', 'chat_id': c.id}

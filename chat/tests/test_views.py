@@ -11,6 +11,7 @@ class ViewsTestCase(TestCase):
         response = self.client.get("/")
         self.assertEqual(response.status_code, 200)
 
+    # test login
     def test_login(self):
         mail = "marco@iswchat.com"
         psw = "1234"
@@ -29,7 +30,6 @@ class ViewsTestCase(TestCase):
         self.assertEqual(session['user_id'], u.id)
         self.assertEqual(session['logged'], True)
 
-    # simile al test precedente
     def test_login_failed(self):
         response = self.client.post("/home",
                                     {
@@ -38,7 +38,7 @@ class ViewsTestCase(TestCase):
                                     })
         self.assertEqual(response.status_code, 302)
 
-    # questo test controlla registrazione
+    # test registrazione
     def test_registration(self):
         mail = "mirko@iswchat.com"
         psw = "1234"
@@ -123,6 +123,7 @@ class ViewsTestCase(TestCase):
             session = self.client.session
             self.assertEqual(session['validdata'], False)
 
+    #test logout
     def test_logout(self):
         # controlliamo che venga rimandato alla login
         # e che la sessione non esista più
