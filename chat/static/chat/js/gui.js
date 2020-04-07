@@ -4,22 +4,22 @@ function getBubble(message) {
     var bubble = document.createElement("div");
     $(bubble).addClass("bubble_container");
 
-    if (message.inviato == "True")
+    if (message.sent == "True")
         $(bubble).addClass("outgoing");
     else
         $(bubble).addClass("incoming");
 
-    if (message.mittente != "") {
-        var mittente = document.createElement("label")
-        $(mittente).text(message.mittente);
-        $(mittente).addClass("bubble_sender_name");
-        $(bubble).append(mittente);
+    if (message.sender != "") {
+        var sender = document.createElement("label");
+        $(sender).text(message.sender);
+        $(sender).addClass("bubble_sender_name");
+        $(bubble).append(sender);
         $(bubble).append("<br>");
     }
 
 
-    var msg = document.createElement("label");
-    $(msg).text(message.contenuto);
+    let msg = document.createElement("label");
+    $(msg).text(message.content);
     $(bubble).append(msg);
 
     return bubble;
@@ -95,7 +95,7 @@ function openCECPanel(mode) {
         $(".contact_checkbox").prop('checked', false);
 
     } else {
-        $("#cec_title").text("Rubrica");
+        $("#cec_title").text("Contatti");
         $("#contacts_list").css("height", "calc(100% - 132px)");
         $("#cec_footer").show();
         $(".contact_checkbox").hide();
@@ -116,7 +116,7 @@ function openInputPanel() {
 
     $("#input_panel").css("height", "100px");
     $("#input_panel_error").hide();
-    $("#input_panel_title").text("Nuovo contatto");
+    $("#input_panel_title").text("Nuovo contact");
     $("#input_panel_text").attr("placeholder", "Inserisci un indirizzo mail");
     $("#input_panel_btn_confirm").on("keypress", addContact2);
     $("#input_panel_btn_confirm").click(addContact);

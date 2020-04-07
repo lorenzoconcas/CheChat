@@ -15,7 +15,7 @@ class PushMessages(WebsocketConsumer):
         current_user = session['user_id']
 
         try:
-            chat_partecipanti = Partecipanti.objects.filter(contatto_id=current_user) # le chat a cui partecipa l'utente
+            chat_partecipanti = Partecipants.objects.filter(contact_id=current_user) # le chat a cui partecipa l'utente
         except models.ObjectDoesNotExist:
             return
 
@@ -25,27 +25,27 @@ class PushMessages(WebsocketConsumer):
             c_p_count = len(chat_partecipanti)  # il conto delle chat a cui partecipa
 
             for partecipante in chat_partecipanti:
-                last_messages += Messaggio.objects.filter(chat=partecipante.chat)  # per ogni chat a prendiamo
+                last_messages += Messages.objects.filter(chat=partecipante.chat)  # per ogni chat a prendiamo
                 # gli ultimi messaggi
             update = False  # servirà per sapere se aggiornare la variabile
             while True:
                 for partecipante in chat_partecipanti:  # per ogni chat a cui partecipa
-                    messaggi = Messaggio.objects.filter(chat=partecipante.chat)  # carichiamo i messaggi di quella chat
-                    ultimo = messaggi.last()  # prendiamo l'ultimo
-                    contiene_msg = ultimo in last_messages  # verifichiamo se abbiamo già notificato l'utente del msg
-                    if not contiene_msg and ultimo is not None and ultimo.mittente.id is not None:
+                    messages = Messages.objects.filter(chat=partecipante.chat)  # carichiamo i messaggi di quella chat
+                    last = messages.last()  # prendiamo l'ultimo
+                    contiene_msg = last in last_messages  # verifichiamo se abbiamo già notificato l'utente del msg
+                    if not contiene_msg and last is not None and last.sender.id is not None:
                         # se non l'abbiamo fatto
                         contiene_msg = True
-                        if not current_user == ultimo.mittente.id:
+                        if not current_user == last.sender.id:
                             is_inviato = 'false'
-                            mittente = str(ultimo.mittente)
+                            mittente = str(last.sender)
                             notifica = json.dumps({  # prepariamo il messaggio per il client
                                 'type': 'new_message',
-                                'chat_id': ultimo.chat.id,
-                                'mittente': mittente,
-                                'dataora': ultimo.dataora.strftime("%Y-%m-%d %H:%M:%S"),
-                                'contenuto': ultimo.contenuto,
-                                'inviato':  is_inviato
+                                'chat_id': last.chat.id,
+                                'sender': mittente,
+                                'time': last.time.strftime("%Y-%m-%d %H:%M:%S"),
+                                'content': last.content,
+                                'sent':  is_inviato
 
                              })
                             self.send(notifica)
@@ -56,14 +56,14 @@ class PushMessages(WebsocketConsumer):
                 if update:  # aggiorniamo la variabile contente l'ultimo msg delle chat a cui partecipa
                     update = False
                     for partecipante in chat_partecipanti:
-                        last_messages += Messaggio.objects.filter(chat=partecipante.chat)
+                        last_messages += Messages.objects.filter(chat=partecipante.chat)
                 # se il numero delle chat in cui è coinvolto aumenta notifico il client
-                if len(Partecipanti.objects.filter(contatto_id=current_user)) > c_p_count:
-                    chat_partecipanti = Partecipanti.objects.filter(contatto_id=current_user)
+                if len(Partecipants.objects.filter(contact_id=current_user)) > c_p_count:
+                    chat_partecipanti = Partecipants.objects.filter(contact_id=current_user)
                     last_chat = chat_partecipanti.last().chat
-                    user = Utente.objects.get(id=current_user)
-                    last_chat.nome = last_chat.nome.replace(str(user), "")
-                    if last_chat.nome.startswith("Gruppo"):
+                    user = Users.objects.get(id=current_user)
+                    last_chat.name = last_chat.name.replace(str(user), "")
+                    if last_chat.name.startswith("Gruppo"):
                         thread_icon = '/static/chat/icons/user_group.png'
                     else:
                         other = getotheruserinchat(last_chat, user)
@@ -77,10 +77,10 @@ class PushMessages(WebsocketConsumer):
                     notifica = json.dumps({
                                 'type': 'new_chat',
                                 'id': last_chat.id,
-                                'name': last_chat.nome,
+                                'name': last_chat.name,
                                 'thread_icon': thread_icon
                             })
-                    if not last_chat.creatore == user:  # se è stata creata dall'utente è già nella sua list
+                    if not last_chat.creator == user:  # se è stata creata dall'utente è già nella sua list
                         # questo rimuove la sincronizzazione delle chat fra dispositivi,
                         # ma è sicuro che la chat venga aggiunta graficamente
                         self.send(notifica)

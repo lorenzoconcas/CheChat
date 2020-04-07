@@ -7,19 +7,19 @@ class RequestsTestCase(TestCase):
 
     def setUp(self):
         self.client = Client()
-        Utente.objects.create(nome="Marco", email="marco@iswchat.com", password="1234", cognome="Rossi")
-        Utente.objects.create(nome="Antonio", email="anto@iswchat.com", password="2345", cognome="Verdi")
-        Utente.objects.create(nome="Lorena", email="lorena@iswchat.com", password="3456", cognome="Verdi")
-        self.ut1 = Utente.objects.get(email="marco@iswchat.com")
-        self.ut2 = Utente.objects.get(email="anto@iswchat.com")
-        self.ut3 = Utente.objects.get(email="lorena@iswchat.com")
+        Users.objects.create(name="Marco", email="marco@iswchat.com", password="1234", surname="Rossi")
+        Users.objects.create(name="Antonio", email="anto@iswchat.com", password="2345", surname="Verdi")
+        Users.objects.create(name="Lorena", email="lorena@iswchat.com", password="3456", surname="Verdi")
+        self.ut1 = Users.objects.get(email="marco@iswchat.com")
+        self.ut2 = Users.objects.get(email="anto@iswchat.com")
+        self.ut3 = Users.objects.get(email="lorena@iswchat.com")
 
         # questa parte va rivista (ricopiata) nei test che prevedono un id utente differente
         session = self.client.session
         session['user_id'] = self.ut1.id
         session.save()
 
-    # test aggiunta contatto
+    # test aggiunta contact
     def test_add_contact(self):
         data = {'req': 'add_contact', 'mail': self.ut2.email}
         response = self.client.post('/client_reqs/', data, HTTP_X_REQUESTED_WITH='XMLHttpRequest')
@@ -46,7 +46,7 @@ class RequestsTestCase(TestCase):
         self.assertEqual(json_response['error'], 'Utente non trovato')
 
     def test_add_contact_fail_already_added(self):
-        Rubrica.objects.create(owner=self.ut1, contatto=self.ut2)
+        Phonebook.objects.create(owner=self.ut1, contact=self.ut2)
         data = {'req': 'add_contact', 'mail': self.ut2.email}
         response = self.client.post('/client_reqs/', data, HTTP_X_REQUESTED_WITH='XMLHttpRequest')
         self.assertNotEqual(response.status_code, 302)
@@ -54,9 +54,9 @@ class RequestsTestCase(TestCase):
         self.assertEqual(json_response['result'], 'err')
         self.assertEqual(json_response['error'], 'Utente già in rubrica')
 
-    # test rimozione contatto
+    # test rimozione contact
     def test_remove_contact(self):
-        Rubrica.objects.create(owner=self.ut1, contatto=self.ut2)
+        Phonebook.objects.create(owner=self.ut1, contact=self.ut2)
         data = {'req': 'remove_contact', 'remove_id': self.ut2.id}
         response = self.client.post('/client_reqs/', data, HTTP_X_REQUESTED_WITH='XMLHttpRequest')
         self.assertNotEqual(response.status_code, 302)
@@ -72,8 +72,7 @@ class RequestsTestCase(TestCase):
 
     # test creazione chat
     def test_create_chat(self):
-        user_ids = []
-        user_ids.append(str(self.ut2.id))
+        user_ids = [str(self.ut2.id)]
         user_ids = json.dumps(user_ids)
         data = {'req': 'create_chat', 'user_ids_json': user_ids,
                 'adding_to_thread': 'false', 'base_thread': 0}
@@ -82,10 +81,7 @@ class RequestsTestCase(TestCase):
         self.assertEqual(result, 'ok')
 
     def test_create_group_chat(self):
-        user_ids = []
-        user_ids.append(str(self.ut1.id))
-        user_ids.append(str(self.ut2.id))
-        user_ids.append(str(self.ut3.id))
+        user_ids = [str(self.ut1.id), str(self.ut2.id), str(self.ut3.id)]
         user_ids = json.dumps(user_ids)
         data = {'req':'create_chat', 'user_ids_json': user_ids,
                 'adding_to_thread' : 'false', 'base_thread' : 0}
@@ -119,13 +115,13 @@ class RequestsTestCase(TestCase):
     def test_get_all_messages(self):
         chat = createchat(self.ut1, [self.ut2.id])
         for i in range(5):
-            sendmessage(self.ut1, "Messaggio : " + str(i), chat)
+            sendmessage(self.ut1, "Messages : " + str(i), chat)
             sendmessage(self.ut2, "Risposta : " + str(i), chat)
 
         data = {'req': 'get_all_messages', 'chat_id': chat.id}
         response = self.client.post('/client_reqs/', data, HTTP_X_REQUESTED_WITH='XMLHttpRequest')
         self.assertNotEqual(response.status_code, 302)
-        #significa che la chat è piena (volendo si può controllare il contenuto)
+        # significa che la chat è piena (volendo si può controllare il content)
         self.assertNotEqual(response.content, "[]")
 
     def test_get_all_messages_fail_not_in_chat(self):
@@ -135,7 +131,7 @@ class RequestsTestCase(TestCase):
 
         chat = createchat(self.ut1, [self.ut2.id])
         for i in range(5):
-            sendmessage(self.ut1, "Messaggio : " + str(i), chat)
+            sendmessage(self.ut1, "Messages : " + str(i), chat)
             sendmessage(self.ut2, "Risposta : " + str(i), chat)
 
         data = {'req': 'get_all_messages', 'chat_id': chat.id}

@@ -68,11 +68,11 @@
             <br>
             <div id="contacts_list">
                 {% for contact in contacts %}
-                    <div class="contact_element" id="contact_{{  contact.contatto.id  }}" onclick="toggleContact({{contact.contatto.id}})">
-                        <input class="contact_checkbox" id="c_{{ contact.contatto.id }}" type="checkbox">
-                        <img   class="contact_icon" id="contact_icon_{{ contact.contatto.id }}" src="{% static 'chat/icons/user_icon_1.png' %}" alt="username">
-                        <label class="contact_name">{{ contact.contatto }}</label>
-                        <button class="contact_delete" onclick="removeFromContacts({{ contact.contatto.id }})"><img class="contact_delete_icon" src="{%  static 'chat/icons/remove_contact.png' %}"></button>
+                    <div class="contact_element" id="contact_{{  contact.contact.id  }}" onclick="toggleContact({{contact.contact.id}})">
+                        <input class="contact_checkbox" id="c_{{ contact.contact.id }}" type="checkbox">
+                        <img   class="contact_icon" id="contact_icon_{{ contact.contact.id }}" src="{% static 'chat/icons/user_icon_1.png' %}" alt="username">
+                        <label class="contact_name">{{ contact.contact }}</label>
+                        <button class="contact_delete" onclick="removeFromContacts({{ contact.contact.id }})"><img class="contact_delete_icon" src="{%  static 'chat/icons/remove_contact.png' %}"></button>
                     </div>
                 {% endfor %}
             </div>
@@ -85,7 +85,7 @@
                 {% for chat_thread in chats %}
                     <div class="chat_thread"  id="thread_{{ chat_thread.chat_id }}" onclick="openThread({{ chat_thread.chat_id }})">
                         <img   class="thread_icon"  id="thread_icon_{{ chat_thread.chat_id }}" src="{% static 'chat/icons/user_icon_1.png' %}" alt="username">
-                        <label class="thread_title"  id="thread_title_{{ chat_thread.chat_id }}">{{ chat_thread.chat.nome}}</label>
+                        <label class="thread_title"  id="thread_title_{{ chat_thread.chat_id }}">{{ chat_thread.chat.name }}</label>
                         <label class="thread_status" id="thread_status_{{ chat_thread.chat_id }}"></label>
                         <br>
                         <label class="thread_preview" id="thread_preview_{{ chat_thread.chat_id }}">{{ chat_thread|getltsmsg }}</label>

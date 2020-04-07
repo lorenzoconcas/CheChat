@@ -13,6 +13,10 @@ let push_socket = new WebSocket("ws://" + window.location.host + "/ws/push_messa
 push_socket.onopen = function() {
     askForMessages();
 };
+push_socket.onclose = function(){
+    push_socket = new WebSocket("ws://" + window.location.host + "/ws/push_messages");
+};
+
 //qui gestiamo i dati ricevuti
 
 push_socket.onmessage = function(e) {
@@ -33,20 +37,20 @@ push_socket.onmessage = function(e) {
         }
         case 'new_message': {
             console.log("nuovo msg");
-            $("#thread_preview_" + msg.chat_id).text(msg.contenuto)
+            $("#thread_preview_" + msg.chat_id).text(msg.content)
             $("#thread_status_" + msg.chat_id).text("");
-            if(msg.inviato == false){
+            if(msg.inviato === false){
                 notification_sound.play();
             }
 
 
-            if (currentChat == msg.chat_id) {
+            if (currentChat === msg.chat_id) {
                 addBubble(msg);
             } else {
 
                 let new_thread_title = "";
                 unreaded_messages++;
-                if (notifications.length == 0) {
+                if (notifications.length === 0) {
                     n = Object.create(notification);
                     n.thread_id = msg.chat_id;
                     n.notification_count++;
@@ -58,7 +62,7 @@ push_socket.onmessage = function(e) {
 
                     for (let i = 0; i < size; i++) {
                         n = notifications[i];
-                        if (n.thread_id == msg.chat_id)
+                        if (n.thread_id === msg.chat_id)
                             n.notification_count++;
                         else {
                             n = Object.create(notification);
