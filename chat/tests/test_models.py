@@ -2,7 +2,7 @@ from django.test import TestCase
 from chat.models import *
 
 
-class ModelsTestCase(TestCase):  # <- modifica
+class MoldesTestCase(TestCase):
 
     # creazione base test
     def setUp(self):
@@ -31,27 +31,40 @@ class ModelsTestCase(TestCase):  # <- modifica
     def test_utente(self):
         self.assertEqual(self.ut1.nome, 'Marco')
         self.assertEqual(self.ut1.email, 'marco@iswchat.com')
-        self.assertEqual(self.ut1.email, 'marco@iswchat.com')
         self.assertEqual(self.ut1.cognome, 'Rossi')
 
     def test_getuser(self):
         self.assertEqual(self.ut1, getuser(1))
+        self.assertNotEqual(self.ut1, getuser(12))
+        self.assertNotEqual(self.ut2, getuser(1))
 
     # controllo inserimento rubrica
     def test_insertcontact(self):
         # controllo se è presente quel contatto, aggiungo e riverifico
         self.assertFalse(Rubrica.objects.filter(owner=self.ut1, contatto=self.ut2).exists())
-        insertcontact(self.ut1, self.ut2)
+        self.assertEqual("ok", insertcontact(self.ut1, self.ut2))
         self.assertTrue(Rubrica.objects.filter(owner=self.ut1, contatto=self.ut2).exists())
+        # controllo il corretto inserimento dei dati
+        ut = Utente.objects.get(id=Rubrica.objects.filter(owner=self.ut1, contatto=self.ut2)[0].contatto.id)
+        self.assertNotEqual(ut.nome, 'Marco')
+        self.assertNotEqual(ut.email, 'marco@iswchat.com')
+        self.assertNotEqual(ut.cognome, 'Rossi')
+        self.assertEqual(ut.nome, 'Antonio')
+        self.assertEqual(ut.email, 'antonio@iswchat.com')
+        self.assertEqual(ut.cognome, 'Verdi')
+        # provo a reinserire lo stesso contatto
+        self.assertNotEqual("ok", insertcontact(self.ut1, self.ut2))
 
     # controllo rimozione rubrica
     def test_removecontact(self):
         insertcontact(self.ut1, self.ut2)
         # controllo se esiste e poi elimino
         self.assertTrue(Rubrica.objects.filter(owner=self.ut1, contatto=self.ut2).exists())
-        removecontact(self.ut1, self.ut2)
+        self.assertEqual("ok", removecontact(self.ut1, self.ut2))
         # controllo se non è più presente
         self.assertFalse(Rubrica.objects.filter(owner=self.ut1, contatto=self.ut2).exists())
+        #provo a cancellare un contatto non presente in rubrica
+        self.assertEqual("err", removecontact(self.ut1, self.ut2))
 
     # controlli creazione chat e gruppi
     def test_createchat(self):
@@ -121,7 +134,3 @@ class ModelsTestCase(TestCase):  # <- modifica
         self.assertNotEqual(getotheruserinchat(self.c, self.ut1), self.ut3)
 
         self.assertEqual(getotheruserinchat(self.d, self.ut2), "group")
-
-    # TO DO:
-    # controllo se un utente esterno può accedere ad una chat non sua
-
