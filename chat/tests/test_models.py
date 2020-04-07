@@ -56,29 +56,34 @@ class ModelsTestCase(TestCase):
         self.assertEqual(ut.email, 'antonio@iswchat.com')
         self.assertEqual(ut.cognome, 'Verdi')
         # provo a reinserire lo stesso contatto
-        self.assertNotEqual("ok", insertcontact(self.ut1, self.ut2))
+        result = insertcontact(self.ut1, self.ut2)
+        self.assertNotEqual(result, "ok")
 
     # controllo rimozione rubrica
     def test_removecontact(self):
         insertcontact(self.ut1, self.ut2)
         # controllo se esiste e poi elimino
         self.assertTrue(Rubrica.objects.filter(owner=self.ut1, contatto=self.ut2).exists())
-        self.assertEqual("ok", removecontact(self.ut1, self.ut2))
+        result = removecontact(self.ut1, self.ut2)
+        self.assertEqual(result, "ok")
         # controllo se non è più presente
         self.assertFalse(Rubrica.objects.filter(owner=self.ut1, contatto=self.ut2).exists())
         # provo a cancellare un contatto non presente in rubrica
-        self.assertEqual("err", removecontact(self.ut1, self.ut2))
+        result = removecontact(self.ut1, self.ut2)
+        self.assertEqual(result, "err")
 
     # controlli creazione chat e gruppi
     def test_createchat(self):
         # chat normale
         self.assertTrue(Chat.objects.filter(creatore=self.ut2.id).exists())
         self.assertFalse(Chat.objects.filter(creatore=self.ut1.id).exists())
-        self.assertEqual(self.c.nome, str(self.ut2) + " " + str(self.ut1))
+        result = str(self.ut2) + " " + str(self.ut1)
+        self.assertEqual(result, self.c.nome)
         self.assertEqual(str(self.c.creatore), str(self.ut2))
         # chat di gruppo
         self.assertTrue(Chat.objects.filter(creatore=self.ut3.id).exists())
-        self.assertEqual(self.d.nome, "Gruppo: " + str(self.ut1) + ", " + str(self.ut2) + ", " + str(self.ut3))
+        result = "Gruppo: " + str(self.ut1) + ", " + str(self.ut2) + ", " + str(self.ut3)
+        self.assertEqual(result, self.d.nome)
         self.assertEqual(str(self.d.creatore), str(self.ut3))
 
     # controllo aggiunta di un membro da una chat
@@ -88,16 +93,19 @@ class ModelsTestCase(TestCase):
         addusertochat(self.d, self.ut4)
         self.assertTrue(Partecipanti.objects.filter(chat=self.d, contatto=self.ut4).exists())
         # cosa succede se cerco di inserire un utente già presente?
-        self.assertEqual("err", addusertochat(self.d, self.ut4))
+        result = addusertochat(self.d, self.ut4)
+        self.assertEqual(result, "err")
 
     # controllo la corretta cancellazione di un utente da una chat
     def test_deletechat(self):
         addusertochat(self.d, self.ut4)
         self.assertTrue(Partecipanti.objects.filter(chat=self.d, contatto=self.ut4).exists())
-        self.assertNotEqual("err", deletechat(self.ut4.id, self.d.id))
+        result = deletechat(self.ut4.id, self.d.id)
+        self.assertNotEqual(result, "err")
         self.assertFalse(Partecipanti.objects.filter(chat=self.d, contatto=self.ut4).exists())
         # provo a cancellare un utente non inserito in quella chat
-        self.assertEqual("err", deletechat(self.ut4.id, self.d.id))
+        result = deletechat(self.ut4.id, self.d.id)
+        self.assertEqual(result, "err")
 
     # controllo in quali chat è presente un utente
     def test_getchats(self):
@@ -113,20 +121,23 @@ class ModelsTestCase(TestCase):
 
         self.assertEqual(list_ids, filtered_ids)
 
-    # controllo invio messaggi DA SISTEMARE
+    # controllo invio messaggi
     def test_sendmessage(self):
         mess = Messaggio.objects.filter(chat=self.c, mittente=self.ut1)
-        self.assertEqual(mess[0].contenuto, "Ciao")
+        result = mess[0].contenuto
+        self.assertEqual(result, "Ciao")
         # invio messaggio ad una chat in cui non si è partecipanti
-        sendmessage(self.ut1, "Ciao", self.e)
+        result = sendmessage(self.ut1, "Ciao", self.e)
+        self.assertEqual(result, "err")
 
     # controllo contenuto dell'ultimo messaggio inviato
     def test_getlastmessagecontent(self):
         self.assertEqual("Ciao", getlastmessagecontent(self.c))
         self.assertNotEqual("Bye", getlastmessagecontent(self.c))
+        # caso in cui non sia stato mandato alcun messaggio
         self.assertEqual("", getlastmessagecontent(self.d))
 
-    # controllo ordine dell chat in base all'orario dell'ultimo messaggio
+    # controllo ordine delle chat in base all'orario dell'ultimo messaggio
     def test__getorderedchats(self):
         threads = getorderedchats(self.ut1)
         self.assertEqual(threads[0].chat, self.c)
@@ -135,10 +146,9 @@ class ModelsTestCase(TestCase):
         self.assertNotEqual(threads[0].chat, self.c)
         self.assertEqual(threads[0].chat, self.d)
 
-    # controllo se si tratta di un gruppo o di una chat
+    # controllo se si tratta di un gruppo o di una chat (restituisce iun utente nel caso sia chat singola)
     def test__getotheruserinchat(self):
         self.assertEqual(getotheruserinchat(self.c, self.ut1), self.ut2)
         self.assertEqual(getotheruserinchat(self.c, self.ut2), self.ut1)
         self.assertNotEqual(getotheruserinchat(self.c, self.ut1), self.ut3)
-
         self.assertEqual(getotheruserinchat(self.d, self.ut2), "group")
