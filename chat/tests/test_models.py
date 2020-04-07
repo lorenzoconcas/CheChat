@@ -19,10 +19,13 @@ class ModelsTestCase(TestCase):
 
         #creazione chat
         ids = []
+        ids2 = []
         ids.append(int(self.ut1.id))
+        ids2.append(int(self.ut3.id))
         self.c = createchat(self.ut2, ids)
         ids.append(int(self.ut2.id))
         self.d = createchat(self.ut3, ids)
+        self.e = createchat(self.ut4, ids2)
 
         #invio messagio
         sendmessage(self.ut1, "Ciao", self.c)
@@ -68,28 +71,31 @@ class ModelsTestCase(TestCase):
 
     # controlli creazione chat e gruppi
     def test_createchat(self):
+        # chat normale
         self.assertTrue(Chat.objects.filter(creatore=self.ut2.id).exists())
         self.assertFalse(Chat.objects.filter(creatore=self.ut1.id).exists())
         self.assertEqual(self.c.nome, str(self.ut2) + " " + str(self.ut1))
         self.assertEqual(str(self.c.creatore), str(self.ut2))
-
+        # chat di gruppo
         self.assertTrue(Chat.objects.filter(creatore=self.ut3.id).exists())
         self.assertEqual(self.d.nome, "Gruppo: " + str(self.ut1) + ", " + str(self.ut2) + ", " + str(self.ut3))
         self.assertEqual(str(self.d.creatore), str(self.ut3))
 
     # controllo aggiunta di un membro da una chat
     def test_addusertochat(self):
+        # controllo prima se è presente nella chat, lo inserisco e ripeto la verifica
         self.assertFalse(Partecipanti.objects.filter(chat=self.d, contatto=self.ut4).exists())
         addusertochat(self.d, self.ut4)
         self.assertTrue(Partecipanti.objects.filter(chat=self.d, contatto=self.ut4).exists())
+        # cosa succede se cerco di inserire un utente già presente?
+        self.assertEqual("err", addusertochat(self.d, self.ut4))
 
     # controllo la corretta cancellazione di un utente da una chat
     def test_deletechat(self):
         addusertochat(self.d, self.ut4)
         self.assertTrue(Partecipanti.objects.filter(chat=self.d, contatto=self.ut4).exists())
-        deletechat(self.ut4.id, self.d.id)
+        self.assertNotEqual("err", deletechat(self.ut4.id, self.d.id))
         self.assertFalse(Partecipanti.objects.filter(chat=self.d, contatto=self.ut4).exists())
-
         # provo a cancellare un utente non inserito in quella chat
         self.assertEqual("err", deletechat(self.ut4.id, self.d.id))
 
@@ -111,6 +117,8 @@ class ModelsTestCase(TestCase):
     def test_sendmessage(self):
         mess = Messaggio.objects.filter(chat=self.c, mittente=self.ut1)
         self.assertEqual(mess[0].contenuto, "Ciao")
+        # invio messaggio ad una chat in cui non si è partecipanti
+        sendmessage(self.ut1, "Ciao", self.e)
 
     # controllo contenuto dell'ultimo messaggio inviato
     def test_getlastmessagecontent(self):

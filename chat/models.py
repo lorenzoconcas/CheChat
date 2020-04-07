@@ -147,6 +147,8 @@ def deletechat(user_id, chat_id):
 def addusertochat(chat, user):
     if not Partecipanti.objects.filter(chat=chat, contatto=user).exists():
         Partecipanti(chat=chat, contatto=user).save()
+    else:
+        return "err"
 
 
 def getchat(chat_id):
