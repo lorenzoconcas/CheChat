@@ -19,7 +19,6 @@ class RequestsTestCase(TestCase):
         session['user_id'] = self.ut1.id
         session.save()
 
-
     def test_personalid(self):
         data = {'req':'personal_id'}
         response = self.client.post('/client_reqs/', data, HTTP_X_REQUESTED_WITH='XMLHttpRequest')
@@ -97,3 +96,29 @@ class RequestsTestCase(TestCase):
         result = json.loads(response.content)
         # agli utenti non partecipanti tale chat risulta vuota (sia che esista sia che non esista)
         self.assertEqual(result, [])
+
+    def test_send_message(self):
+        c = createchat(self.ut1, [self.ut2.id])
+        data = {'req': 'send_message', 'msg': 'Prova',
+                'chat_id': c.id}
+        response = self.client.post('/client_reqs/', data, HTTP_X_REQUESTED_WITH='XMLHttpRequest')
+        self.assertEqual(response.content, b'sent')
+
+    def test_send_message_not_in_chat(self):
+        session = self.client.session
+        session['user_id'] = self.ut3.id
+        session.save()
+        c = createchat(self.ut1, [self.ut2.id])
+        data = {'req': 'send_message', 'msg': 'Prova',
+                'chat_id': c.id}
+        response = self.client.post('/client_reqs/', data, HTTP_X_REQUESTED_WITH='XMLHttpRequest')
+
+        self.assertEqual(response.content, b'not_allowed')
+
+    def test_send_message_chat_not_exist(self):
+
+        data = {'req': 'send_message', 'msg': 'Prova',
+                'chat_id': 2}
+        response = self.client.post('/client_reqs/', data, HTTP_X_REQUESTED_WITH='XMLHttpRequest')
+
+        self.assertEqual(response.content, b'not_allowed')

@@ -80,7 +80,7 @@ def insertcontact(phonebook_owner, contact):
 
 def removecontact(phonebook_owner, contact):
     try:
-        Rubrica.objects.get(owner=phonebook_owner, contatto=contact).deleteauth_user_groups()
+        Rubrica.objects.get(owner=phonebook_owner, contatto=contact).delete()
         return "ok"
     except models.ObjectDoesNotExist:
         print("contatto non trovato in rubrica")

@@ -246,12 +246,15 @@ def client_requests(request):
         elif req == 'send_message':
             msg = request.POST['msg']
             chat_id = request.POST['chat_id']
-            c = Chat.objects.get(id=chat_id)
+            try:
+                c = Chat.objects.get(id=chat_id)
+            except models.ObjectDoesNotExist:
+                return HttpResponse("not_allowed")
             if Partecipanti.objects.filter(chat=c, contatto=u).exists():
                 sendmessage(u, msg, c)
                 resp = "sent"
             else:
-                resp = "non allowed"
+                resp = "not_allowed"
         elif req == 'get_chat_icon':
             chat_id = request.POST['chat_id']
             chat = getchat(chat_id)
