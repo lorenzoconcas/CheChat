@@ -182,7 +182,7 @@ def client_requests(request):
             for e in ids_json:
                 ids.append(int(e))
 
-            adding_to_thread = request.POST['starting_thread']
+            adding_to_thread = request.POST['adding_to_thread']
             # print(adding_to_thread)
             if adding_to_thread is not None and adding_to_thread == 'true':
                 # significa che l'utente ha creato una chat
@@ -204,7 +204,8 @@ def client_requests(request):
                                     addusertochat(chat, partecipante.contatto)
                             return HttpResponse('[{"result":"ok", "id":"' + str(chat.id) + '" }]')
                     except exceptions.ObjectDoesNotExist:
-                        print("L'utente sta cercando di aggiungere un partecipante ad una conversazione che non esiste")
+                    #   print("L'utente sta cercando di aggiungere un partecipante ad una conversazione che non esiste")
+                        return HttpResponse("[{'result':'err'}]")
             c = createchat(u, ids)
             if len(ids) > 1:
                 icon = '/static/chat/icons/user_group.png'
@@ -226,7 +227,7 @@ def client_requests(request):
             try:
                 chat = Chat.objects.get(id=chat_id)
             except exceptions.ObjectDoesNotExist:
-                print("la chat non esiste")
+                # print("la chat non esiste")
                 return HttpResponse("[]")
             # controlliamo che l'utente sia effettivamente in quella chat
             if Partecipanti.objects.filter(chat=chat, contatto=u).exists():

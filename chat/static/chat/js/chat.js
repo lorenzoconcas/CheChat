@@ -300,7 +300,7 @@ function startChat(){
             data: {
                'req': 'create_chat',
                 'user_ids_json': chat_ids_json,
-                'starting_thread' : adding_partecipant,
+                'adding_to_thread' : adding_partecipant,
                 'base_thread': currentChat,
             },
 

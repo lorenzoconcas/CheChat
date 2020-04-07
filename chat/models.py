@@ -83,7 +83,7 @@ def removecontact(phonebook_owner, contact):
         Rubrica.objects.get(owner=phonebook_owner, contatto=contact).delete()
         return "ok"
     except models.ObjectDoesNotExist:
-        print("contatto non trovato in rubrica")
+        # print("contatto non trovato in rubrica")
         return "err"
 
 
@@ -124,7 +124,10 @@ def getlastmessagecontent(chat):
 
 def deletechat(user_id, chat_id):
     user = Utente.objects.get(id=user_id)
-    target_chat = Chat.objects.get(id=chat_id)
+    try:
+        target_chat = Chat.objects.get(id=chat_id)
+    except models.ObjectDoesNotExist:
+        return "err"
     users_in_chat = Partecipanti.objects.filter(chat=target_chat)  # restituisce tutti i partecipanti ad una chat
     try:
         p = Partecipanti.objects.filter(chat=target_chat, contatto=user)  # togliamo l'accesso alla chat all'utente
@@ -132,7 +135,7 @@ def deletechat(user_id, chat_id):
         p[0].delete()  # perchè [0] ? filter restituisce un queryset non un entry singola,
         # anche se restituirà un solo elemento
     except (models.ObjectDoesNotExist, IndexError):
-        print("L'utente sta cercando di cancellarsi da una chat non sua o non esiste in quella chat")
+        # print("L'utente sta cercando di cancellarsi da una chat non sua o non esiste in quella chat")
         return "err"
 
     if len(users_in_chat) == 0:  # se anche l'ultimo partecipante è stato cancellato eliminiamo la chat
