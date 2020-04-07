@@ -17,7 +17,7 @@ class ModelsTestCase(TestCase):
         self.ut3 = Utente.objects.get(email="lorena@iswchat.com")
         self.ut4 = Utente.objects.get(email="francesca@iswchat.com")
 
-        #creazione chat
+        # creazione chat
         ids = []
         ids2 = []
         ids.append(int(self.ut1.id))
@@ -105,11 +105,11 @@ class ModelsTestCase(TestCase):
         filtered_chat_list = getchats(self.ut1)
         list_ids = []
         filtered_ids = []
-        for l in list_chats:
-            list_ids.append(l.chat_id)
+        for lst in list_chats:
+            list_ids.append(lst.chat_id)
 
-        for l in filtered_chat_list:
-            filtered_ids.append(l.chat_id)
+        for lst in filtered_chat_list:
+            filtered_ids.append(lst.chat_id)
 
         self.assertEqual(list_ids, filtered_ids)
 
