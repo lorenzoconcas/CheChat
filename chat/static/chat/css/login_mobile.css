@@ -7,6 +7,21 @@
         left:0;
         width: 100%;
     }
+    footer{
+        height: 62px;
+        top: calc(100% - 62px);
+    }
+    .point_separator{
+        font-size: 32px;
+    }
+    #invalid_data_message{
+        font-size: 48px;
+    }
+    #stage{
+        font-size: 30px;
+        padding: 5px 10px;
+        top: -88px;
+    }
     #logo_box{
         top:10%;
         left:0;
@@ -17,6 +32,14 @@
        top:35%;
         left:0;
 
+    }
+    #login_btn{
+        width: 133px;
+        padding: 0px;
+        font-size: 128px;
+
+        top: 68px;
+        left: 5px;
     }
      #register_box{
       top:35%;
@@ -51,7 +74,15 @@
          width: 100%;
          text-align: center;
      }
+    @-webkit-keyframes autofill {
+    0%,100% {
 
+    }
+}
+
+input:-webkit-autofill {
+
+}
 }
 
 @media (max-width:1080px) and (-webkit-min-device-pixel-ratio: 2.75), (max-width:1080px) and (-webkit-min-device-pixel-ratio: 2.75){
@@ -78,7 +109,7 @@
         top: calc(50% - 100px);
     }
     #access_text{
-        font-size: 96px;
+        font-size: 148px;
         position: relative;
         top:32px;
     }
@@ -86,7 +117,7 @@
 
     }
     #register{
-        font-size: 32px;
+        font-size: 48px;
     }
     .input, .button{
          margin-top:20px;
@@ -98,7 +129,7 @@
      .button{
          width:30%;
      }
-     #footer_text{
+     .footer_text{
          position: relative;
           height: 16px;
           top: calc(100% - 64px);
@@ -106,5 +137,7 @@
           text-align: center;
          font-size: 48px;
      }
-
+    #team_logo{
+        font-size:48px;
+    }
 }
