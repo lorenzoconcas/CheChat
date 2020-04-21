@@ -351,7 +351,7 @@ a:link {
 .popup_panel{
 	z-index: 50;
 	position: fixed;
-	height: calc(100% - 48px);
+	height: calc(100% - 24px);
 	top: 150%;
 	left: 0;
 	width: 315px;
