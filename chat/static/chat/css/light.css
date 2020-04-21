@@ -1,9 +1,8 @@
 #navbar {
 	-webkit-backdrop-filter: blur(8px);
 	backdrop-filter: blur(8px);
-	background: rgba(235, 235, 235, 0.8);
-	background: linear-gradient(#ededed, #ededed);
-	border-bottom-color: #e0e0e0;
+	background: white;
+
 }
 #navbar_title {
 	color:black;
@@ -15,17 +14,14 @@
 	border-width: 1px;
 }
 .chat_thread {
-	border-bottom-color: lightgray;
-	border-bottom-width: 1px;
+	border-color: #e6e6e6;
+    box-shadow: 0 3px 12px 0 #0000003b;
 }
 #box_footer{
 	-webkit-backdrop-filter: blur(8px);
 	backdrop-filter: blur(8px);
-	background: rgba(235, 235, 235, 0.8);
-	background: linear-gradient(#ededed, #ededed);
-	border-top-color: #e0e0e0;
-	border-top-style: solid;
-    border-top-width: 0.5px;
+		background: white;
+    box-shadow: 0 3px 12px 0 #0000003b;
 }
 .thread_status {
 	color: white;
@@ -39,8 +35,6 @@
 	border-radius: 32px;
 }
 #chat {
-	border-top-style: solid;
-	border-top-color: #dfdfdf;
 	border-left-style: solid;
 	border-left-color: #dfdfdf;
 	border-width: 1px;
@@ -50,7 +44,7 @@
 	border-color: #dfdfdf;
 	-webkit-backdrop-filter: blur(5px);
 	backdrop-filter: blur(5px);
-	background: rgba(220, 220, 220, 0.31);
+	background: #ffffff42;
 }
 .chat_thread_header_btn{
 	color: black;
@@ -67,9 +61,6 @@
 #send_box{
 	background: rgba(244, 244, 244, 0.25);
 	backdrop-filter: blur(8px);
-	border-top-style: solid;
-	border-top-width: 0.5px;
-	border-color: #dfdfdf;
 }
 #send_btn {
 	border-style: solid;

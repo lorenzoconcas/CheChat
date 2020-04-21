@@ -6,6 +6,7 @@ body {
     transition:all 0.5s ease-out;
 	background-repeat: no-repeat;
 	background-attachment: fixed;
+	min-width: 1024px;
 }
 
 body::-webkit-scrollbar {
@@ -18,19 +19,18 @@ a:link {
 
 #logo {
 	position: relative;
-	width: 32px;
+	width: 0px;
 	left: 16px;
 
 }
 
 #navbar_title {
 	position: relative;
-	padding-left: 10px;
-
-	left: 16px;
-	font-family: "Libel Suit", sans-serif;
-	font-size: 20px;
-	font-weight: bold;
+    padding-left: 10px;
+    left: 0;
+    font-family: "Product Sans", sans-serif;
+    font-size: 16px;
+    font-weight: bold;
 }
 
 #user_name {
@@ -43,13 +43,13 @@ a:link {
 }
 
 #user_icon {
-	width: 32px;
-	position: relative;
-	text-align: left;
-	float: right;
-	left: -20px;
-
-	    border-style: solid;
+	width: 20px;
+    position: relative;
+    text-align: left;
+    float: right;
+    left: -16px;
+	top:-1px;
+    border-style: solid;
     border-radius: 256px;
     border-width: 0.5px;
     border-color: #ffffff00;
@@ -57,18 +57,17 @@ a:link {
 
 #navbar {
 	z-index: 55;
-	position: fixed;
-	width: 100%;
-	height: 48px;
-	left: 0;
-	top: 0;
-	border-bottom-style: solid;
-	border-bottom-width: 0.5px;
+    position: fixed;
+    width: 100%;
+    height: 24px;
+    left: 0;
+    top: 0;
+	box-shadow: 0 -9px 17px 0 #0000003b;
 }
 .navbar_section{
 	position: absolute;
 
-	height: 48px;
+	height: 24px;
 	display: -ms-flexbox;
     display: -webkit-flex;
     display: flex;
@@ -92,29 +91,26 @@ a:link {
 
 #box_left {
 	position: absolute;
-	width: 33%;
-	left: 0;
-	top: 48px;
-	height: calc(100% - 48px);
+    width: 315px;
+    left: 0;
+    top: 24px;
+    height: calc(100% - 24px);
 }
 #box_left_title{
-	font-family: "Libel Suit", sans-serif;
-	font-size: 24px;
-	position: absolute;
-    width: 100%;
-    text-align: center;
-	top: 4px;
-
+	font-family: "Product Sans", sans-serif;
+    font-size: 24px;
+    position: absolute;
+    top: 12px;
+    font-weight: bold;
+    padding-left: 7px;
 }
 #box_footer{
-	position: fixed;
-    width: 33%;
-    left: 0;
-  	height: 63.5px;
-    top: calc(100% - 63.5px);
-	display: flex;
-  	align-items: center;
-  	justify-content: center;
+    position: fixed;
+    left: 69px;
+    top: calc(100% - 72px);
+    align-items: center;
+    justify-content: center;
+    border-radius: 10px;
 }
 .box_footer_btn{
 	background: transparent;
@@ -123,11 +119,11 @@ a:link {
 
 }
 .box_footer_btn_image{
-	width: 48px;
+	width: 40px;
 }
 #thread_list{
 	position: relative;
-    top: 32px;
+    top: 48px;
 }
 .thread_icon {
 	position: relative;
@@ -142,11 +138,12 @@ a:link {
 }
 
 .chat_thread {
-	position: relative;
-	height: 64px;
-	top:4px;
-    border-collapse: collapse;
-    border-bottom-style: solid;
+    position: relative;
+    height: 64px;
+    border-radius: 10px;
+    width: calc(100% - 16px);
+    margin-left: 8px;
+    margin-top: 8px;
 }
 
 .thread_title {
@@ -194,12 +191,11 @@ a:link {
 
 #chat {
 	position: fixed;
-	width: calc(100% - 33%);
-	left: 33%;
-	top: 48px;
-	height: calc(100% - 48px);
-	visibility: hidden
-
+    width: calc(100% - 315px);
+    left: 315px;
+    top: 25px;
+    height: calc(100% - 25px);
+    visibility: hidden;
 }
 #chat_hidden{
 	position: fixed;
@@ -215,10 +211,13 @@ a:link {
 }
 #thread_header {
 	z-index: 2;
-	position: relative;
-	width: 100%;
-	height: 48px;
-
+    position: relative;
+    width: calc(100% - 16px);
+    height: 48px;
+    box-shadow: 0 3px 12px 0 #0000003b;
+    border-radius: 10px;
+    left: 8px;
+    top: 4px;
 }
 #chat_close{
 	font-size: 0;
@@ -241,36 +240,38 @@ a:link {
 	position: relative;
 	width: 32px;
 	top: 8px;
-	left: 8px;
+	left: 0;
 	border-style: solid;
     border-radius: 256px;
     border-width: 0;
     border-color: #1e90ff00;
 }
-
+#chat_header_btns{
+	position: absolute;
+    float: right;
+    right: 8px;
+    top: 6px;
+    box-shadow: 0 3px 12px 0 #0000003b;
+    border-radius: 10px;
+}
 .chat_thread_header_btn{
-    font-size: 24px;
+	font-size: 24px;
     position: relative;
     float: right;
-    right: 4px;
-    top: 5px;
     padding: 4px;
-    /* background: rgba(181, 181, 181, 0.39); */
-    margin-right: 10px;
+    margin: 0 4px;
     width: 32px;
     border-style: solid;
-    /* border-radius: 256px; */
     border-width: 0;
     border-color: #1e90ff00;
-
+	top: 4px;
 }
 #thread_bubbles {
 	top:0;
-	height: calc(100% - 48px);
+	height: calc(100% - 40px);
 	overflow: auto;
 	position: absolute;
 	width: 100%;
-
 }
 
 #thread_bubbles::-webkit-scrollbar {
@@ -300,7 +301,7 @@ a:link {
 	padding-top: 2px;
 }
 .outgoing {
-	left: 52.5%;
+	left: 50%;
 	border-radius: 16px 16px 0 16px;
 	  overflow: hidden;
 }
@@ -312,33 +313,34 @@ a:link {
 
 #send_box {
 	z-index: 16;
-	position: absolute;
-	height: 64px;
-	top: calc(100% - 64px);
-	width: 100%;
-	left: 0;
+    position: absolute;
+    height: 48px;
+    top: calc(100% - 56px);
+    width: 100%;
+    left: 0;
 }
 
 #send_btn {
 	font-family: "Material Icons", sans-serif;
-	z-index: 16;
-	position: relative;
-	float: right;
-	border-radius: 16px;
-	padding: 8px 4px;
-	width: 64px;
-	top: 14px;
-    right: 8px;
+    z-index: 16;
+    position: relative;
+    float: right;
+    border-radius: 236px;
+    padding: 8px 4px;
+    width: 33px;
+    top: 6px;
+    right: 13px;
     cursor: pointer;
+    font-size: 15px;
 }
 
 #message_box {
 	z-index: 16;
-	position: relative;
-	width: calc(100% - 124px);
-	left: 8px;
-	height: 24px;
-	top: calc(50% - 22px);
+    position: relative;
+    width: calc(100% - 100px);
+    left: 8px;
+    height: 19px;
+    top: 5px;
 }
 
 .input_box {
@@ -351,16 +353,14 @@ a:link {
 	position: fixed;
 	height: calc(100% - 48px);
 	top: 150%;
-
-    left: 0;
-    width: 33%;
-    border-style: solid;
-    border-width: 0;
-
+	left: 0;
+	width: 315px;
+	border-style: solid;
+	border-width: 0;
 	-webkit-transition:all 0.3s ease-out;
-    -moz-transition:all 0.3s ease-out;
-    -o-transition:all 0.3s ease-out;
-    transition:all 0.3s ease-out;
+	-moz-transition:all 0.3s ease-out;
+	-o-transition:all 0.3s ease-out;
+	transition:all 0.3s ease-out;
 }
 
 #input_panel_error{
@@ -460,12 +460,11 @@ a:link {
 
 .contact_delete{
 	    float: right;
-    right: 8px;
-
-    border-radius: 64px;
-    border-color: transparent;
-    background: transparent;
-    position: fixed;
+	    right: 4px;
+	    border-radius: 64px;
+	    border-color: transparent;
+	    background: transparent;
+	    position: fixed;
 }
 .contact_delete_icon{
 	width: 32px;
@@ -517,14 +516,10 @@ a:link {
 }
 #logout{
 	font-family: "Material Icons", sans-serif;
-	font-size: 24px;
-
-
+	font-size: 20px;
 	position: relative;
-
 	float: right;
-	left: -16px;
-
+	left: -10px;
 	cursor: pointer;
 }
 #logout:hover{
@@ -539,14 +534,14 @@ a:link {
 	position: absolute;
 	float:right;
 	right:0;
-	top:40px;
+	top:28px;
 	width: 200px;
 }
 #tooltip_edit_profile{
 	position: absolute;
 	float:right;
 	right:32px;
-	top:40px;
+	top:28px;
 	width: 150px;
 }
 

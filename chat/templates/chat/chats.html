@@ -13,7 +13,7 @@
         <script async src="{% static 'chat/js/gui.js' %}"></script>
         <script async src="{% static 'chat/js/push.js' %}"></script>
         <script async src="{% static 'chat/js/jquery.js' %}"></script>
-        <meta name="theme-color" content="#ECECEC">
+        <meta name="theme-color" content="#FFFFFF">
 
         <!-- Queste proprietà servono per la PWA-->
         <link rel="manifest" href="{% static 'chat/manifest.webmanifest' %}">
@@ -31,10 +31,9 @@
     <body onLoad="setup()">
         <navbar id="navbar">
             <div id="navbar_section_logo" class="navbar_section">
-                 <img id="logo" src="{% static 'chat/icons/chat_icon.png' %}" alt="ISWChat">
+                 <img id="logo" src="{% static 'chat/icons/chat_icon.png' %}" alt="CheChat">
                  <a id="navbar_title" href="/home">CheChat</a>
             </div>
-
             <div id="navbar_section_profile" class="navbar_section">
                 <a id="user_name" onmouseover="tooltip('tooltip_edit_profile', 1)" onmouseleave="tooltip('tooltip_edit_profile', 0)">{{ name_to_show }}</a>
                 <span id="tooltip_edit_profile" class="tooltip">Quello sei tu</span>
@@ -43,19 +42,7 @@
                 <span id="tooltip_exit" class="tooltip">Premi per fare il logout</span>
                 <a id="logout" href="logout" onmouseover="tooltip('tooltip_exit', 1)" onmouseleave="tooltip('tooltip_exit', 0)"></a>
             </div>
-
         </navbar>
-        <div id="personal_info_panel">
-            <label id="personal_info_panel_close" ></label>
-            <br>
-            <img   id="personal_info_icon" src="{{ user_icon }}" alt="{{ name_to_show }}"/>
-            <br>
-            <label id="personal_info_username">{{ name_to_show }}</label> <!--e cognome-->
-            <br>
-            <label id="personal_info_delete_profile" >Elimina profilo</label>
-            <br>
-        </div>
-
         <div id="chat_and_contacts_panel" class="popup_panel">
             <label id="cec_title">Nuova chat</label>
             <br>
@@ -94,13 +81,19 @@
             </div>
             <div id="box_footer">
 
-                <button class="box_footer_btn" onmouseover="tooltip('tooltip_new_chat', 1)" onmouseleave="tooltip('tooltip_new_chat', 0)" onclick="openCECPanel(1)"><img class="box_footer_btn_image" src="{%  static 'chat/icons/new_chat.png' %}"></button>
+                <button class="box_footer_btn" onmouseover="tooltip('tooltip_new_chat', 1)" onmouseleave="tooltip('tooltip_new_chat', 0)" onclick="openCECPanel(1)" style="left: 8px;">
+                    <img class="box_footer_btn_image" src="{%  static 'chat/icons/new_chat.png' %}">
+                </button>
                 <span id="tooltip_new_chat" class="tooltip tooltip_bottom">Nuova Chat</span>
 
-                <button class="box_footer_btn" onmouseover="tooltip('tooltip_open_contacts', 1)" onmouseleave="tooltip('tooltip_open_contacts', 0)" onclick="openCECPanel(0)"><img class="box_footer_btn_image" src="{%  static 'chat/icons/contacts.png' %}"></button>
+                <button class="box_footer_btn" onmouseover="tooltip('tooltip_open_contacts', 1)" onmouseleave="tooltip('tooltip_open_contacts', 0)" onclick="openCECPanel(0)" >
+                    <img class="box_footer_btn_image" src="{%  static 'chat/icons/contacts.png' %}">
+                </button>
                 <span id="tooltip_open_contacts" class="tooltip tooltip_bottom">Contatti</span>
 
-                <button class="box_footer_btn" onmouseover="tooltip('tooltip_toggletheme', 1)" onmouseleave="tooltip('tooltip_toggletheme', 0)" onclick="toggleTheme()"><img id="themeImg" class="box_footer_btn_image" src="{%  static 'chat/icons/light_mode.png' %}"></button>
+                <button class="box_footer_btn" onmouseover="tooltip('tooltip_toggletheme', 1)" onmouseleave="tooltip('tooltip_toggletheme', 0)" onclick="toggleTheme()" style="left: -8px;">
+                    <img id="themeImg" class="box_footer_btn_image" src="{%  static 'chat/icons/light_mode.png' %}">
+                </button>
                  <span id="tooltip_toggletheme" class="tooltip tooltip_bottom">Alterna tema</span>
             </div>
         </div>
@@ -114,7 +107,6 @@
                 <label id="chat_title"></label>
                 <btn class="" onclick="deleteChat()"><img class="chat_thread_header_btn" src="{%  static 'chat/icons/delete_chat.png' %}"></btn>
                 <btn class="" onclick="addPartecipant()"><img class="chat_thread_header_btn" src="{%  static 'chat/icons/add_partecipant.png' %}"></btn>
-
             </div>
             <div id="thread_bubbles">
                 <br><br><br>

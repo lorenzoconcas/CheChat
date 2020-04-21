@@ -33,7 +33,7 @@ function openPanel(panel_name) {
     if (isMobile)
         $("#" + panel_name).css("top", 0);
     else
-        $("#" + panel_name).css("top", "48px");
+        $("#" + panel_name).css("top", "24px");
 }
 
 //mostra all'utente i tooltip al passaggio del mouse

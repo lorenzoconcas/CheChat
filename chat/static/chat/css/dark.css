@@ -40,6 +40,7 @@ body {
 .chat_thread {
 	border-bottom-color: black;
 	border-bottom-width: 1px;
+	background: black;
 }
 
 .thread_status {
