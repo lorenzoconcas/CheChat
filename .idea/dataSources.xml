@@ -21,7 +21,7 @@
       <imported>true</imported>
       <remarks>$PROJECT_DIR$/ISW_test/settings.py</remarks>
       <jdbc-driver>org.sqlite.JDBC</jdbc-driver>
-      <jdbc-url>jdbc:sqlite:C:\Users\lorec\PycharmProjects\ISW\db.sqlite3</jdbc-url>
+      <jdbc-url>jdbc:sqlite:db.sqlite3</jdbc-url>
     </data-source>
   </component>
 </project>

@@ -374,13 +374,16 @@ a:link {
 }
 
 #cec_title {
-	font-family: "Libel Suit", serif;
+	font-family: "Product Sans", serif;
 	position: absolute;
 	font-size: 24px;
-	padding-left: 24px;
+	/*padding-left: 24px;*/
 	padding-top: 4px;
 	padding-bottom: 4px;
 	top:8px;
+
+    font-weight: bold;
+    padding-left: 7px;
 
 }
 #cec_startchat{
