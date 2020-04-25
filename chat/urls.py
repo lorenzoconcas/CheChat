@@ -12,7 +12,6 @@ urlpatterns = [
     path('home', views.home, name="home"),
     path('logout', views.logout, name="logout"),
     # urls delle richieste json
-
     path('client_reqs/', views.client_requests, name='c_req'),
 
 

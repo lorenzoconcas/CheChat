@@ -5,7 +5,7 @@ from chat.models import *
 class ViewsTestCase(TestCase):
     def setUp(self):
         Users.objects.create(name="Marco", email="marco@iswchat.com", password="1234", surname="Rossi")
-        client = Client()
+        self.client = Client()
 
     def test_getlogin(self):
         response = self.client.get("/")

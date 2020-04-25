@@ -80,19 +80,18 @@
                 {% endfor %}
             </div>
             <div id="box_footer">
-
                 <button class="box_footer_btn" onmouseover="tooltip('tooltip_new_chat', 1)" onmouseleave="tooltip('tooltip_new_chat', 0)" onclick="openCECPanel(1)" style="left: 8px;">
-                    <img class="box_footer_btn_image" src="{%  static 'chat/icons/new_chat.png' %}">
+                    <img class="box_footer_btn_image" src="{%  static 'chat/icons/new_chat.png' %}" alt="Nuova Chat">
                 </button>
                 <span id="tooltip_new_chat" class="tooltip tooltip_bottom">Nuova Chat</span>
 
                 <button class="box_footer_btn" onmouseover="tooltip('tooltip_open_contacts', 1)" onmouseleave="tooltip('tooltip_open_contacts', 0)" onclick="openCECPanel(0)" >
-                    <img class="box_footer_btn_image" src="{%  static 'chat/icons/contacts.png' %}">
+                    <img class="box_footer_btn_image" src="{%  static 'chat/icons/contacts.png' %}" alt="Contatti">
                 </button>
                 <span id="tooltip_open_contacts" class="tooltip tooltip_bottom">Contatti</span>
 
                 <button class="box_footer_btn" onmouseover="tooltip('tooltip_toggletheme', 1)" onmouseleave="tooltip('tooltip_toggletheme', 0)" onclick="toggleTheme()" style="left: -8px;">
-                    <img id="themeImg" class="box_footer_btn_image" src="{%  static 'chat/icons/light_mode.png' %}">
+                    <img id="themeImg" class="box_footer_btn_image" src="{%  static 'chat/icons/light_mode.png' %}" alt="Alterna Tema">
                 </button>
                  <span id="tooltip_toggletheme" class="tooltip tooltip_bottom">Alterna tema</span>
             </div>
