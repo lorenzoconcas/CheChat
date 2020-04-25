@@ -93,13 +93,15 @@ input:-webkit-autofill {
         width: 100%;
 
     }
-    #logo_box{
-        height: 35%;
-        top:0px;
+    #home_btn{
+        left: 32px;
+        top: 32px;
+        font-size: 92px;
+        border-radius: 128px;
     }
     #login_box{
-       top:35%;
-        height: 65%;
+        top:35%;
+        height:720px;
     }
     #separator{
         background: transparent;
