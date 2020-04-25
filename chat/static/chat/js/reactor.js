@@ -7,7 +7,7 @@ function init(){
     let isMobile = detectMobile();
     if(isMobile)
         loadMobileCSS();
-    
+
     let path = window.location.pathname;
     if(isMobile){
          if (path === "/register")
