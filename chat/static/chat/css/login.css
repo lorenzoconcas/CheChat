@@ -1,91 +1,59 @@
-
-
 body{
     font-family: "Product Sans", sans-serif;
     text-align: center;
-    background-repeat: no-repeat;
-    background-attachment: fixed;
-    background-image: linear-gradient(to bottom, white, rgba(232, 232, 232, 0.33));
-    overflow: auto;
+
+
 }
 a:link{
     text-decoration: none;
 }
-.box{
-    position: absolute;
-    width: 40%;
-    top:30%;
-    height: 40%;
-}
+
 #login_box{
-    left:50%;
-}
-#logo_box{
-    left:0;
-    width: 50%;
-}
-#register_box{
-    left:50%;
-    top:20%;
-}
-#chat_logo{
-
-    position: relative;
-    height: 70%;
-    top: 36px;
-    object-fit: contain;
-}
-#greeting_message{
-    color:black;
-    font-size: 24px;
-    font-family: "Product Sans", sans-serif;
+    position:fixed;
+    height: 50%;
     width:100%;
-    text-align: center;
-    position: relative;
-    top: 42px;
+    top: 33%;
 }
-#separator{
-    position: absolute;
-    top:5%;
-    left: calc(50% - 1px);
-    width: 1px;
-    height: 90%;
-    background: lightgray;
-   ' background: linear-gradient(90deg, rgba(255,255,255,1) 0%, rgba(0,0,0,1) 51%, rgba(255,255,255,1) 100%);
 
-}
 #response_message{
         color: #8e0000;
 }
 #invalid_data_message{
+    position: relative;
+    top: 100px;
     color: #8e0000;
 }
 footer{
     position: absolute;
     height: 24px;
-    top: calc(100% - 24px);
+    top: calc(100% - 32px);
     text-align: center;
     width: 100%;
     left:0;
-
 }
 .input{
     position: relative;
     top:64px;
     border-style: solid;
     border-color: transparent;
-    border-radius: 32px;
+    border-radius: 16px;
     padding: 8px 16px;
-    background-color: rgba(232,232,232,0.8);
-    color:darkgrey;
+    background-color: rgba(255, 255, 255, 0.8);
+    color: #1e1e1e;
     margin: 10px;
-    width: 128px;
+    width: 160px;
+    box-shadow: 0 3px 12px 0 #0000003b;
+    font-family: "Product Sans", sans-serif;
+    font-weight: bold;
 }
 
 #access_text{
     position: relative;
-    top:64px;
-    font-size: 48px;
+    top: 30px;
+    font-size: 55px;
+    font-family: "Product Sans", sans-serif;
+    font-weight: bold;
+    left: 21px;
 }
 .button{
     position: relative;
@@ -100,70 +68,56 @@ footer{
     width: 128px;
 }
 #register{
+
+    color: rgb(34, 34, 34);
+    font-family: "Product Sans", sans-serif;
+    font-weight: bold;
+}
+#stage{
     position: relative;
-    top:64px;
-    color: rgba(48,48,48,0.74);
+    font-size: 12px;
+    border-radius: 50px 50px 50px 0;
+    border-style: solid;
+    padding: 5px 10px;
+    top: -43px;
+}
+#login_btn{
+    background-color: #047DD9;
+    color: white;
+    font-family: "Material Icons", sans-serif;
+    width: 42px;
+    padding: 0px;
+    font-size: 38px;
+    box-shadow: 0 3px 12px 0 #0000003b;
+    top: 68px;
+    left: -2px;
+}
+.point_separator{
+    font-family: "Material Icons", sans-serif;
+    font-size: 9px;
+    color:#6E6E6E;
+}
+#team_logo{
+    font-family: Product Sans, sans-serif;
+    font-weight: bold;
+    position: fixed;
+    float: right;
+    right: 16px;
+}
+.footer_text{
+    font-weight: bold;
 }
 
-@media only screen and (max-width: 1280px) {
-     .box{
-        width: 30%;
-    }
-    #login_box{
-        left:60%;
-    }
-    #register_box{
-        left:60%;
-        top:20%;
-    }
-}
-@media only screen and (max-width: 581px) {
-    .box{
-        width: 30%;
-    }
-    #login_box{
-        left:60%;
-    }
-    #logo_box{
-        left:10%;
-    }
-      #register_box{
-        left:60%;
-        top:20%;
-    }
-    #greeting_message{
-        width: auto;
-    }
-}
-@media only screen and (max-width: 580px){
-    .box{
-        height: 30%;
-        left:0;
-        width: 100%;
-    }
-    #logo_box{
-        top:10%;
-        left:0;
-        width: 100%;
-    }
-    #login_box{
-       top: calc(35% + 16px);
-       left:0;
-    }
-    #greeting_message{
-        top: -12px;
-    }
-    #register_box{
-        left:0%;
-        top:30%;
-    }
-    #separator{
+@-webkit-keyframes autofill {
+    0%,100% {
+        color: #666;
         background: transparent;
+        font-family: "Product Sans", sans-serif;
     }
-    #chat_logo{
-        top:0;
-    }
-    footer{
-        top:0;
-    }
+}
+
+input:-webkit-autofill {
+    -webkit-animation-delay: 1s; /* Safari support - any positive time runs instantly */
+    -webkit-animation-name: autofill;
+    -webkit-animation-fill-mode: both;
 }

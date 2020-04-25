@@ -4,7 +4,6 @@
     <head>
         <meta charset="UTF-8">
         <link rel="shortcut icon" type="image/png" href="{% static 'favicon.ico' %}"/>
-        <link rel="shortcut icon" type="image/png" href="{% static 'favicon.ico' %}"/>
         <link rel="stylesheet" type="text/css" href="{% static 'chat/css/login.css' %}">
         <link rel="stylesheet" type="text/css" href="{% static 'chat/css/fonts.css' %}">
         <script src="{% static 'chat/js/reactor.js' %}"></script>
@@ -12,15 +11,13 @@
 
     </head>
     <body onload="init()">
-        <div class="box" id="logo_box">
-            <img id="chat_logo" src="{% static 'chat/icons/chat_icon.png' %}" alt="CheChat" />
-            <br>
-            <label id="greeting_message" style="font-family: Libel Suit, sans-serif;">Benvenuto in CheChat</label>
-        </div>
-        <div id="separator"></div>
-        <div class="box" id="register_box">
-            <form action="/register" method="post">{% csrf_token %}
-                <label id="access_text">Registrazione</label>
+           <label id="team_logo" >C2GP <span style="
+            font-weight: normal;
+        ">Team</span></label>
+            <form id="login_box"  action="/register" method="post">{% csrf_token %}
+                <label id="access_text">CheChat<span id="stage">ISW</span></label>
+                <br>
+                <label style="position: relative;top: 32px;">Registrazione</label>
                 <br>
                 <input id="name_field" class="input" type="name" name="name" placeholder="Nome" oninput="onFieldRegisterInput()"/>
                 <br>
@@ -33,14 +30,19 @@
                 <input id="confirm_password_field" class="input" type="password" name="confirm_psw" placeholder="Conferma password" oninput="onFieldRegisterInput()"/>
                 <br>
                 <input type="hidden" name="register" value="True"/>
-                <button id="login_btn" class="button" name="register=true">Registrati</button>
+                <button id="login_btn" class="button"></button>
+                <br>
+                <label id="invalid_data_message" style="position: relative;top: 64px;">{{ response }}</label>
             </form>
             <br>
-             <label id="response_message" style="position: relative;top: 64px;">{{ response }}</label>
+
         </div>
 
-        <footer>
-             <label id="footer_text" style="font-family: Libel Suit, sans-serif;">Creato da C2GP Team</label>
+          <footer>
+
+            <label class="footer_text" >Privacy Policy</label>
+            <label class="point_separator"></label>
+            <label class="footer_text">Informazioni</label>
         </footer>
 
     </body>

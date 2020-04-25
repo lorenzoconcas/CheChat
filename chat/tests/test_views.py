@@ -4,7 +4,7 @@ from chat.models import *
 
 class ViewsTestCase(TestCase):
     def setUp(self):
-        Utente.objects.create(nome="Marco", email="marco@iswchat.com",  password="1234", cognome="Rossi")
+        Users.objects.create(name="Marco", email="marco@iswchat.com", password="1234", surname="Rossi")
         client = Client()
 
     def test_getlogin(self):
@@ -24,7 +24,7 @@ class ViewsTestCase(TestCase):
         # non viene utilizzata la redirect
         self.assertEqual(response.status_code, 200)
         #controlliamo anche alcuni valori in sessione
-        u = Utente.objects.get(email="marco@iswchat.com")
+        u = Users.objects.get(email="marco@iswchat.com")
         session = self.client.session
         self.assertEqual(session['mail'], mail)
         self.assertEqual(session['user_id'], u.id)
@@ -56,7 +56,7 @@ class ViewsTestCase(TestCase):
                                     })
 
         # controllo l'effettiva registrazione dell'utente
-        u = Utente.objects.get(email=mail)
+        u = Users.objects.get(email=mail)
         self.assertIsNotNone(u)
         self.assertEqual(response.status_code, 302)
 

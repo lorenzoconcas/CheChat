@@ -48,7 +48,7 @@ self.addEventListener( 'fetch', ( event ) => {
     let headers = new Headers();
     headers.append( 'cache-control', 'no-cache' );
     headers.append( 'pragma', 'no-cache' );
-    var req = new Request( 'test-connectivity.html', {
+    var req = new Request( '/home', {
         method: 'GET',
         mode: 'same-origin',
         headers: headers,
@@ -61,7 +61,7 @@ self.addEventListener( 'fetch', ( event ) => {
             return fetch( event.request )
         } )
         .catch( function ( err ) {
-            return new Response( '<div><h2>Uh oh that did not work</h2></div>', {
+            return new Response( '<div style="display:inline-block; text-align: center"><h2>Il server sembra essere offline</h2></div>', {
                 headers: {
                     'Content-type': 'text/html'
                 }

@@ -25,7 +25,7 @@ SECRET_KEY = 't!q^9p#mrk_2_#$&3!v(8^opl%e)3cnff75xoz$_j_14+knyw3'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['*']  # permette di collegarsi con qualsiasi ip
+ALLOWED_HOSTS = ['localhost']  # permette di collegarsi con qualsiasi ip
 
 # Application definition
 

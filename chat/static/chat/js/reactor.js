@@ -28,7 +28,7 @@ function onFieldInput(){
     var pFilled = pswdField.value !== '';
 
     if(uFilled && pFilled){
-        loginBtn.style.backgroundColor = "#0099FF";
+        loginBtn.style.backgroundColor = "#047DD9";
         loginBtn.style.color = "white";
     }else{
         loginBtn.style.backgroundColor = "rgba(232,232,232,0.8)";
@@ -53,7 +53,7 @@ function onFieldRegisterInput() {
     var cPFilled = confPswdField.value !== '';
 
      if(uFilled && pFilled && sFilled && eFilled && cPFilled){
-        loginBtn.style.backgroundColor = "#0099FF";
+        loginBtn.style.backgroundColor = "#047DD9";
         loginBtn.style.color = "white";
     }else{
         loginBtn.style.backgroundColor = "rgba(232,232,232,0.8)";

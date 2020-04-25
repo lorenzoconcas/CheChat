@@ -46,7 +46,7 @@ def register(request):
                 'response': "Compila tutti i campi",
             })
         # controlliamo la mail non sia già stata usata
-        if Utente.objects.filter(email=mail).exists():
+        if Users.objects.filter(email=mail).exists():
             return render(request, 'chat/register.html', {
                 'response': "Email già utilizzata",
             })
@@ -58,7 +58,7 @@ def register(request):
         # avendo superato tutti i controlli aggiungiamo il nuovo utente e lo reindirizziamo al login
         # (si potrebbe fare il login automatico)
         mail = mail.lower()
-        new_user = Utente(email=mail, password=psw, nome=name, cognome=surname)
+        new_user = Users(email=mail, password=psw, name=name, surname=surname)
         new_user.save()
         return redirect('/')
     else:
@@ -87,8 +87,8 @@ def home(request):
     # se non siamo loggati tentiamo il login
     if not islogged:
         # cerchiamo l'utente nel db e se esiste proviamo il login
-        if Utente.objects.filter(email=mail).exists():
-            u = Utente.objects.get(email=mail)
+        if Users.objects.filter(email=mail).exists():
+            u = Users.objects.get(email=mail)
             if u.login(mail, password):  # se il login riesce segniamo in sessione il flag logged e l'id utente
                 request.session.__setitem__("mail", mail)
                 request.session.__setitem__("logged", True)
@@ -117,19 +117,19 @@ def home(request):
 
     # qui ci occupiamo di caricare tutte le chat dell'utente (quelle nella barra laterale)
     try:
-        user = Utente.objects.get(email=mail)
+        user = Users.objects.get(email=mail)
     except models.ObjectDoesNotExist:
         return redirect("/logout")
 
     chats = getorderedchats(user)
     # carichiamo i contatti dell'utente, se non esistono elementi restituiamo un array vuoto
     try:
-        contacts = Rubrica.objects.filter(owner=user)
+        contacts = Phonebook.objects.filter(owner=user)
     except models.ObjectDoesNotExist:
         contacts = []
     # chiamiamo la pagina passando alcune variabili
     return render(request, 'chat/chats.html', {
-        'name_to_show': user.nome + " " + user.cognome,
+        'name_to_show': user.name + " " + user.surname,
         'user': user,
         'user_icon': user_icon,
         'chats': chats,
@@ -150,12 +150,12 @@ def client_requests(request):
             return redirect("/")
 
         user_id = request.session['user_id']
-        u = Utente.objects.get(id=user_id)
+        u = Users.objects.get(id=user_id)
 
         if req == 'add_contact':
             email = request.POST['mail']
             try:
-                utente = Utente.objects.get(email=email)
+                utente = Users.objects.get(email=email)
             except models.ObjectDoesNotExist:
                 resp = '[{"result":"err","error":"Utente non trovato"}]'
                 return HttpResponse(resp)
@@ -165,12 +165,12 @@ def client_requests(request):
                 return HttpResponse(resp)
 
             if insertcontact(u, utente) == "ok":
-                resp = '[{"result":"ok","name":"' + str(utente) + '", "id":"' + str(utente.id) + '"}]'
+                resp = '[{"result":"ok", "name":"' + str(utente) + '", "id":"' + str(utente.id) + '"}]'
             else:
-                resp = '[{"result":"err","error":"Utente già in rubrica"}]'
+                resp = '[{"result":"err", "error":"Utente già in rubrica"}]'
         elif req == 'remove_contact':
             try:
-                utente = Utente.objects.get(id=request.POST['remove_id'])
+                utente = Users.objects.get(id=request.POST['remove_id'])
                 result = removecontact(u, utente)
             except models.ObjectDoesNotExist:
                 result = "err"
@@ -192,7 +192,7 @@ def client_requests(request):
                 if not thread_id == 0:
                     try:
                         chat = Chat.objects.get(id=thread_id)
-                        partecipanti = Partecipanti.objects.filter(chat=chat).exclude(contatto=u)
+                        partecipanti = Partecipants.objects.filter(chat=chat).exclude(contatto=u)
                         if len(partecipanti) == 1:  # se ci sono due partecipanti è una chat singola
                             altro_partecipante = partecipanti[0]
                             other_user = altro_partecipante.contatto
@@ -200,11 +200,11 @@ def client_requests(request):
                                 ids.append(int(other_user.id))
                         elif len(partecipanti) > 1:  # altrimenti è un gruppo, quindi esiste
                             for partecipante in partecipanti:
-                                if not Partecipanti.objects.filter(chat=chat, contatto=partecipante.contatto).exists():
+                                if not Partecipants.objects.filter(chat=chat, contatto=partecipante.contatto).exists():
                                     addusertochat(chat, partecipante.contatto)
                             return HttpResponse('[{"result":"ok", "id":"' + str(chat.id) + '" }]')
                     except exceptions.ObjectDoesNotExist:
-                    #   print("L'utente sta cercando di aggiungere un partecipante ad una conversazione che non esiste")
+                        #   print("L'utente sta cercando di aggiungere un partecipante ad una conversazione che non esiste")
                         return HttpResponse("[{'result':'err'}]")
             c = createchat(u, ids)
             if len(ids) > 1:
@@ -216,10 +216,10 @@ def client_requests(request):
                     ic_id = 1
                 icon = '/static/chat/icons/user_icon_' + str(ic_id) + ".png"
             resp = '[{"result":"ok","id":"' + str(c.id) + '", "icon":"' + icon + '", "chat_name":"' + \
-                   c.nome.replace(u.nome + " " + u.cognome, "") + '"}]'
+                   c.name.replace(u.name + " " + u.surname, "") + '"}]'
         elif req == 'delete_chat':
             result = deletechat(user_id, request.POST['chat_id'])
-            resp = '[{"delete":"'+ result +'"}]'
+            resp = '[{"delete":"' + result + '"}]'
         elif req == 'get_all_messages':  # restituisce tutti i messaggi di una data conversazione
             chat_id = request.POST["chat_id"]
             try:
@@ -228,16 +228,16 @@ def client_requests(request):
                 # print("la chat non esiste")
                 return HttpResponse("[]")
             # controlliamo che l'utente sia effettivamente in quella chat
-            if Partecipanti.objects.filter(chat=chat, contatto=u).exists():
-                messaggi = Messaggio.objects.filter(chat_id=chat_id)
+            if Partecipants.objects.filter(chat=chat, contact=u).exists():
+                messaggi = Messages.objects.filter(chat_id=chat_id)
                 resp = "["
                 # trasformiamo i messaggi in una linea json e la aggiungiamo alla risposta
                 for m in messaggi:
-                    if m.mittente_id == user_id:
-                        resp = resp + json_element(m.dataora, m.contenuto, True, "") + ","
+                    if m.sender_id == user_id:
+                        resp = resp + json_element(m.time, m.content, True, "") + ","
                     else:
-                        resp = resp + json_element(m.dataora, m.contenuto, False, (m.mittente.nome + " " +
-                                                                                   m.mittente.cognome)) + ","
+                        resp = resp + json_element(m.time, m.content, False, (m.sender.name + " " +
+                                                                              m.sender.surname)) + ","
                 resp = resp[:-1]
                 resp += "]"
             else:
@@ -249,7 +249,7 @@ def client_requests(request):
                 c = Chat.objects.get(id=chat_id)
             except models.ObjectDoesNotExist:
                 return HttpResponse("not_allowed")
-            if Partecipanti.objects.filter(chat=c, contatto=u).exists():
+            if Partecipants.objects.filter(chat=c, contact=u).exists():
                 sendmessage(u, msg, c)
                 resp = "sent"
             else:

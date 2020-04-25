@@ -88,9 +88,9 @@ function sendMessage() {
             },
         });
         /*
-         "type": "new_message","chat_id": "ultimo.chat.id,""mittente": "", "contenuto", "inviato":  "True"
+         "type": "new_message","chat_id": "ultimo.chat.id,""sender": "", "contenuto", "inviato":  "True"
         * */
-        let bubble = JSON.parse('[{"type": "new_message", "mittente": "", "contenuto" : "'+ msg.value +'", "inviato":"True"}]');
+        let bubble = JSON.parse('[{"type": "new_message", "sender": "", "content" : "'+ msg.value +'", "sent":"True"}]');
         addBubble(bubble[0]);
          $("#thread_preview_"+currentChat).text("Tu: "+msg.value.substring(0, 20));
         msg.value = '';
@@ -186,7 +186,7 @@ function loadMessages(chat_id) {
     });
 }
 
-//utilizzate per salvare un nuovo contatto in rubrica
+//utilizzate per salvare un nuovo contact in rubrica
 function addContact() {
     let mail = $("#contacts_search_box").val();
     if(mail === "")
